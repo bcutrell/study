@@ -62,6 +62,8 @@ mat.std()
 
 # get the sum of all the columns in mat
 mat.sum(axis=0)
+# gets the sum of each column
+# [55 60 65 70 75]
 
 # What is the best way to ensure you get the same random numbers
 np.random.seed(101)
