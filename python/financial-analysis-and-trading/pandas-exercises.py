@@ -48,6 +48,8 @@ df[df['Bank Name'].apply(lambda x: len(x.split()) == 2)]
 # Bonus: How many banks closed in the year 2008?
 df[df['Closing Date'].apply(lambda x: x[-2:] == '08')]
 
+sum(pd.to_datetime(df['Closing Date']).apply(lambda date: date.year == 2008))
+
 # Notes
 # - use inplace=True to mutate df
 # - Remove column -> df.drop(column)
