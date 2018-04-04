@@ -2,7 +2,7 @@
 import pandas as pd
 # import code code.interact(local=locals())
 
-df = pd.read_csv('data/banklist.csv')
+df = pd.read_csv('../data/banklist.csv')
 
 # Show the head of the dataframe
 df.head()

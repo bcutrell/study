@@ -24,5 +24,5 @@ mydata.plot()
 mydata = quandl.get('ZILLOW/C9_ZRIFAH')
 
 mydata = quandl.get('WIKI/AAPL')
-my.head()
+mydata.head()
 

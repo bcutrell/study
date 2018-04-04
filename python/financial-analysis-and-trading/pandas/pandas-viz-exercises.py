@@ -55,8 +55,6 @@ ax.xaxis.grid(True)
 
 plt.tight_layout()
 
-
-
 ax.xaxis.set_major_locator(dates.MonthLocator()) # set tick for every month
 ax.xaxis.set_major_formatter(dates.DateFormatter('\n\n\n%b-%Y')) # set tick format use \n to add space
 
