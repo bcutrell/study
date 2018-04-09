@@ -207,3 +207,9 @@ for possible_return in frontier_y:
   frontier_volatility.append(result['fun'])
 
 plt.plot(frontier_volatility, frontier_y, 'g--', linew=3)
+
+# types of funds
+# ETF - basket of tradeable securities
+# Mutual funds - collecton of securities, run by a manager
+# Hedge funds - pooled funds generally with alt investments, only aval to accredited investors
+
