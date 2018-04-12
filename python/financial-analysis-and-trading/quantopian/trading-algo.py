@@ -47,7 +47,7 @@ plt.axhline(1.0, ls='--', c='black')
 
 # initialize - schedule_function
 def initialize(context):
-  schedule_function(check_pairs, date_rules, every_day(), time_rules.market_close(minutes=60))
+  schedule_function(check_pairs, date_rules.every_day(), time_rules.market_close(minutes=60))
 
   context.aa = sid(45971)
   context.ual = sid(28051)
