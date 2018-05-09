@@ -3,3 +3,5 @@ venv
 config.py
 .vscode
 node_modules
+package-lock.json
+config.js
