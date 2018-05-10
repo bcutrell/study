@@ -7,8 +7,6 @@ var StockSchema = new Schema(
     symbol: { type: String, required: true, max: 10 },
     sector: { type: String, max: 100 },
     name:   { type: String, max: 100 },
-    date_of_birth: {type: Date},
-    date_of_death: {type: Date},
   }
 );
 
