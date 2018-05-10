@@ -23,7 +23,6 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 var stocks = [];
 var stockinstances = [];
 
-
 function stockCreate(symbol, sector, name, cb) {
   stockdetail = {symbol: symbol, sector: sector, name: name }
   var stock = new Stock(stockdetail);
