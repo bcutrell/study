@@ -27,8 +27,6 @@ def is_superbalanced(btn):
   if btn == None:
     return True
 
-  # nodes = (depth, value)
-  
   nodes = [(0, btn)]
   depths = []
   while len(nodes) > 0:
@@ -52,19 +50,19 @@ def is_superbalanced(btn):
 
 
 t = BinaryTreeNode(10)
-l=t.insert_left(BinaryTreeNode(12))
-r=t.insert_right(BinaryTreeNode(8))
+l=t.insert_left(12)
+r=t.insert_right(8)
 
-# l_l1=l.insert_left(BinaryTreeNode(14))
-# l_r1=l.insert_right(BinaryTreeNode(10))
+# l_l1=l.insert_left(14)
+# l_r1=l.insert_right(10)
 
-r_r1=r.insert_left(BinaryTreeNode(6))
-r_l1=r.insert_right(BinaryTreeNode(8))
+r_r1=r.insert_left(6)
+r_l1=r.insert_right(8)
 
-r1_r1=r_r1.insert_left(BinaryTreeNode(6))
+r1_r1=r_r1.insert_left(6)
 
-r1_r2=r_r1.insert_right(BinaryTreeNode(3))
-r1_r2=r1_r2.insert_right(BinaryTreeNode(2))
+r1_r2=r_r1.insert_right(3)
+r1_r2=r1_r2.insert_right(2)
 
 print(is_superbalanced(t))
 
