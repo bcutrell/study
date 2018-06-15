@@ -7,3 +7,4 @@ package-lock.json
 config.js
 app.db
 migrations
+words.txt
