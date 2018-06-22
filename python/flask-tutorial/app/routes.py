@@ -10,8 +10,11 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'bcutrell'}
-    return render_template('index.html', title='Home', user=user)
+    video = [
+        {}
+    ]
+
+    return render_template('index.html', title='Home', videos=videos)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
