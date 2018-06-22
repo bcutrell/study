@@ -10,8 +10,10 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-    video = [
-        {}
+    videos = [
+      {
+        'title': 'Pacific Rim'
+      }
     ]
 
     return render_template('index.html', title='Home', videos=videos)
