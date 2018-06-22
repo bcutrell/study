@@ -10,7 +10,7 @@ Pipelines
 # Classifier - function that transforms input and timestamp to a categorical output ( AAPL -> Tech Sector )
 # Factor - takes in asset + timestamp and returns numerical output
 
-from quantopian.pipline import Pipeline
+from quantopian.pipeline import Pipeline
 
 def make_pipeline():
   return Pipeline()
