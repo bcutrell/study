@@ -2,7 +2,8 @@
 
 {% block content %}
     <h1>Hello, {{ current_user.username }}</h1>
+    <h2>Videos</h2>
     {% for video in videos %}
-
+      <p>Title: {{ video['title'] }}</p>
     {% endfor %}
 {% endblock %}
