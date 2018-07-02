@@ -49,7 +49,7 @@ def my_rebalance(context, data):
       order_target_percent(security, context.short_weight)
 
 
-def my_computer_weights(context):
+def my_compute_weights(context):
   if len(context.longs) == 0:
     long_weight = 0
   else:
