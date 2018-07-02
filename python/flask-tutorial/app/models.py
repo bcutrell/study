@@ -2,6 +2,7 @@ from datetime import datetime
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import desc
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +29,11 @@ class Video(db.Model):
     def __repr__(self):
         return '<Video {}>'.format(self.title)
 
+    @classmethod
+    def load_all(self):
+        return self.query.order_by(desc(Video.timestamp)).limit(3).all()
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+

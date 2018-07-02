@@ -14,3 +14,4 @@ login.login_view = 'login'
 
 # workaround for circular imports
 from app import routes, models
+
