@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+
+from flask_wtf.file import FileField, FileRequired
 from app.models import User
 
 class LoginForm(FlaskForm):
@@ -25,3 +27,8 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+class VideoUploadForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    video_file = FileField('Video file', validators=[FileRequired()])
+    submit = SubmitField('Upload')
