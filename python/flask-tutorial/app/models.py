@@ -1,3 +1,6 @@
+
+# https://www.pythonsheets.com/notes/python-sqlalchemy.html
+
 from datetime import datetime
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,6 +24,8 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 class Video(db.Model):
+    # store videos by title + user + datetime
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(240))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

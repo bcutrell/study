@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>New Video</h1>
+  <form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(size=32 )}}<br>
+        {% for error in form.title.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.video_file.label }}<br>
+        {{ form.video_file(size=64) }}<br>
+        {% for error in form.video_file.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+
+  {% if video %}
+    <img src="{{ url_for('static', filename=video) }}">
+  {% endif %}
+{% endblock %}
+
