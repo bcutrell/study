@@ -1,10 +1,14 @@
+import os
 from flask import render_template, flash, redirect, url_for, request
 from app import app
 from app import db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, VideoUploadForm
 from flask_login import logout_user, login_required, current_user, login_user
 from app.models import User
 from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
+
+# import code ; code.interact(local=dict(globals(), **locals()))
 
 @app.route('/')
 @app.route('/index')
@@ -56,3 +60,17 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/video', methods=['GET', 'POST'])
+def video():
+  video = None
+  form = VideoUploadForm()
+
+  if form.validate_on_submit():
+    f = form.video_file.data
+    filename = secure_filename(f.filename)
+    f.save(os.path.join(app.static_folder, 'videos', filename))
+    return redirect(url_for('index'))
+
+  return render_template('video.html', form=form, video=video)
+

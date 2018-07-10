@@ -8,3 +8,4 @@ config.js
 app.db
 migrations
 words.txt
+static
