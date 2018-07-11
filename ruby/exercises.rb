@@ -139,7 +139,6 @@ puts "
 # end
 
 # puts html.to_s
-
 # <h2>Why is Arbre awesome?</h2>
 # # <ul>
 # #   <li>The DOM is implemented in ruby</li>
@@ -150,6 +149,14 @@ puts "
 # Task 1: Build the following HTML class that supports the DSL.
 
 class HTML
+  def initialize(&block)
+    if block_given?
+      binding.pry
+
+
+
+    end
+  end
 end
 
 html = HTML.new do
