@@ -93,8 +93,11 @@ class ConStruct
   def [](key)
     instance_variable_get :"@#{key}"
   end
-
 end
+
+# refactor ->
+# Class.new do
+# end
 
 Product = ConStruct.new(:id, "name")    # Should allow string and symbol names
  
@@ -148,14 +151,45 @@ puts "
 
 # Task 1: Build the following HTML class that supports the DSL.
 
-class HTML
+# use & to convert Proc <-> block
+
+[:h2, :ul, :li].each do |m|
+define_singleton_method m do |text|
+if block_given?
+yield self.instance_eval(&block)
+end
+"<#{m}>#{text}</#{m}>"
+end
+end
+yield self.instance_eval(&block) if block_given?
+
+class HTML < BasicObject
+
   def initialize(&block)
-    if block_given?
-      binding.pry
+    @rendered_html = ""
+    instance_eval(&block)
+  end
 
+  def method_missing(tag, *args, &block)
+    properties = ""
 
-
+    if args.first.is_a?(::Object::Hash)
+      properties = args.shift.map { |p| p.join("=")} * " " 
     end
+
+    @rendered_html << "<#{tag}> #{properties}"
+
+    if block
+      @rendered_html << instance_eval(&block)
+    else
+      @rendered_html << "#{args.first}"
+    end
+
+    @rendered_html << "</#{tag}>"
+  end
+
+  def render
+    @rendered_html
   end
 end
 
@@ -168,21 +202,25 @@ html = HTML.new do
     li "Templates suck"
   end
 end
+puts html.render
 
 
 # Task 2: Allow adding attributes to the tags as it is shown in the example below.
 
-# html = HTML.new do
-#  ul id: "nav", class: "list-squares" do
-#    li "The DOM is implemented in ruby"
-#  end
-# end
+html = HTML.new do
+  ul id: "nav", class: "list-squares" do
+    li "The DOM is implemented in ruby"
+  end
+end
+puts html.render
 
 # Task 3: Add p tag to your DSL code and run it. What happens? Are your paragraph tags rendered? If not, explain why?
 
-# html = HTML.new do
-#   h1 "Super buper title"
-#   p "Some paragraph."
-#   p "Another paragraph."
-# end
+html = HTML.new do
+  h1 "Super buper title"
+  p "Some paragraph."
+  p "Another paragraph."
+end
+puts html.render
+
 
