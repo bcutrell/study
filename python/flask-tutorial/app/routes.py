@@ -62,6 +62,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/video', methods=['GET', 'POST'])
+# https://stackoverflow.com/questions/42596562/cant-properly-save-mp4-files-on-server-using-flask
 def video():
   video = None
   form = VideoUploadForm()
