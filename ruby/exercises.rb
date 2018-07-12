@@ -224,3 +224,108 @@ end
 puts html.render
 
 
+puts "
+##############################
+# rails magic exercise
+##############################
+"
+
+=begin
+Exercise: Implement Rails methods and features
+This exercise is an individual work. Please try to solve all the tasks yourself. If you can't, this means that you need to review the course content again. If after reviewing the course, you are still having trouble resolving the tasks below, please contact me. I will try to guide you through and direct you in the right direction.
+
+
+
+Task 1: Implement Rails application configuration syntax.
+
+All Rails apps store configuration settings in application.rb and environments/{production|etc}.rb files.
+
+An example code from environments directory may looks something like this:
+
+TestApp::Application.configure do
+  # Settings specified here will take precedence over those in config/application.rb
+ 
+  # Code is not reloaded between requests
+  config.cache_classes = true
+ 
+  # Full error reports are disabled and caching is turned on
+  config.consider_all_requests_local       = false
+  config.action_controller.perform_caching = true
+ 
+  # Disable Rails's static asset server (Apache or nginx will already do this)
+  config.serve_static_assets = false
+  
+  # ...
+end
+# Accessing configuration settings
+Rails.application.config
+
+
+Task 1a: Create TestApp::Application class.
+
+Because implementing the exact syntax is not the core purpose of this exercise, please simplify the syntax above to the one below.
+
+TestApp::Application.configure do
+  # Code is not reloaded between requests
+  config[:cache_classes] = true
+ 
+  # Full error reports are disabled and caching is turned on
+  config[:consider_all_requests_local]       = false
+  config[:action_controller]                 = true
+  
+  # ...
+end
+
+
+Implement TestApp::Application class. It must have .configure method that takes a block. Also, make sure that the code in the provided block has access to config method (or Hash, up to you).
+
+
+
+Task 1b: Create TestApp::Application.conf configuration accessor method.
+
+Now that we have our configuration class. Add .conf method that would return our application settings.
+
+TestApp::Application.configure do
+  config[:cache_classes]     = true
+  config[:action_controller] = true
+end
+ 
+# Accessing configuration settings
+TestApp::Application.conf[:cache_classes]                # => true
+ 
+TestApp::Application.configure do
+  config[:cache_classes]     = false
+end
+ 
+TestApp::Application.conf[:cache_classes]                # => false
+TestApp::Application.conf[:action_controller]            # => true
+
+
+Task 2: Implement Rails model association methods.
+
+ActiveRecord  makes it really easy to create classes with associated database tables. Also, it makes creating associations between your models even easier by providing you methods like belongs_to, has_one, etc.
+
+Here is an excerpt from the Rails documentation.
+
+class Project < ActiveRecord::Base
+  belongs_to              :portfolio
+  has_one                 :project_manager
+  has_many                :milestones
+  has_and_belongs_to_many :categories
+end
+The project class now has the following methods (and more) to ease the traversal and manipulation of its relationships:
+
+Project#portfolio, Project#portfolio=(portfolio), Project#portfolio.nil?
+Project#project_manager, Project#project_manager=(project_manager), Project#project_manager.nil?,
+Project#milestones.empty?, Project#milestones.size, Project#milestones, Project#milestones<<(milestone), Project#milestones.delete(milestone), Project#milestones.destroy(milestone), Project#milestones.find(milestone_id), Project#milestones.build, Project#milestones.create
+Project#categories.empty?, Project#categories.size, Project#categories, Project#categories<<(category1), Project#categories.delete(category1), Project#categories.destroy(category1)
+
+
+Task 2a: Think and try to explain to yourself or your teammate how you would implement those methods.
+
+Task 2b: Go through the documentation and think about different ways you would implement all those features/methods.
+
+
+
+Task 3: Think of any Rails magic and try to explain to yourself or your teammate different ways you could implement it.
+=end
