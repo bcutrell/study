@@ -2,6 +2,10 @@
 anagram check
 """
 
+# remove all whitespace and lower
+# " a A ".replace(' ', '').lower()
+# > "aa"
+
 def count_letters(word):
   count = {}
   for w in word:
@@ -15,6 +19,10 @@ def count_letters(word):
   return count
 
 def anagram(word1, word2):
+  # edge case check if str in noralized
+  # if len(word1) != len(word2):
+  #   return False
+
   word1_count = count_letters(word1)
   word2_count = count_letters(word2)
 
@@ -33,7 +41,7 @@ class AnagramTest(object):
     assert_equal(sol('hi man','hi     man'),True)
     assert_equal(sol('aabbcc','aabbc'),False)
     assert_equal(sol('123','1 2'),False)
-    print("ALL TEST CASES PASSED")
+    print("ANAGRAM TEST CASES PASSED")
 
 t = AnagramTest()
 t.test(anagram)
@@ -43,26 +51,22 @@ pair sum
 """
 
 def pair_sum(arr,k):
-  idx = 0
-  count = 0
-  pairs = set() # avoid duplicate pairs
 
-  for n1 in arr:
-    inner_idx = 0
+  if len(arr)<2:
+    return
 
-    for n2 in arr:
-      if idx <= inner_idx:
-        inner_idx += 1
-        continue
-      elif (n1 + n2) == k:
-        pair = [n1,n2]
-        pairs.add((min(pair), max(pair)))
+  seen = set()
+  output = set()
 
-      inner_idx += 1
+  for num in arr:
+    target = k-num # 9
 
-    idx += 1
+    if target not in seen:
+      seen.add(num)
+    else:
+      output.add( ( (min(num,target)), max(num,target) ))
 
-  return len(pairs)
+  return len(output)
 
 
 """
@@ -75,7 +79,7 @@ class TestPair(object):
     assert_equal(sol([1,9,2,8,3,7,4,6,5,5,13,14,11,13,-1],10),6)
     assert_equal(sol([1,2,3,1],3),1)
     assert_equal(sol([1,3,2,2],4),2)
-    print('ALL TEST CASES PASSED')
+    print('PAIR SUM TEST CASES PASSED')
 
 # Run tests
 t = TestPair()
@@ -101,11 +105,42 @@ Output:
 '''
 
 def finder(arr1,arr2):
+  arr1.sort()
+  arr2.sort()
+
+  for num1, num2 in zip(arr1,arr2):
+    if num1 != num2:
+      return num1
+
+  return arr1[-1]
+
+def finder2(arr1,arr2):
   for n in arr2:
     arr1.remove(n)
-
   return arr1[0]
       
+import collections
+
+def finder3(arr1,arr2):
+  d = collections.defaultdict(int)
+
+  for num in arr2:
+    d[num] += 1
+  for num in arr1:
+    if d[num] == 0:
+      return num
+    else:
+      d[num] -= 1
+
+def finder4(arr1,arr2):
+  # XOR Truth
+  result = 0
+
+  # Perform an XOR between the numbers in the arrays
+  for num in arr1+arr2:
+    result^=num
+    print(result)
+  return result
 
 """
 TEST YOUR SOLUTION
@@ -117,7 +152,7 @@ class TestFinder(object):
     assert_equal(sol([5,5,7,7],[5,7,7]),5)
     assert_equal(sol([1,2,3,4,5,6,7],[3,7,2,1,4,6]),5)
     assert_equal(sol([9,8,7,6,5,4,3,2,1],[9,8,7,5,4,3,2,1]),6)
-    print('ALL TEST CASES PASSED')
+    print('FINDER TEST CASES PASSED')
 
 # Run test
 t = TestFinder()
@@ -133,7 +168,6 @@ def large_cont_sum(arr):
 
   sums = set()
 
-
   idx = 1 # start at 1
   for x in arr:
     running_sums = x
@@ -144,13 +178,12 @@ def large_cont_sum(arr):
     idx += 1
   return max(sums)
 
-
 class LargeContTest(object):
   def test(self,sol):
     assert_equal(sol([1,2,-1,3,4,-1]),9)
     assert_equal(sol([1,2,-1,3,4,10,10,-10,-1]),29)
     assert_equal(sol([-1,1]),1)
-    print('ALL TEST CASES PASSED')
+    print('SUMS TEST CASES PASSED')
 
 # Run Test
 t = LargeContTest()
