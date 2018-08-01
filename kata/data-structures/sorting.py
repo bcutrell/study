@@ -101,7 +101,92 @@ def gap_insertion_sort(arr, start, gap):
         
         arr[position] = currentvalue
 
-test = [5,3,1,2,4, 9, 0, 50]
-print(shell_sort(test))
+# test = [5,3,1,2,4, 9, 0, 50]
+# print(shell_sort(test))
 
-# 
+# merge sort
+# recursive algo that continually splits a list in half
+# base case -> list has one item
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr)//2
+        lefthalf = arr[:mid]
+        righthalf = arr[mid:]
+
+        merge_sort(lefthalf)
+        merge_sort(righthalf)
+
+        i=0 # left half
+        j=0 # right half
+        k=0 # final array
+
+        # are we still in both halves
+        while i < len(lefthalf) and j < len(righthalf):
+            if lefthalf[i] < righthalf[j]:
+                arr[k] = lefthalf[i]
+                i=i+1
+            else:
+                arr[k] = righthalf[j]
+                j=j+1
+            k=k+1
+        
+        # are we still in left half
+        while i < len(lefthalf):
+            arr[k]=lefthalf[i]
+            i=i+1
+            k=k+1
+        
+        # are we still in right half
+        while j < len(righthalf):
+            arr[k] = righthalf[j]
+            j=j+1
+            k=k+1
+
+    print(arr)
+
+# test = [5,3,1,2,4]
+# print(merge_sort(test))
+
+# divide and conquer similar to merge_sort 
+# but does not use additional storage
+# uses a pivot -> partition
+
+def quick_sort(arr):
+    quick_sort_help(arr, 0, len(arr)-1)
+    return arr
+
+def quick_sort_help(arr, first, last):
+
+    if first<last:
+        splitpoint = partition(arr, first, last)
+        quick_sort_help(arr,first,splitpoint-1)
+        quick_sort_help(arr,splitpoint+1,last)
+
+def partition(arr, first, last):
+    pivotvalue = arr[first]
+    leftmark = first + 1
+    rightmark = last
+
+    done = False
+
+    while not done:
+        while leftmark <= rightmark and arr[leftmark] <= pivotvalue:
+            leftmark = leftmark + 1
+        while arr[rightmark] >= pivotvalue and rightmark >= leftmark:
+            rightmark = rightmark - 1
+        
+        if rightmark < leftmark:
+            done = True
+        else: 
+            temp = arr[leftmark]
+            arr[leftmark] = arr[rightmark]
+            arr[rightmark] = temp
+    temp = arr[first]
+    arr[first] = arr[rightmark]
+    arr[rightmark] = temp
+
+    return rightmark
+
+
+test = [5,3,1,2,4]
+print(quick_sort(test))
