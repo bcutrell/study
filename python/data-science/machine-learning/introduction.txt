@@ -1,0 +1,17 @@
+What is Machine Learning?
+- Machine learning is a method od fata analysis that automates analytical model building
+
+- Using algorithms that iteratively learn from data, machine learning allows computers to find 
+hidden insights without being explicityly programmed where to look
+
+Types of alogs
+1. Supervised learning
+  Labeled data trying to predict a label based off of known features
+
+2. Unsupervised learning
+  Unlabeled data that you are trying to group together into similar data points based off of features
+
+3. Reinforcement learning
+  Algorithm learns to perform an action from experience
+
+
