@@ -9,3 +9,5 @@ app.db
 migrations
 words.txt
 static
+
+.ipynb_checkpoints
