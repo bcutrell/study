@@ -29,71 +29,92 @@
 # Adjacency List
 # A more space efficient way to represent a sparsely connected graph
 
-class Vertex:
-    def __init__(self,key):
-        self.id = key
-        self.connectedTo = {}
+# Implement Graph
+from enum import Enum
+from collections import OrderedDict
 
-    def addNeighbor(self,nbr,weight=0):
-        self.connectedTo[nbr] = weight
+class State(Enum):
+    unvisited = 1   # White
+    visited = 2     # Black
+    visiting = 3    # Gray
+
+class Node:
+
+    def __init__(self, num):
+        self.num = num
+        self.visit_state = State.unvisited
+        self.adjacent = OrderedDict()  # key = node, val = weight
 
     def __str__(self):
-        return str(self.id) + ' connectedTo: ' + str([x.id for x in self.connectedTo])
-
-    def getConnections(self):
-        return self.connectedTo.keys()
-
-    def getId(self):
-        return self.id
-
-    def getWeight(self,nbr):
-        return self.connectedTo[nbr]
+        return str(self.num)
 
 class Graph:
+
     def __init__(self):
-        self.vertList = {}
-        self.numVertices = 0
+        self.nodes = OrderedDict()  # key = node id, val = node
 
-    def addVertex(self,key):
-        self.numVertices = self.numVertices + 1
-        newVertex = Vertex(key)
-        self.vertList[key] = newVertex
-        return newVertex
+    def add_node(self, num):
+        node = Node(num)
+        self.nodes[num] = node
+        return node
 
-    def getVertex(self,n):
-        if n in self.vertList:
-            return self.vertList[n]
-        else:
-            return None
+    def add_edge(self, source, dest, weight=0):
+        if source not in self.nodes:
+            self.add_node(source)
+        if dest not in self.nodes:
+            self.add_node(dest)
+        self.nodes[source].adjacent[self.nodes[dest]] = weight
 
-    def __contains__(self,n):
-        return n in self.vertList
 
-    def addEdge(self,f,t,cost=0):
-        if f not in self.vertList:
-            nv = self.addVertex(f)
-        if t not in self.vertList:
-            nv = self.addVertex(t)
-        self.vertList[f].addNeighbor(self.vertList[t], cost)
+# Implement Depth First Search
 
-    def getVertices(self):
-        return self.vertList.keys()
+def dfs(graph, start):
+  visited, stack = set(), [start]
 
-    def __iter__(self):
-        return iter(self.vertList.values())
-
-g = Graph()
-for i in range(6):
-    g.addVertex(i)
-
-g.vertList
-g.addEdge(0,1,2)
-for vertex in g:
+  while stack:
+    vertex = stack.pop()
     print(vertex)
-    for c in vertex.getConnections():
-        print('weight', vertex.getWeight(c))
+
+    if vertex not in visited:
+      visited.add(vertex)
+      stack.extend(graph[vertex] - visited)
+
+  return visited
+
+def bfs(graph, start):
+  visited, queue = set(), [start]
+
+  while queue:
+    vertex = queue.pop(0)
+    print(vertex)
+
+    if vertex not in visited:
+      visited.add(vertex)
+      queue.extend(graph[vertex] - visited)
+
+  return visited
+
+
+graph = { 'A': set(['B', 'C']),
+          'B': set(['A', 'D', 'E']),
+          'C': set(['A', 'F']),
+          'D': set(['B']),
+          'E': set(['B', 'F']),
+          'F': set(['C', 'E'])}
+
+
+print('DFS')
+print(dfs(graph, 'A'))
+
+
+print('BFS')
+bfs(graph, 'A')
 
 # Word ladder problem
+
+# breadth first search -> QUEUE
+# finds all k veriticies before k+1
+
 def buildGraph(word):
     d = {}
     g = Graph()
@@ -117,14 +138,12 @@ def buildGraph(word):
                     g.addEdge(word1,word2)
     return g
 
-words = ['pope', 'rope', 'sage', 'best', 'ripe', 'pipe']
-buildGraph(words)
-
-# breadth first search
-# finds all k veriticies before k+1
-
-
+# words = ['pope', 'rope', 'sage', 'best', 'ripe', 'pipe']
+# buildGraph(words)
 
 # knights tour
 # represent the legal moves of the knight on a chessboard
 #** for larger graphs the adjancy matrix is the way to go
+
+# depth first search -> STACK
+# 
