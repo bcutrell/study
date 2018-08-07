@@ -10,7 +10,7 @@ const App = (props) => {
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', type: 'lime'};
+    this.state = { value: '', type: 'lime', rows: []};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,6 +29,8 @@ class Demo extends React.Component {
   handleSubmit(event) {
     // alert('A name was submitted: ' + this.state );
     console.log(this.state);
+    this.state.rows.push({ value: this.state.value, type: this.state.type})
+    this.setState({ value: '', type: 'lime', rows: this.state.rows })
     event.preventDefault();
   }
 
@@ -48,16 +50,22 @@ class Demo extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        < Rows />
+        < Rows data={this.state.rows} />
       </div>
     )
   }
 }
 
 const Rows = (props) => {
+  var items = props.data.map((row, index) => 
+    <li key={index} >
+      Value: {row.value} Type: {row.type}
+      <button>Delete</button>
+    </li>
+  )
   return (
       <ul>
-        <li>Rows 1</li>
+        { items }
       </ul>
   )
 }
