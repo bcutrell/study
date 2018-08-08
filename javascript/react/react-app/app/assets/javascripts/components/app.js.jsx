@@ -10,7 +10,11 @@ const App = (props) => {
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', type: 'lime', rows: []};
+    this.state = { 
+      value: '', 
+      type: 'lime', 
+      rows: []
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,7 +23,8 @@ class Demo extends React.Component {
 
   handleChange(event) {
     const target = event.target;
-    const value = target.value; // target.type === 'select' ? target.checked : target.value;
+    
+    const value = target.value;
     const name = target.name;
 
     this.setState({
@@ -31,7 +36,7 @@ class Demo extends React.Component {
     console.log(this.state);
     this.setState({ 
       value: '', 
-      type: 'lime', 
+      type: 'lime',
       rows: [...this.state.rows, { value: this.state.value, type: this.state.type }]
     })
     event.preventDefault();
@@ -55,10 +60,9 @@ class Demo extends React.Component {
             <input type="text" value={this.state.value} name="value" onChange={this.handleChange} />
 
              <select value={this.state.type} name="type" onChange={this.handleChange}>
-               <option value="grapefruit">Grapefruit</option>
-               <option value="lime">Lime</option>
+               <option value="grapefruit">grapefruit</option>
+               <option value="lime">lime</option>
              </select>
-
           </label>
           <input type="submit" value="Submit" />
         </form>
@@ -68,15 +72,25 @@ class Demo extends React.Component {
   }
 }
 
+
+// https://stackoverflow.com/questions/37387351/reactjs-warning-setstate-cannot-update-during-an-existing-state-transiti
 const List = (props) => (
   <ul>
     {
       props.items.map((item, index) => 
         <li key={index}>
-          Value: {item.value} Type: {item.type}
+          value: {item.value} type: {item.type}
+          <button onClick={() => props.handleDelete(index)}>Create</button>
+          <button onClick={() => props.handleDelete(index)}>Update</button>
           <button onClick={() => props.handleDelete(index)}>Delete</button>
         </li>
       )
     }
   </ul>
 );
+
+// const ListItem = (props) => (
+// )
+
+// const UpdateListItem = (props) => (
+// )
