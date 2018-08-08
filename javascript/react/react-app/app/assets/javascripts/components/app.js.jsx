@@ -10,15 +10,21 @@ const App = (props) => {
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: '', type: 'lime', rows: []};
+    this.state = { 
+      value: '', 
+      type: 'lime', 
+      rows: []
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleChange(event) {
     const target = event.target;
-    const value = target.value; // target.type === 'select' ? target.checked : target.value;
+    
+    const value = target.value;
     const name = target.name;
 
     this.setState({
@@ -27,11 +33,22 @@ class Demo extends React.Component {
   }
 
   handleSubmit(event) {
-    // alert('A name was submitted: ' + this.state );
     console.log(this.state);
-    this.state.rows.push({ value: this.state.value, type: this.state.type})
-    this.setState({ value: '', type: 'lime', rows: this.state.rows })
+    this.setState({ 
+      value: '', 
+      type: 'lime',
+      rows: [...this.state.rows, { value: this.state.value, type: this.state.type }]
+    })
     event.preventDefault();
+  }
+
+  handleDelete(index) {
+    rows = this.state.rows;
+    rows.splice(index, 1);
+
+    this.setState({
+      rows: rows
+    });
   }
 
   render() {
@@ -43,29 +60,37 @@ class Demo extends React.Component {
             <input type="text" value={this.state.value} name="value" onChange={this.handleChange} />
 
              <select value={this.state.type} name="type" onChange={this.handleChange}>
-               <option value="grapefruit">Grapefruit</option>
-               <option value="lime">Lime</option>
+               <option value="grapefruit">grapefruit</option>
+               <option value="lime">lime</option>
              </select>
-
           </label>
           <input type="submit" value="Submit" />
         </form>
-        < Rows data={this.state.rows} />
+        < List items={this.state.rows} handleDelete={this.handleDelete} />
       </div>
     )
   }
 }
 
-const Rows = (props) => {
-  var items = props.data.map((row, index) => 
-    <li key={index} >
-      Value: {row.value} Type: {row.type}
-      <button>Delete</button>
-    </li>
-  )
-  return (
-      <ul>
-        { items }
-      </ul>
-  )
-}
+
+// https://stackoverflow.com/questions/37387351/reactjs-warning-setstate-cannot-update-during-an-existing-state-transiti
+const List = (props) => (
+  <ul>
+    {
+      props.items.map((item, index) => 
+        <li key={index}>
+          value: {item.value} type: {item.type}
+          <button onClick={() => props.handleDelete(index)}>Create</button>
+          <button onClick={() => props.handleDelete(index)}>Update</button>
+          <button onClick={() => props.handleDelete(index)}>Delete</button>
+        </li>
+      )
+    }
+  </ul>
+);
+
+// const ListItem = (props) => (
+// )
+
+// const UpdateListItem = (props) => (
+// )
