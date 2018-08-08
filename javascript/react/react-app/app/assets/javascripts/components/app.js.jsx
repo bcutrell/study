@@ -14,6 +14,7 @@ class Demo extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleChange(event) {
@@ -27,11 +28,22 @@ class Demo extends React.Component {
   }
 
   handleSubmit(event) {
-    // alert('A name was submitted: ' + this.state );
     console.log(this.state);
-    this.state.rows.push({ value: this.state.value, type: this.state.type})
-    this.setState({ value: '', type: 'lime', rows: this.state.rows })
+    this.setState({ 
+      value: '', 
+      type: 'lime', 
+      rows: [...this.state.rows, { value: this.state.value, type: this.state.type }]
+    })
     event.preventDefault();
+  }
+
+  handleDelete(index) {
+    rows = this.state.rows;
+    rows.splice(index, 1);
+
+    this.setState({
+      rows: rows
+    });
   }
 
   render() {
@@ -50,22 +62,21 @@ class Demo extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        < Rows data={this.state.rows} />
+        < List items={this.state.rows} handleDelete={this.handleDelete} />
       </div>
     )
   }
 }
 
-const Rows = (props) => {
-  var items = props.data.map((row, index) => 
-    <li key={index} >
-      Value: {row.value} Type: {row.type}
-      <button>Delete</button>
-    </li>
-  )
-  return (
-      <ul>
-        { items }
-      </ul>
-  )
-}
+const List = (props) => (
+  <ul>
+    {
+      props.items.map((item, index) => 
+        <li key={index}>
+          Value: {item.value} Type: {item.type}
+          <button onClick={() => props.handleDelete(index)}>Delete</button>
+        </li>
+      )
+    }
+  </ul>
+);
