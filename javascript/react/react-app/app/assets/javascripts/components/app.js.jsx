@@ -1,3 +1,9 @@
+// window.Redux.createStore()
+// window.ReactRedux.connect
+// https://redux.js.org/basics/usagewithreact
+
+// https://github.com/reduxjs/redux/blob/master/docs/basics/ExampleTodoList.md
+
 class Row {
   constructor(id, value, type, rows) {
     this.id = id;
@@ -112,7 +118,7 @@ class Demo extends React.Component {
           value={this.state.value} 
           type={this.state.type} />
 
-        < List 
+        <List 
           items={this.state.rows} 
           handleSubmit={this.handleSubmit}
           handleCreate={this.handleCreate}
@@ -142,12 +148,14 @@ const Form = (props) => {
 }
 
 // https://stackoverflow.com/questions/37387351/reactjs-warning-setstate-cannot-update-during-an-existing-state-transiti
+// https://engineering.tripping.com/building-an-recursive-nested-dropdown-component-in-react-b1c883e06ac4
 const List = (props) => {
   let subList,
       createForm;
 
   const listItems = props.items.map((item, index) => {
     let subList;
+
     if (item.rows && item.rows.length > 0) {
       subList = < List items={item.rows} handleDelete={props.handleDelete} />
     }
@@ -160,14 +168,15 @@ const List = (props) => {
     }
 
     const display = (
-    <li key={index}>
-      value: {item.value} type: {item.type}
-      <button onClick={() => props.handleCreate(index)}>Create</button>
-      <button onClick={() => props.handleUpdate}>Update</button>
-      <button onClick={() => props.handleDelete(index)}>Delete</button>
-      { createForm }
-      { subList }
-    </li>
+      <li key={index}>
+        value: {item.value} type: {item.type}
+        <button onClick={() => props.handleCreate(index)}>Create</button>
+        <button onClick={() => props.handleUpdate}>Update</button>
+        <button onClick={() => props.handleDelete(index)}>Delete</button>
+
+        { createForm }
+        { subList }
+      </li>
     )
 
     return display
@@ -178,3 +187,4 @@ const List = (props) => {
     { listItems }
   </ul>)
 };
+
