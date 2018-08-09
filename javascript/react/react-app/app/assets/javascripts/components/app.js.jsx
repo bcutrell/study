@@ -1,7 +1,6 @@
 // window.Redux.createStore()
 // window.ReactRedux.connect
 // https://redux.js.org/basics/usagewithreact
-
 // https://github.com/reduxjs/redux/blob/master/docs/basics/ExampleTodoList.md
 
 class Row {
