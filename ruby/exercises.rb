@@ -153,15 +153,19 @@ puts "
 
 # use & to convert Proc <-> block
 
-[:h2, :ul, :li].each do |m|
-define_singleton_method m do |text|
-if block_given?
-yield self.instance_eval(&block)
+
+def tmp
+  [:h2, :ul, :li].each do |m|
+    define_singleton_method m do |text|
+      if block_given?
+        yield self.instance_eval(&block)
+      end
+
+      "<#{m}>#{text}</#{m}>"
+    end
+  end
+  yield self.instance_eval(&block) if block_given?
 end
-"<#{m}>#{text}</#{m}>"
-end
-end
-yield self.instance_eval(&block) if block_given?
 
 class HTML < BasicObject
 
