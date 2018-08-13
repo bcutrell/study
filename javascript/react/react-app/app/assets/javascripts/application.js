@@ -15,5 +15,7 @@
 //= require turbolinks
 //= require react
 //= require react_ujs
+//= require vendor/redux.min.js
+//= require vendor/react-redux.min.js
 //= require components
 //= require_tree .
