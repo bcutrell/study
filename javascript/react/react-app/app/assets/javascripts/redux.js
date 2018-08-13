@@ -42,30 +42,40 @@ function newHolding() {
 // This will be passed to our store and will
 // manage state and actions
 const reducer = (state = initialSate, action) => {
+    // clone state
+    // const newState = Object.assign({}, state);
+
+
     switch (action.type) {
         case 'ADD_HOLDING':
-            account = state.account;
-            account.holdings.push(newHolding());
             return {
+                ...state,
+                account: { 
+                    ...state.account, 
+                    holdings: state.account.holdings.concat(newHolding())
+                },
                 // update not triggered if *just* holding.account is updated
-                counter: state.counter + 1,
-                account: account
+                counter: state.counter + 1
             }
         case 'ADD_TARGET':
-            account = state.account;
-            account.target = target;
             return { 
+                ...state,
+                account: {
+                    ...state.account, 
+                    target: target
+                },
                 counter: state.counter + 1,
-                account: account
             }
         case 'DELETE_HOLDING':
-            account = state.account;
-            holdings = account.holdings;
+            let holdings = [...state.account.holdings];
             holdings.splice(action.index, 1);
-            account.holdings = holdings;
-            return { 
+            return {
+                ...state,
+                account: { 
+                    ...state.account, 
+                    holdings: holdings
+                },
                 counter: state.counter + 1,
-                account: account
             }
         default:
             break
@@ -109,5 +119,4 @@ const store = window.Redux.createStore(reducer)
 // What actions do I want to dispatch
 
 const AccountRedux = window.ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Account);
-
 const TargetRedux = window.ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Target);
