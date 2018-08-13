@@ -1,4 +1,20 @@
+// Declare objects that will be used in our state
+let account = {
+  name: 'Fred',
+  holdings: [],
+  target: null 
+}
 
+let holding = {
+  ticker: 'AAPL',
+  price: 100.0
+}
+
+let target = {
+  name: 'Balanced Mix'
+}
+
+// Set initial Global State
 const initialSate = { counter: 0 }
 
 const reducer = (state = initialSate, action) => {
@@ -65,3 +81,4 @@ class Counter extends React.Component {
     )
   }
 }
+
