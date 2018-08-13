@@ -17,7 +17,6 @@ class Account extends React.Component {
     const holdings = this.props.account.holdings.map((holding, index) => {
       return (
         <li key={index}> 
-          
           Ticker: { holding.ticker } Price: { holding.price }
           <button onClick={this.props.deleteHolding.bind(this, index)}>Delete</button>
         </li>
