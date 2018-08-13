@@ -1,4 +1,95 @@
 const App = (props) => {
+    
+  const initialState = { 
+    counter: 0,
+    account: props.account
+  }
+
+  // ********************************
+  // Reducer
+  // ********************************
+
+  // This will be passed to our store and will
+  // manage state and actions
+  const reducer = (state = initialState, action) => {
+    console.log('REDUCER');
+
+    switch (action.type) {
+        case actionTypes.ADD_HOLDING:
+            return {
+                ...state,
+                account: { 
+                    ...state.account, 
+                    holdings: state.account.holdings.concat(newHolding())
+                },
+                // update not triggered if *just* holding.account is updated
+                counter: state.counter + 1
+            }
+        case actionTypes.ADD_TARGET:
+            return { 
+                ...state,
+                account: {
+                    ...state.account, 
+                    target: target
+                },
+                counter: state.counter + 1,
+            }
+        case actionTypes.DELETE_HOLDING:
+            return {
+                ...state,
+                account: { 
+                    ...state.account, 
+                    holdings: state.account.holdings.filter((item, index) => index !== action.index)
+                },
+                counter: state.counter + 1,
+            }
+        default:
+            break
+    }
+    return state;
+  };
+
+  // ********************************
+  // Dispatchers
+  // ********************************
+
+  // get global state
+  function mapStateToProps(state) {
+    console.log('STATE DISPATCHER');
+    return {
+        counter: state.counter,
+        account: state.account
+    };
+  };
+
+  // creates functions that can be passed to the component in connect
+  function mapDispatchToProps(dispatch) {
+    console.log('ACTION DISPATCHER');
+    return {
+        deleteHolding: (index) => dispatch({type: actionTypes.DELETE_HOLDING, index: index}),
+        addHolding: () => dispatch({type: actionTypes.ADD_HOLDING}),
+        addTarget: () => dispatch({type: actionTypes.ADD_TARGET})
+    }
+  }
+
+  // ********************************
+  // Create Redux Store
+  // ********************************
+  const store = window.Redux.createStore(reducer)
+
+  // ********************************
+  // Declare Components
+  // ********************************
+
+  // What we pass to connect...
+  // Which part of the entire application state is interesting to us
+  // What actions do I want to dispatch
+  const Provider = window.ReactRedux.Provider
+
+  // ** Must be Component in order to recieve State from Redux
+  const AccountRedux = window.ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Account);
+  const TargetRedux = window.ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Target);
+
   return (
     <div className="app">
       <Provider store={store}>
@@ -9,64 +100,4 @@ const App = (props) => {
       </Provider>
     </div>
   )
-}
-
-class Account extends React.Component {
-  render() {
-
-    const holdings = this.props.account.holdings.map((holding, index) => {
-      return (
-        <li key={index}> 
-          Ticker: { holding.ticker } Price: { holding.price }
-          <button onClick={this.props.deleteHolding.bind(this, index)}>Delete</button>
-        </li>
-      )
-    })
-
-    return (
-      <div>
-        <h2>Aciton Counter: {this.props.ctr}</h2>
-        <p>Account Name: {this.props.account.name}</p>
-        <button onClick={this.props.addHolding}>Add Holding</button>
-        <button onClick={this.props.addTarget}>Add Target</button>
-        <p> Target: {this.props.account.target ? this.props.account.target.name : 'No Target'}</p>
-        <h2> Holdings </h2>
-        <ul> { holdings } </ul>
-      </div>
-    )
-  }
-}
-
-// ** Must be Component in order to recieve State from Redux
-class Target extends React.Component {
-
-  genAllocation() {
-    text = ""
-    const nHoldings = this.props.account.holdings.length
-    if (nHoldings > 0) {
-      let weight = 100;
-      
-      text = this.props.account.holdings.map((holding, index) => {
-        return (
-          <li> {holding.ticker} {weight / nHoldings} </li>
-        )
-      })
-    }
-    return text;
-  }
-
-  render() {
-    allocation = this.genAllocation();
-
-    return (
-      <div>
-        <h2>Target Allocation</h2>
-        <ul> {allocation} </ul>
-      </div>
-    )
-  }
-}
-
-const Holding = (props) => {
-  // return ()
 }
