@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+
   def index
 
     # initial state
@@ -7,6 +8,6 @@ class HomeController < ApplicationController
       holdings: [],
       target: nil
     }
-
+ 
   end
 end
