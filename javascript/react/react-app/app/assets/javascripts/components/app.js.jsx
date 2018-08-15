@@ -22,7 +22,6 @@ const App = (props) => {
                     ...state.account, 
                     holdings: state.account.holdings.concat(newHolding())
                 },
-                // update not triggered if *just* holding.account is updated
                 counter: state.counter + 1
             }
         case actionTypes.ADD_TARGET:
