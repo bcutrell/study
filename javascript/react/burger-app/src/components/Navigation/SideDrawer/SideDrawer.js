@@ -9,7 +9,7 @@ import Aux from '../../../hoc/Aux';
 
 const sidedrawer = (props) => {
     let attachedClasses = [classes.SideDrawer, classes.Close];
-    
+
     if (props.open) {
         attachedClasses = [classes.SideDrawer, classes.Open];
     }
@@ -21,9 +21,9 @@ const sidedrawer = (props) => {
                 <div className={classes.Logo}>
                     <Logo />
                 </div>
-                
+
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems isAuthenticated={props.isAuth} />
                 </nav>
             </div>
         </Aux>
