@@ -5,14 +5,21 @@ import config from '../../config';
 export const checkAuthTimeout  = (expirationTime) => {
     return dispatch => {
         setTimeout(() => {
-            dispatch(logOut());
+            dispatch(logout());
         }, expirationTime * 1000)
     }
 }
 
-export const logOut  = () => {
+export const logout  = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const setAuthRedirectPath  = (path) => {
+    return {
+        type: actionTypes.SET_AUTH_REDIRECT_PATH,
+        path: path
     }
 }
 
