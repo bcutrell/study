@@ -1,7 +1,20 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import config from '../../config'
+import config from '../../config';
 
+export const checkAuthTimeout  = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logOut());
+        }, expirationTime * 1000)
+    }
+}
+
+export const logOut  = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
 
 export const authStart = () => {
     return {
@@ -26,11 +39,12 @@ export const authFail = (error) => {
 
 export const auth = (email, password, isSignUp) => {
     return dispatch => {
-        // dispatch(authStart());
-        const authData ={
+        dispatch(authStart());
+
+        const authData = {
             email: email,
             password: password,
-            returnSecuretoken: true
+            returnSecureToken: true
         };
 
         let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + config.firebaseAPIKey
@@ -42,6 +56,7 @@ export const auth = (email, password, isSignUp) => {
         .then(response => {
             console.log(response);
             dispatch(authSuccess(response.data.idToken, response.data.localId));
+            dispatch(checkAuthTimeout(response.data.expiresIn));
         })
         .catch(err => {
             console.log(err);
