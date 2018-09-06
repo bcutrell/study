@@ -1,14 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,session, redirect, url_for, flash
 from werkzeug import secure_filename
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, BooleanField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
 class VideoForm(FlaskForm):
-  title = StringField('Video Title')
+  title = StringField('Video Title', validators=[DataRequired()])
   submit = SubmitField('Submit')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -22,6 +23,10 @@ def index():
   if form.validate_on_submit():
     title = form.title.data
     form.title.data = ''
+
+  else:
+    flash('Error')
+    # return redirect(url_for('index'))
 
   return render_template('index.html', videos=videos, form=form, title=title)
 
