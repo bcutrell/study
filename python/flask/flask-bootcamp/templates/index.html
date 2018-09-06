@@ -10,4 +10,20 @@
   {% for video in videos %}
     <a href="{{ url_for('video', name='ben') }}"> {{ video }}</a>
   {% endfor %}
+
+
+<p>
+  {% if title %}
+    <div>New Title: {{ title }}</div>
+  {% else %}
+
+  {% endif %}
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.title.label }}{{ form.title() }}
+    {{ form.submit() }}
+
+  </form>
+
+</p>
 {% endblock %}
