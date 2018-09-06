@@ -1,14 +1,29 @@
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
-app = Flask(__name__)
 
-@app.route('/')
-@app.route('/index')
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'mysecretkey'
+
+class VideoForm(FlaskForm):
+  title = StringField('Video Title')
+  submit = SubmitField('Submit')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
   videos = [
     { 'fpath': 'abc', 'title': 'Video 1', 'upvotes': 1, 'downvotes': 2 }
   ]
-  return render_template('index.html', videos=videos)
+
+  title=False
+  form = VideoForm()
+  if form.validate_on_submit():
+    title = form.title.data
+    form.title.data = ''
+
+  return render_template('index.html', videos=videos, form=form, title=title)
 
 @app.route('/uploader', methods = ['GET', 'POST'])
 def uploader():
@@ -27,6 +42,8 @@ def video(name):
 
 def vote():
   pass
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
