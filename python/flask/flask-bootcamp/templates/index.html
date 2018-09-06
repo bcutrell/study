@@ -18,6 +18,10 @@
   {% else %}
 
   {% endif %}
+
+  {% for mess in get_flashed_messages() %}
+    {{ mess }}
+  {% endfor %}
   <form method="POST">
     {{ form.hidden_tag() }}
     {{ form.title.label }}{{ form.title() }}
