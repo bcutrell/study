@@ -7,9 +7,15 @@
     <input type = "submit"/>
   </form>
 
-  {% for video in videos %}
-    <a href="{{ url_for('video', name='ben') }}"> {{ video }}</a>
-  {% endfor %}
+  <ul>
+    {% for video in videos %}
+    <li>
+      {{ video }}
+      <a href="{{ url_for('video', title=title) }}">View</a><a href="{{ url_for('delete', title=video.title) }}">Delete</a>
+    </li>
+
+    {% endfor %}
+  </ul>
 
 
 <p>
@@ -24,7 +30,7 @@
   {% endfor %}
   <form method="POST">
     {{ form.hidden_tag() }}
-    {{ form.title.label }}{{ form.title() }}
+    {{ form.title.label }}{{ form.title(value=title) }}
     {{ form.submit() }}
 
   </form>
