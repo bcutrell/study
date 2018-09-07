@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request,session, redirect, url_for, flash
 from werkzeug import secure_filename
 
@@ -8,6 +9,8 @@ from wtforms.validators import DataRequired
 import os
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_migrate import Migrate
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 # __file__ --> /Users/../../flask-bootcamp/basic.py
 
@@ -17,15 +20,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'da
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+Migrate(app, db)
+
 ########################################################################
 
 class Video(db.Model):
   __tablename__ = 'videos'
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.Text)
+  upvotes = db.Column(db.Integer)
 
-  def __init__(self, title):
+  def __init__(self, title, upvotes):
     self.title = title
+    self.upvotes = upvotes
 
   def __repr__(self):
     return f"Video title: {self.title}"
