@@ -37,7 +37,6 @@ class Video(db.Model):
   def __repr__(self):
     return f"Video title: {self.title}"
 
-
 ########################################################################
 
 class VideoForm(FlaskForm):
@@ -46,19 +45,18 @@ class VideoForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-  videos = [
-    { 'fpath': 'abc', 'title': 'Video 1', 'upvotes': 1, 'downvotes': 2 }
-  ]
-
   title=False
   form = VideoForm()
   if form.validate_on_submit():
-    title = form.title.data
+    db.session.add(Video(form.title.data, 0))
+    db.session.commit()
     form.title.data = ''
-  else:
-    flash('Error')
-    # return redirect(url_for('index'))
+    title=False
 
+  else:
+    flash('Please Enter a Title')
+
+  videos = Video.query.all()
   return render_template('index.html', videos=videos, form=form, title=title)
 
 @app.route('/uploader', methods = ['GET', 'POST'])
@@ -72,12 +70,20 @@ def uploader():
 
     return 'file uploaded successfully'
 
-@app.route('/video/<name>')
-def video(name):
-  return "Video: {}".format(name.upper())
+@app.route('/video/<title>')
+def video(title):
+  return "Video: {}".format(title.upper())
 
-def vote():
-  pass
+@app.route('/delete/<title>', methods=['GET', 'POST'])
+def delete(title):
+  print(title)
+  videos = Video.query.filter_by(title=title)
+  [db.session.delete(video) for video in videos]
+  db.session.commit()
+
+  return redirect(url_for('index'))
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
