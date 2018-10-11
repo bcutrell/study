@@ -1,6 +1,0 @@
-
-const actionTypes = {
-    ADD_TARGET: 'ADD_TARGET',
-    ADD_HOLDING: 'ADD_HOLDING',
-    DELETE_HOLDING: 'DELETE_HOLDING',
-}
