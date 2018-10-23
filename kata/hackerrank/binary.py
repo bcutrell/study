@@ -11,18 +11,29 @@ def to_bin(n):
     else:
       result.append(0)
 
-  return ''.join([str(x) for x in result])
+  return int(''.join([str(x) for x in result]))
 
 
 def from_bin(n):
-  pass
+  bin_str = str(n)
+  max_power = len(bin_str)-1
+  result = 0
+
+  for c in bin_str:
+    num = int(c)
+    
+    if num == 1:
+      result += 2**max_power
+    max_power -= 1
+
+  return result
 
 
-assert(to_bin(20) == '10100')
-assert(to_bin(27) == '11011')
-assert(to_bin(114) == '1110010')
 
-exit()
+assert(to_bin(20) == 10100)
+assert(to_bin(27) == 11011)
+assert(to_bin(114) == 1110010)
+
 assert(from_bin(10100) == 20)
 assert(from_bin(11011) == 27)
 assert(from_bin(1110010) == 114)
