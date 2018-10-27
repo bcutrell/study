@@ -1,3 +1,11 @@
+def to_bin_alt(n):
+  # Function to print binary number for the input decimal using recursion
+  if n > 1:
+    to_bin_alt(n//2)
+  print(n % 2,end = '')
+
+to_bin_alt(20) # 10100
+
 def to_bin(n):
   powers_of_two = [2**exp for exp in range(100) if 2**exp<n]
   result = []
