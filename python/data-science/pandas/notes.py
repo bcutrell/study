@@ -73,4 +73,40 @@ pd.merge(df_left, df_right, on=['key1', 'key2'], how='outer')
 pd.merge(df_left, df_right, on='key1')
 pd.merge(df_left, df_right, on='key1', suffixes=('_lefty', '_righty'))
 
+# On Index
+pd.merge(df_left, df_right, left_on='key', right_index=True)
+# left on can accept list for nested indicies
 
+# Join
+df_left.join(df_right)
+
+##############################
+# Concatenate
+##############################
+arr1 = np.arange(9).reshape(3,3)
+np.concatenate([arr1,arr1],axis=1) # left to right
+np.concatenate([arr1,arr1],axis=0) # top to bottom
+
+pd.concat([ser1, ser2], axis=1)
+pd.concat([ser1, ser2], keys=['cat1', 'cat2'])
+
+pd.concat([dframe1, dframe2], keys=['cat1', 'cat2'], ignore_index=True)
+
+##############################
+# Combine DataFrames
+##############################
+ser1.combine_first(ser2)
+dframe_odds.combine_first(dframe_evens)
+
+##############################
+# Reshaping
+##############################
+df.stack()
+df.unstack() # can pass in column name
+
+##############################
+# Pivot
+##############################
+
+# args: rows, columns, field value
+dfame.pivot('date', 'variable', 'value')
