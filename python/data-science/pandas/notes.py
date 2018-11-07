@@ -110,3 +110,60 @@ df.unstack() # can pass in column name
 
 # args: rows, columns, field value
 dfame.pivot('date', 'variable', 'value')
+
+##############################
+# Duplicates
+##############################
+dframe.duplicated() # returns boolean df
+dframe.drop_duplicates() # removes false values from duplicated()
+dframe.drop_duplicates(['key1']) # drop from key1 column
+dframe.drop_duplicates(['key1'], take_last=True) # keep last dup
+
+##############################
+# Mapping
+##############################
+
+dframe['state'] = dframe['city'].map(state_map)
+# create a new column based on keys / values in state_map dict
+
+##############################
+# Replace
+##############################
+
+ser1.replace(1, np.nan)
+ser1.replace([1,4], [100, 400])
+ser1.replace({ 4: np.nan })
+
+##############################
+# Rename Index
+##############################
+
+dframe.index.map(str.lower)
+dframe.index = dframe.index.map(str.lower) # mutuate
+dframe.rename(index=str.title, columns=str.lower)
+dframe.rename(index={'ny': 'NEW YORK'}, columns={ 'A': 'ALPHA'})
+
+##############################
+# Binning
+##############################
+
+decade_cat = pd.cut(years, decade_bins)
+decade_cat.categories
+pd.value_counts(decade_cat)
+pd.cut(years,2,percision=1)
+
+##############################
+# Outliers
+##############################
+
+col = dframe[0]
+col[np.abs(col)>3]
+dframe[(np.abs(dframe)>3).any(1)] # if any column, return entire row
+dframe[np.abs(dframe)>3] = np.sign(dframe)*3 # if > 3, set value to sign * 3
+
+##############################
+# Outliers
+##############################
+
+dframe.take([1,2,0,3]) # get values at indicies
+
