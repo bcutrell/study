@@ -152,3 +152,18 @@ decade_cat.categories
 pd.value_counts(decade_cat)
 pd.cut(years,2,percision=1)
 
+##############################
+# Outliers
+##############################
+
+col = dframe[0]
+col[np.abs(col)>3]
+dframe[(np.abs(dframe)>3).any(1)] # if any column, return entire row
+dframe[np.abs(dframe)>3] = np.sign(dframe)*3 # if > 3, set value to sign * 3
+
+##############################
+# Outliers
+##############################
+
+dframe.take([1,2,0,3]) # get values at indicies
+
