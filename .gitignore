@@ -13,3 +13,4 @@ static
 .ipynb_checkpoints
 
 data.sqlite
+.idea
