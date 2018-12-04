@@ -32,11 +32,33 @@ int main() {
     unsigned short int t7 = 65535;
 
     const string NAME = "can not change";
+    
+    // console input
+    // int a;
+    // cin >> a; 
+    // cout << a;
 
-    int a;
-    cin >> a; // console input
+    // operators
+    int m = 10;
+    int n = 5;
 
-    cout << a;
+    cout << m + n << endl;
+    cout << m - n << endl;
+    cout << m * n << endl;
+    cout << m / n << endl;
+    cout << m % n << endl;
+
+    // incrementation - increase by 1
+    // decrementation - decrease by 1
+    int z = 1;
+    z = z + 1;
+    z += 1;
+    cout << z << endl;
+
+    int d = 1;
+    cout << d++ << endl; // 1
+    cout << d << endl; // 2
+    cout << ++d << endl; // 3
 
     return 0;
 }
