@@ -60,6 +60,8 @@ int main() {
     cout << d << endl; // 2
     cout << ++d << endl; // 3
 
+    cout << (d == z) << endl;
+
     return 0;
 }
 
