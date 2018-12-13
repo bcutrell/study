@@ -48,6 +48,15 @@ int main() {
     cout << m / n << endl;
     cout << m % n << endl;
 
+    if (m > n)
+      cout << "something less" << endl;
+
+    if (m > n)
+    {
+      cout << "something" << endl;
+      cout << "something more" << endl;
+    }
+
     // incrementation - increase by 1
     // decrementation - decrease by 1
     int z = 1;
