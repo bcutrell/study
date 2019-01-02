@@ -48,7 +48,7 @@ int main() {
     cout << m / n << endl;
     cout << m % n << endl;
 
-    if (m > n)
+    if (m > n) // anything that != 0
       cout << "something less" << endl;
 
     if (m > n)
@@ -56,6 +56,13 @@ int main() {
       cout << "something" << endl;
       cout << "something more" << endl;
     }
+
+    if (n > m)
+      cout << "wrong" << endl;
+    else if (m > n)
+      cout << "yep" << endl;
+    else
+      cout << "still wrong yep" << endl;
 
     // incrementation - increase by 1
     // decrementation - decrease by 1
@@ -72,5 +79,19 @@ int main() {
     cout << (d == z) << endl;
 
     return 0;
+
+    int xx = 50;
+    switch (xx)
+    {
+      case 0:
+        cout << "when switched value = 0";
+      case 25:
+        cout << "when switched value = 25";
+      case 50:
+        cout << "when switched value = 50";
+      default:
+        cout << "when switched != any case";
+    }
+
 }
 
