@@ -81,17 +81,76 @@ int main() {
     return 0;
 
     int xx = 50;
+    // only int and char values
+    // remember all chars are ints e.g. 100 == 'd'
     switch (xx)
     {
       case 0:
         cout << "when switched value = 0";
+        break;
       case 25:
         cout << "when switched value = 25";
+        break;
       case 50:
         cout << "when switched value = 50";
+        break;
       default:
         cout << "when switched != any case";
     }
+    
+    // coditional operator
+    // CONDITION ? (exec if true) : (exec if false)
+
+    // system("cls") -> clear console output
+    // goto beginning -> rerun main function
+
+    // Arrays
+    int array[3]; // TYPE NAME[SIZE_OF_ELEMENTS]
+    array[0] = 10;
+    array[1] = 50;
+    array[2] = 256;
+
+    // multi dimensional
+    int biArray[3][4] = {0};
+    // &biArray[0][0] see addr
+
+    // Loops
+    // for (initilization; condition; inc/dec)
+    //  instruction-to-repeat
+
+    for ( int i=0; i < 5; i++ )
+      cout << "tasdasd";
+    
+    int array[4];
+    for (int i=0; i < 4; i++)
+      array[i] = i;
+
+    i = 0;
+    // ++i < 10 increment and then check
+    // i++ < 10 check and then increment
+    while(++i < 10)
+    {
+      cout << "lalal";
+    }
+
+    const int SIZEOFARRAY = 10;
+    int i = 0;
+    int array[SIZEOFARRAY];
+    while ( i < SIZEOFARRAY )
+    {
+      array[i] = 10 * i;
+      cout << array[i++] << endl;
+    }
+
+    do 
+    {
+      // runs before while
+    } while (i);
+
+    // find number of digits
+
+
+
 
 }
 
