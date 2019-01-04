@@ -148,9 +148,42 @@ int main() {
     } while (i);
 
     // find number of digits
+    int nr = 1234;
+    int nrOfDigits = 1;
+    int tmp = nr;
+    while (tmp /= 10)
+      nrOfDigits++;
 
+    cout << "the number " << nr << " has  " << nrOfDigits << " digits" << endl;
 
+    // multiplication table
+    for (int i=1; i < 10; i++)
+    {
+      for (int j=1; i < 10; j++)
+      {
+        cout.width(4);
+        cout << i * j << " ";
+      }
+      cout << endl;
+    }
 
+    // break 
+    // continue
+}
 
+// FUNCTIONS
+// string tmp; string.length();
+void welcome(); // declaration
+void welcome() 
+{
+  cout << "Welcome"
+}
+
+bool isNumber(string tmp)
+{
+  // not actually working
+  if (tmp[0] == '0')
+    return false;
+  return true
 }
 
