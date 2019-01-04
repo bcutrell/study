@@ -173,7 +173,7 @@ int main() {
 
 // FUNCTIONS
 // string tmp; string.length();
-void welcome(); // declaration
+void welcome(); // declaration - no need to include params
 void welcome() 
 {
   cout << "Welcome"
@@ -186,4 +186,8 @@ bool isNumber(string tmp)
     return false;
   return true
 }
+
+double add(double a, double) { return a + b }; // one line func
+
+
 
