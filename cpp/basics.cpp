@@ -173,7 +173,7 @@ int main() {
 
 // FUNCTIONS
 // string tmp; string.length();
-void welcome(); // declaration
+void welcome(); // declaration - no need to include params
 void welcome() 
 {
   cout << "Welcome"
@@ -186,4 +186,35 @@ bool isNumber(string tmp)
     return false;
   return true
 }
+
+double add(double a, double) { return a + b }; // one line func
+
+// Overloading functions
+int power(int, int);
+double power(double, int);
+
+int power(int b, int e)
+{
+  int temp = b;
+  while(e > 1)
+  {
+    b = b  *tmp; // b*= tmp
+    e--;
+  }
+
+  return b
+}
+double power(double b, int e)
+{
+  int temp = b;
+  while(e > 1)
+  {
+    b = b  *tmp; // b*= tmp
+    e--;
+  }
+
+  return b
+}
+
+
 
