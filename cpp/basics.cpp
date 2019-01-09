@@ -204,6 +204,7 @@ int power(int b, int e)
 
   return b
 }
+
 double power(double b, int e)
 {
   int temp = b;
@@ -216,5 +217,39 @@ double power(double b, int e)
   return b
 }
 
+// cin functs
+cin.rdstate();
+cin.clear();
+cin.rdstate();
+cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+// enum - enumeration 
 
+enum dayOfWeek { M=1, TU, W, TH, F, SA, SN }; // this is a type, not a variable
+dayofWeek d =  SN;
+cout << d << endl;
+// >> 7
+
+// reference variables
+
+string name = "Agnes";
+string &nr_6 = name;
+// Ref var must be initialized when created
+// can just do > string &nr_6
+// Ref var can't change associations / connections
+// Ref must be same type
+
+// Using ref vars in functions to mutate variables
+// you can also return & to reference a variable used in the function
+swap(int &, int &)
+int a = 10;
+int b = 10;
+swap(a, b)
+
+void swap(int &x, int &y)
+{
+  int t;
+  t = x;
+  x = y;
+  y = t;
+}
