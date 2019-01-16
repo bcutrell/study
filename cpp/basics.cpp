@@ -253,3 +253,29 @@ void swap(int &x, int &y)
   x = y;
   y = t;
 }
+
+/* 
+ POINTERS are ordinary variables that can store addresses of variables
+*/
+
+int var = 5;
+int *p; // * just says that this var is a pointer
+p = &var; // stores addr as a value
+// OR int *p = &var
+cout << *p << endl; // prints value 5 * is used to get value from addr
+
+// you can change the point
+int a = 20;
+p = &a;
+
+// if we want a const pointer
+// note: it must be initialized when declared
+int * const p = &var;
+const int * const p_2 = &a; // cant change value or addr
+
+int ordinary_var = 10;
+int *ordinary_p = &ordinary_var;
+cout << &ordinary_p < < endl; // print point addr
+int ** p_pointing_to_address_of_point = &ordinary_p;
+
+
