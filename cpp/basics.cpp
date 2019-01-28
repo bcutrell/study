@@ -301,3 +301,31 @@ cout << ++*p2 << endl; // change underlying value
 cout << *++p2 << endl; // move 4 bytes show me addr of next item
 cout << *p2++ << endl; // last item
 
+// dynamic allocation of memory
+int amount = 20;
+int array[amount]; // fail
+int *p = new int[amount]; // pass dynamic array
+
+// use nothrow to handle memory issues
+// if we run out of memory p will be NULL
+int *p = new (nothrow) int[amount];
+
+// use new to reserve memory we need after compile
+new int 
+
+// use {} for local scoping
+{
+  int *p = new int;
+  *p = 50;
+  cout << *p << endl;
+
+  delete p; // release memory
+  p = NULL; // good practice to set to NULL after delete
+}
+
+// strings and a pointer on a char type
+string text = "tralalalal";
+
+
+
+
