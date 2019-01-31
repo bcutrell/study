@@ -324,8 +324,97 @@ new int
 }
 
 // strings and a pointer on a char type
-string text = "tralalalal";
+char * const dynamic_array = new char[50];
+dynamic_array[0] = 'k';
+dynamic_array[1] = '\0';
+//dynamic_array = "lalala";
+
+cout << dynamic_array << endl;
+
+delete [] dynamic_array;
+
+string array_of_string[5] = "this i a text that will be in all of the elements of strings";
+array_of_string[0] = "afsdf";
+cout << array_of_string[0] << endl;
+cout << array_of_string[1] << endl;
+cout << array_of_string[2] << endl;
 
 
+// Sorts
+int sizeOfArray;
+cout << "Input the size of the array to sort: ";
+cin >> sizeOfArray;
 
+int* a = createArray(sizeOfArray);
+printArrayValues(a, sizeOfArray);
 
+int * createArray(int sizeOfArray)
+{
+    int* newArray = new int[sizeOfArray];
+
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        newArray[i] = rand()%1500;
+    }
+
+    return newArray;
+}
+
+void swapTwoValues(int* firstValue, int* secondValue)
+{
+    int temporaryVariable;
+
+    temporaryVariable = *firstValue;
+    *firstValue = *secondValue;
+    *secondValue = temporaryVariable;
+}
+
+void printArrayValues(int arrayToPrint[], int sizeOfArray)
+{
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        cout << "Array[" << i << "] = " << arrayToPrint[i] << endl;
+    }
+    cout << endl;
+}
+
+void bubbleSort(int arrayToSort[], int sizeOfArray, int orderOfSequence)
+{
+    for (int i = 0; i < sizeOfArray-1; i++)
+    {
+        for (int j = 0; j < sizeOfArray-1; j++)
+        {
+            if (orderOfSequence == 1 && arrayToSort[j] > arrayToSort[j+1])
+            {
+                    swapTwoValues(arrayToSort+j, arrayToSort+j+1);
+            }
+            else if (orderOfSequence == 2 && arrayToSort[j] < arrayToSort[j+1])
+            {
+                    swapTwoValues(arrayToSort+j, arrayToSort+j+1);
+            }
+        }
+    }
+    printArrayValues(arrayToSort, sizeOfArray);
+}
+
+void selectionSort(int arrayToSort[], int sizeOfArray, int orderOfSequence)
+{
+    int limitIndex;
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        limitIndex = i;
+        for (int j = i; j < sizeOfArray; j++)
+        {
+            if (orderOfSequence == 1 && arrayToSort[j] < arrayToSort[limitIndex])
+            {
+                limitIndex = j;
+            }
+            else if (orderOfSequence == 2 && arrayToSort[j] > arrayToSort[limitIndex])
+            {
+                limitIndex = j;
+            }
+        }
+        swapTwoValues(arrayToSort+i, arrayToSort+limitIndex);
+    }
+    printArrayValues(arrayToSort, sizeOfArray);
+}
