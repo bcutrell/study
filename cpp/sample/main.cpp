@@ -1,8 +1,12 @@
 #include <iostream>
-
+#include "ourfirstlibrary.h"
 using namespace std;
 
+#define PI 3.14
+
 int main(int argc, char *argv[]) {
+  showHelp();
+
   // arguments counter
   cout << argc << endl;
 
