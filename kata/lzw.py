@@ -86,3 +86,4 @@ assert(decode_lzw(encode_lzw(string1)) == string1)
 string2 = 'the shovel was a ground breaking invention.'
 assert(decode_lzw(encode_lzw(string2)) == string2)
 
+print(encode_lzw("seven hundred pounds"))
