@@ -418,3 +418,30 @@ void selectionSort(int arrayToSort[], int sizeOfArray, int orderOfSequence)
     }
     printArrayValues(arrayToSort, sizeOfArray);
 }
+
+struct personalData
+{
+  string name;
+  string telephoneNumber;
+  short age;
+}
+
+personalData person;
+person.name = 'a';
+
+// array of structs
+personalData person[6];
+
+// pointers
+(*person).name
+(*&person[0]).name
+person->name
+(person+1)->name
+
+// functions
+void test(personalData *person)
+{
+  person->name = "Agnes";
+}
+
+
