@@ -445,3 +445,35 @@ void test(personalData *person)
 }
 
 
+// classes are more supped up structures
+class PersonalData
+{
+  private:
+    short age;
+  public:
+    string name;
+    void setAge(int value) { age = value; }
+}
+
+void PersonalData::setAge(int age)
+{
+  if (age < 0)
+    this->age = 0;
+  else
+    this->age = age;
+}
+
+PersonalData::PersonalData()
+{
+  // constructor
+}
+
+PersonalData:::~PersonalData()
+{
+  // destructor
+}
+
+PersonalData *pointer = new PersonalData[5];
+delete []pointer
+
+// https://github.com/ssloy/tinyraycaster
