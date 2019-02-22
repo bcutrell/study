@@ -58,7 +58,7 @@ def decode_lzw(compressed):
     END WHILE
     '''
 
-    dictionary = {chr(i+96): i for i in range(1, 27)}
+    dictionary = { chr(i+96): i for i in range(1, 27) }
     dictionary[chr(32)] = 0
     dictionary[chr(46)] = 27
     dict_size = len(dictionary)
