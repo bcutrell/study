@@ -49,7 +49,7 @@ class PricesDataFrame(object):
         for ticker in self.tickers:
             df = self.get_prices_df(ticker)
             data.append(
-                    go.Scatter(x=df['date'], y=df['close'], name=ticker)
+                go.Scatter(x=df['date'], y=df['close'], name=ticker)
             )
 
         return data
@@ -59,7 +59,13 @@ def ticker_options():
     resp = requests.get('https://api.iextrading.com/1.0/ref-data/symbols')
     return [ {'label': i["symbol"], 'value': i["symbol"] }  for i in json.loads(resp.text) ]
 
+
+# Use the awesome nes css library
 external_stylesheets = ['https://unpkg.com/nes.css@2.0.0/css/nes.min.css']
+
+#
+# Setup Dash App and Layout
+#
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = \
@@ -70,17 +76,22 @@ html.Div(children=[
         multi=True,
         value=['AAPL']
     ),
+    html.H1('Closing Prices'),
     html.Div(id='output-container'),
     dcc.Graph(id='my-graph')
 ])
 
+# Use object to store DataReader calls
+# and perform any dataframe calculations
 prices_df = PricesDataFrame('AAPL')
 
+#
+# Callbacks
+#
 @app.callback(Output('my-graph', 'figure'),
               [Input('my-dropdown', 'value')])
 def update_graph(tickers):
     prices_df.set_tickers(tickers)
-    print(tickers)
 
     return {
         'data': prices_df.traces(),
@@ -89,9 +100,6 @@ def update_graph(tickers):
 
 
 if __name__ == '__main__':
-    # TODO
-    # CAPM + factor regressions
-    # trailing n graphs
-    # sharpe ratio
+    # TODO CAPM + factor regressions, trailing n graphs, sharpe ratio, optimal allocations
     app.run_server(debug=True)
 
