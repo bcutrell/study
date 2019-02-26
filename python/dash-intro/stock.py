@@ -1,58 +1,97 @@
+'''
+Completion <C-Space>
+Goto assignments <leader>g (typical goto function)
+Goto definitions <leader>d (follow identifier as far as possible, includes imports and statements)
+Show Documentation/Pydoc K (shows a popup with assignments)
+Renaming <leader>r
+Usages <leader>n (shows all the usages of a name)
+Open module, e.g. :Pyimport os (opens the os module)
+'''
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import datetime as dt
 import plotly.graph_objs as go
-from pandas_datareader.data import DataReader
+
 from dash.dependencies import Input, Output
+
 import pandas as pd
+from pandas_datareader.data import DataReader
 import numpy as np
+
 import requests_cache
 import requests
-import json
 
-import datetime
+import datetime as dt
+import json
 import code
 
-external_stylesheets = ['https://unpkg.com/nes.css@2.0.0/css/nes.min.css']
+class PricesDataFrame(object):
 
-expire_after = datetime.timedelta(days=3)
-session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
-master_df = pd.DataFrame()
+    def __init__(self, initial_ticker):
+        expire_after = dt.timedelta(days=3)
+        self.session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
 
-def get_stock_df(ticker):
-    stock_df = DataReader(str(ticker), 'iex',
-                    dt.datetime(2018, 1, 1),
-                    dt.datetime.now(),
-                    session=session,
-                    retry_count=0).reset_index()
-    # add values to master_df
-    master_df['date'] = stock_df.date
-    master_df[ticker] = stock_df['close'] # adj close?
+        self.df = self.get_prices_df(initial_ticker)
 
-    return stock_df
+    def set_tickers(self, tickers):
+        self.tickers = tickers
+
+    def get_prices_df(self, ticker):
+        return DataReader(str(ticker), 'iex',
+                          dt.datetime(2018, 1, 1),
+                          dt.datetime.now(),
+                          session=self.session,
+                          retry_count=0).reset_index()
+
+    def traces(self):
+        data = [] # list of traces
+        for ticker in self.tickers:
+            df = self.get_prices_df(ticker)
+            data.append(
+                    go.Scatter(x=df['date'], y=df['close'], name=ticker)
+            )
+
+        return data
+
 
 def ticker_options():
     resp = requests.get('https://api.iextrading.com/1.0/ref-data/symbols')
     return [ {'label': i["symbol"], 'value': i["symbol"] }  for i in json.loads(resp.text) ]
 
+external_stylesheets = ['https://unpkg.com/nes.css@2.0.0/css/nes.min.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-app.layout = html.Div(children=[
+app.layout = \
+html.Div(children=[
     dcc.Dropdown(
         id='my-dropdown',
         options= ticker_options(),
-        multi=True
+        multi=True,
+        value=['AAPL']
     ),
-    html.Div(id='output-container')
+    html.Div(id='output-container'),
+    dcc.Graph(id='my-graph')
 ])
 
-# @app.callback(  Output(),
-#                 [Input()])
-def ticker_select_callback(ticker):
-    pass
+prices_df = PricesDataFrame('AAPL')
+
+@app.callback(Output('my-graph', 'figure'),
+              [Input('my-dropdown', 'value')])
+def update_graph(tickers):
+    prices_df.set_tickers(tickers)
+    print(tickers)
+
+    return {
+        'data': prices_df.traces(),
+        'layout': go.Layout()
+    }
+
 
 if __name__ == '__main__':
-    # app.run_server(debug=True)
-    get_stock_df('AAPL')
-    code.interact(local=locals())
+    # TODO
+    # CAPM + factor regressions
+    # trailing n graphs
+    # sharpe ratio
+    app.run_server(debug=True)
+
