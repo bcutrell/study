@@ -1,0 +1,9 @@
+/* A hopefully limited set of rules to override existing dash and nes styles */
+
+body {
+  font-size: 12px;
+}
+
+.DateInput {
+  font-size: 10px;
+}
