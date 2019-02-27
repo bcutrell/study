@@ -16,7 +16,7 @@ import datetime as dt
 import json
 import code
 
-class PricesDataFrame(object):
+class Portfolio(object):
 
     def __init__(self, initial_ticker):
         expire_after = dt.timedelta(days=3)
@@ -36,10 +36,16 @@ class PricesDataFrame(object):
 
     def traces(self):
         data = [] # list of traces
+        # TODO 
+        # store parts of the df so that calculations do not need to be repeated
+
         for ticker in self.tickers:
             df = self.get_prices_df(ticker)
+            df['return'] = df['close'].pct_change(1)
+            df['cumulative'] = df['close']/df['close'].iloc[0]
+
             data.append(
-                go.Scatter(x=df['date'], y=df['close'], name=ticker)
+                go.Scatter(x=df['date'], y=df['cumulative'], name=ticker)
             )
 
         return data
@@ -91,7 +97,7 @@ html.Div(children=[
 
 # Use object to store DataReader calls
 # and perform any dataframe calculations
-prices_df = PricesDataFrame('AAPL') # TODO change name
+portfolio = Portfolio('AAPL')
 
 #
 # Callbacks
@@ -102,13 +108,15 @@ prices_df = PricesDataFrame('AAPL') # TODO change name
                State('my-date-picker', 'start_date'),
                State('my-date-picker', 'end_date')])
 def update_closing_prices(n_clicks, tickers, start_date, end_date):
+
+    # not used for now...
     start_date = dt.datetime.strptime(start_date[:10], '%Y-%m-%d')
     end_date = dt.datetime.strptime(end_date[:10], '%Y-%m-%d')
 
-    prices_df.set_tickers(tickers)
+    portfolio.set_tickers(tickers)
 
     return {
-        'data': prices_df.traces(),
+        'data': portfolio.traces(),
         'layout': go.Layout()
     }
 
