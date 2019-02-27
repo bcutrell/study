@@ -7,3 +7,8 @@ body {
 .DateInput {
   font-size: 10px;
 }
+
+.CalendarMonth__caption {
+  font-size: 12px;
+}
+
