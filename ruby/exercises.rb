@@ -283,8 +283,6 @@ end
 
 Implement TestApp::Application class. It must have .configure method that takes a block. Also, make sure that the code in the provided block has access to config method (or Hash, up to you).
 
-
-
 Task 1b: Create TestApp::Application.conf configuration accessor method.
 
 Now that we have our configuration class. Add .conf method that would return our application settings.
@@ -328,8 +326,6 @@ Project#categories.empty?, Project#categories.size, Project#categories, Project#
 Task 2a: Think and try to explain to yourself or your teammate how you would implement those methods.
 
 Task 2b: Go through the documentation and think about different ways you would implement all those features/methods.
-
-
 
 Task 3: Think of any Rails magic and try to explain to yourself or your teammate different ways you could implement it.
 =end
