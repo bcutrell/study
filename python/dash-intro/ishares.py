@@ -1,7 +1,15 @@
 import pandas as pd
 import numpy as np
-from pandas_datareader.data import DataReader
+import requests
+import config
+
 import datetime as dt
+from io import StringIO
+import urllib
+import code
+import json
+
+import time
 
 #
 # Goal: Generate etf data files that can be used for testing portfolio optimizations
@@ -12,13 +20,6 @@ import datetime as dt
 # Output: prices.csv
 #         etf_info.csv
 #
-
-def get_price_df(ticker):
-    return DataReader(ticker, 'iex',
-                      dt.datetime(2014, 1, 1),
-                      dt.datetime.now(),
-                      retry_count=0) # .reset_index()
-
 
 OUTPUT_COLUMNS = [
         'Asset Class', 
@@ -32,6 +33,33 @@ OUTPUT_COLUMNS = [
         'Country', 
         'Fees'
 ]
+
+BASE_URL = 'https://www.alphavantage.co/query?'
+
+def url_for(ticker):
+    params = {
+        'function': 'TIME_SERIES_DAILY_ADJUSTED',
+        'datatype': 'csv',
+        'outputsize': 'full', # compact
+        'apikey': config.ALPHAVANTAGE_API_KEY,
+        'symbol': ticker 
+    }
+    return BASE_URL + urllib.parse.urlencode(params)
+
+# standard API call frequency is 5 calls per minute and 500 calls per day
+def get_price_df(ticker):
+    attempts = 0
+
+    while attempts < 3:
+        resp = requests.get(url_for(ticker))
+        # if we get a json response instead of application/x-download
+        # we have reached the limit
+        if resp.headers['Content-Type'] == 'application/json':
+            attempts += 1
+            print('Waiting due to API call frequency... ', ticker)
+            time.sleep(30)
+        else:
+            return pd.read_csv(StringIO(resp.text))
 
 if __name__ == '__main__':
 
@@ -49,15 +77,16 @@ if __name__ == '__main__':
 
     # initialize our prices df for the ticker with the longest history
     ticker = tickers[0]
-    tickers = np.delete(tickers,0) # pop(0) doesn't work with np arrays
+    tickers = np.delete(tickers, 0) # pop(0) doesn't work with np arrays
+
     price_df = get_price_df(ticker)
     prices_df = pd.DataFrame(index=price_df.index)
-    prices_df[ticker] = price_df['close']
+    prices_df[ticker] = price_df['adjusted_close']
 
     # add in the other tickers
     for ticker in tickers:
         price_df = get_price_df(ticker)
-        prices_df[ticker] = price_df['close']
+        prices_df[ticker] = price_df['adjusted_close']
 
     # output prices.csv and etf_info.csv
     prices_df.to_csv('prices.csv')
