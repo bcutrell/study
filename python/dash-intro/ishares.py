@@ -59,7 +59,9 @@ def get_price_df(ticker):
             print('Waiting due to API call frequency... ', ticker)
             time.sleep(30)
         else:
-            return pd.read_csv(StringIO(resp.text))
+            df = pd.read_csv(StringIO(resp.text))
+            df.index = pd.to_datetime(df.timestamp)
+            return df
 
 if __name__ == '__main__':
 
