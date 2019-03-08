@@ -1,0 +1,207 @@
+
+Views -> A view is a virtual table, that provides access to a subset of columns or some restricted rows from one or more tables. Views act like a real table but do not take any space. A view is just a stored SQL script.
+
+Materialed Views -> A materialized view has a real table filled by an SQL query like in normal views. The real table is truncated and refilled with a specified time frequency
+
+Indexes -> used for improving speed of data retrieval from tables. 
+
+Functions return values; Procedures return nothing
+
+Triggers -> compiled pgrogram units stored in db and executed with a specific event
+
+Sequences -> db objects which generate unique integers. Usually used for generating primary key values
+
+Data Dictionary Views
+===================================================================
+select * from dictionary where table_name = 'USER_TABLES';
+select * from dictionary where UPPER(comments) like '%SECURITY%';
+
+3 common dictionary views
+USER, ALL, DBA
+
+USER Prefixes: Includes all the objects in the user's schema
+
+All Prefixes: All the objects the user can access
+
+DBA Prefixes: Includes all the objects of all users. Only DBA's and users who have the privilege can access
+
+V$ Prefixes: Includes views that have information about performance. Only DBA's and users who have the privilege can access
+
+ALL_OBJECTS
+
+user_tab_columns;
+all_tab_columns;
+dba_tab_columns;
+
+USER_CONTRAINTS -> 
+.CONSTRAINT_TYPE
+C -> check constraint
+P -> Primary key
+U -> Unique key
+R -> foreign key
+V -> with check option (in views)
+O -> with read-only (in views)
+
+DELETE_RULE
+CASCADE -> delete children
+SET NULL -> set child to null
+NO ACTION
+
+USER_CONS_COLUMNS
+view all columns <-> constraint pairs
+
+CAT table only has names and types for tables, views and sequences
+All_cons_columns view has the table name and column names for the constraints
+
+Indexes
+===================================================================
+Schema objects for speeding up retrieval of rows by using a pointer
+Points to exact location instead of scanning disk
+
+Indexes are created explicitly of autmatically (with creating primary or unique constraint)
+Indexes are tied to a table
+Indexes are used only when we refer to the index column in a where clause
+
+Types of Indexes
+Unique Index: automatically created for a primary key or unique constraint
+
+Nonunique index: created by a user for improving performance with any column or columns
+
+B-tree Indexes: Default index - if most of the values are different using B-tree indexes will be faster
+
+Bitmap Indexes: Used with bitmap keyword. Useful for low cardinality columns ( bitmap indexes will be faster if there are lots of duplicate values)
+*Can not be unique
+
+CREATE UNIQUE INDEX temp_idx on employees (employee_id);
+
+*multiple indexes must use all in where clause
+CREATE INDEX temp_idx on employees (first_name, last_name);
+
+CREATE BITMAP INDEX temp_idx on employees (first_name, last_name);
+
+CREATE TABLE employee_temp (
+employee_id number(6)
+PRIMARY KEY USING INDEX (CREATE INDEX temp_idx on employee_templ(employee_id)),
+first_name varchar2(20),
+last_name varchar2(30)
+);
+
+alter table empoyee_temp add primary key (employee_id) using index temp_idex
+
+Function Based Indexes ->
+CREATE INDEX first_name_idx on employees (UPPER(first)name));
+
+# only one index can be visible
+alter index temp_idx invisible; # must be added in order to add second index
+
+Dropping Indexes ->
+If we want to allow DML operations while dropping an index we use ONLINE keyword
+DROP INDEX temp_idx ONLINE;
+
+Multiple indexes with same columns ->
+We can create multiple indexes on the same set of columns if the indexes are in different types
+
+Anaylyzing Indexes ->
+SELECT * FROM user_indexes;
+SELECT * FROM ALL_COL_COMMENTS WHERE TABLE_NAME = 'USER_INDEXES';
+USER_IND_COLUMNS provides information about the columns of our indexes;
+SELECT * FROM user_ind_columns where table_name = 'EMPLOYEES' ORDER BY index_name;
+
+Views
+===================================================================
+Stores select statement
+
+Why use them?
+- Restricting data access
+- Making complex queries easy
+- Present different views of the same data
+- Provide data independences
+
+Types of views
+- Simple views (one table)
+- Complex views (more than one table)
+
+CREATE [OR REPLACE] VIEW view_name as subquery
+
+WITH CHECK OPTIONS checks constraints
+WITH READ ONLY
+FORCE create even if table does not exist
+
+# using alias
+CREATE VIEW tview (alias,alias,alias) as
+select col1,col2,col from table
+
+table1 join table2 using (shared_col_name) # alt to on
+
+CREATE OR REPLACE VIEW vname
+  SELECT ...
+
+Analysing views ->
+select view_name, read_only, text from USER_VIEWS
+
+Performing DML ops with views ->
+You can not perform DML operations if the view includes:
+group functions, group by clause, distinct, rownum not null, expressions, read only
+
+You can insert using view
+INSERT INTO view VALUES (1,2,3,4)
+
+Adding a with check option to the view will restrict what can be inserted
+
+Preventing DML operations on a view
+add WITH READ ONLY;
+
+Removing Views ->
+DROP VIEW view_name;
+
+Sequences
+===================================================================
+
+CREATE SEQUENCE employee_seq
+start with 100
+increment by 3
+
+maxvalue 9999
+cache 50
+nocycle
+order;
+
+nocycle -> stop generating numbers after reaching the max value 
+(need this for primary key or else it will reset to min value)
+noorder -> don't want to guarentee numbers will be in order
+
+ALTER SEQUENCE sequence_name;
+can't use start with
+
+DROP SEQUENCE sequence_name;
+
+Using Sequences:
+NEXTVAL
+CURRVAL -> last generated sequence (may need to run nextval first if session expired)
+
+select employee_seq.currval from DUAL;
+select employee_seq.nextval from DUAL;
+CURRVAL
+
+INSERT INTO EMPLOYEES (EMPLOYEE_ID...)
+VALUES (EMPLOYEE_SEQ.NEXTVAL...)
+
+Using Sequences as a default value ->
+create table temp (t1 number default employee_seq.next_val, t2 varchar2(50));
+insert into temp(t2) values ('Alex');
+
+DESCRIBE USER_SEQUENCES;
+
+sequences can not be used in group by clause
+
+Synonyms
+===================================================================
+CREATE SYNONYM sy FOR sys.user.objects
+DROP [PUBLIC] SYNONYM sy; (only done by DBA)
+
+USER_SYNONYMS data dictionary
+select * from dba_synonyms where owner = 'HR';
+
+If the synonym is not created as public, other users can not query it.
+
+
