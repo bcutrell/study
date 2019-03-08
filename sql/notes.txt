@@ -154,6 +154,53 @@ add WITH READ ONLY;
 Removing Views ->
 DROP VIEW view_name;
 
+Materialized Views
+===================================================================
+Useful for reducing network loads and improving performance
+Holds stored SQL query that keeps running on a certain frequency
+Data can become stale
+
+CREATE MATERIALIZED VIEW vname
+BUILD [ IMMEDIATE | DEFERRRED ]
+REFRESH [ FAST | COMPLETE | FORCE ]
+ON [ COMMIT | DEMAND ]
+[ [ENABLE | DISABLE ] QUERY REWRITE]
+[ ON PREVUILT TABLE ]
+AS SELECT ..;
+
+The BUILD clause options are shown below.
+
+IMMEDIATE : The materialized view is populated immediately.
+DEFERRED : The materialized view is populated on the first requested refresh.
+The following refresh types are available.
+
+FAST : A fast refresh is attempted. If materialized view logs are not present against the source tables in advance, the creation fails.
+COMPLETE : The table segment supporting the materialized view is truncated and repopulated completely using the associated query.
+FORCE : A fast refresh is attempted. If one is not possible a complete refresh is performed.
+A refresh can be triggered in one of two ways.
+
+ON COMMIT : The refresh is triggered by a committed data change in one of the dependent tables.
+ON DEMAND : The refresh is initiated by a manual request or a scheduled task.
+
+ON DEMAND -> refresh is performed manually or a scheduled task
+
+ENABLE QUERY REWRITE => allows optimizer to use query rewite option to improve performance for expensive parts of query
+DISABLED QUERY REWRITE (default)
+
+CREATE MATERIALIZED VIEW deparment_max_salaries_mv
+BUILD IMMEDIATE 
+REFRESH COMPLETE ON DEMAND
+ENABLE QUERY REWRITE AS 
+	SELECT DEPARTMENT_ID,max(salary) FROM employees
+	GROUP BY DEPARTMENT_ID
+	ORDER BY DEPARTMENT_ID; 
+
+CREATE MATERIALIZED VIEW LOG ON employees;
+DROP MATERIALIZED VIEW LOG ON employees; 
+
+Log captures all changes and fast refresh applies the changes rather than a full refresh
+
+
 Sequences
 ===================================================================
 
