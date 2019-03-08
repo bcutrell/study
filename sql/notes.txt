@@ -200,6 +200,11 @@ DROP MATERIALIZED VIEW LOG ON employees;
 
 Log captures all changes and fast refresh applies the changes rather than a full refresh
 
+Complex materialzed views can not be fast refereshed
+complex = connect by, distinct, set operators (intersect, minus, union all)
+joins with other tables
+aggregate functions
+
 
 Sequences
 ===================================================================
