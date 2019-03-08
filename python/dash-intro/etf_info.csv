@@ -1,0 +1,26 @@
+,Asset Class,CUSIP,Ticker,Fees,Asset Class,Sub Asset Class,Inception Date,Market,Country,Fees
+1,Equity,464287200,IVV,0.04,Equity,Large Cap,2000-05-15,Developed,United States,0.04
+5,Equity,464287507,IJH,0.07,Equity,Mid Cap,2000-05-22,Developed,United States,0.07
+6,Equity,464287804,IJR,0.07,Equity,Small Cap,2000-05-22,Developed,United States,0.07
+12,Equity,464287663,IUSV,0.04,Equity,All Cap,2000-07-24,Developed,United States,0.04
+11,Equity,464287671,IUSG,0.04,Equity,All Cap,2000-07-24,Developed,United States,0.04
+3,Fixed Income,464287226,AGG,0.06,Fixed Income,Multi Sectors,2003-09-22,Developed,United States,0.06
+7,Equity,464287150,ITOT,0.03,Equity,All Cap,2004-01-20,Developed,United States,0.03
+19,Real Estate,464288521,USRT,0.08,Real Estate,Real Estate Securities,2007-05-01,Developed,United States,0.08
+22,Multi Asset,464289859,AOA,0.32,Multi Asset,Static Allocation,2008-11-04,Developed,Broad,0.32
+21,Multi Asset,464289875,AOM,0.32,Multi Asset,Static Allocation,2008-11-04,Developed,Broad,0.32
+17,Multi Asset,464289867,AOR,0.32,Multi Asset,Static Allocation,2008-11-04,Developed,Broad,0.32
+23,Multi Asset,464289883,AOK,0.32,Multi Asset,Static Allocation,2008-11-04,Developed,Broad,0.32
+24,Fixed Income,464289479,ILTB,0.06,Fixed Income,Multi Sectors,2009-12-08,Developed,United States,0.06
+9,Equity,46429B663,HDV,0.08,Equity,All Cap,2011-03-29,Developed,United States,0.08
+4,Equity,46432F842,IEFA,0.08,Equity,All Cap,2012-10-18,Developed,Broad,0.08
+2,Equity,46434G103,IEMG,0.14,Equity,All Cap,2012-10-18,Emerging,Broad,0.14
+15,Fixed Income,46432F859,ISTB,0.06,Fixed Income,Multi Sectors,2012-10-18,Developed,United States,0.06
+8,Equity,46432F834,IXUS,0.10,Equity,All Cap,2012-10-18,Developed,Broad,0.10
+20,Equity,46434V696,IPAC,0.10,Equity,All Cap,2014-06-10,Developed,Broad,0.10
+13,Equity,46434V738,IEUR,0.10,Equity,All Cap,2014-06-10,Developed,Broad,0.10
+14,Fixed Income,46434V613,IUSB,0.07,Fixed Income,Multi Sectors,2014-06-10,Developed,United States,0.07
+10,Equity,46434V621,DGRO,0.08,Equity,All Cap,2014-06-10,Developed,United States,0.08
+18,Fixed Income,46435G672,IAGG,0.09,Fixed Income,Multi Sectors,2015-11-10,Developed,Broad,0.09
+25,Fixed Income,46435G417,IMTB,0.08,Fixed Income,Multi Sectors,2016-11-01,Developed,United States,0.08
+16,Equity,46435G326,IDEV,0.05,Equity,Large/Mid Cap,2017-03-21,Developed,Broad,0.05
