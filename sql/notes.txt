@@ -201,9 +201,24 @@ DROP MATERIALIZED VIEW LOG ON employees;
 Log captures all changes and fast refresh applies the changes rather than a full refresh
 
 Complex materialzed views can not be fast refereshed
-complex = connect by, distinct, set operators (intersect, minus, union all)
+complex = connect by, distinct, set operators (intersect, minus) (union does not always mean complex)
 joins with other tables
 aggregate functions
+
+Refreshing ->
+FAST REFRESH uses view log to update based on changes (not a full refresh)
+COMPLETE REFRESH clears the entire table and refills it
+FORCE REFRESH (default) perform fast if possible otherwise perform complete
+
+Manual refresh ->
+EXECUTE DBMS_MVIEW.REFRESH('vw_it_programmers', 'F');
+
+could also use DBMS_SNAPSHOT
+DBMS_SNAPSHOT.REFRESH_ALL_MVIEWS(tname, 'C', '', TRUE, FALSE, FALSE);
+
+Periodic scheduling ->
+START WITH sysdate + 3/24 // 3 hours from now
+NEXT sysdate + 5 // 5 days
 
 
 Sequences
@@ -256,4 +271,131 @@ select * from dba_synonyms where owner = 'HR';
 
 If the synonym is not created as public, other users can not query it.
 
+Subqueries
+===================================================================
+can be used like an INLINE View
+
+Select a.first_name,a.last_name,a.hire_date,a.job_id,b.department_name,b.city from empvw80 a join 
+(select state_province,city,department_id,department_name from departments join locations using (location_id)) b
+using (department_id);
+
+Scalar subquery returns exactly one column for one row ( useful for where columns, where id = one_value)
+
+Multiple-column subqueries ->
+SELECT first_name, last_name,manager_id,department_id from employees 
+where 
+department_id in (select department_id from employees where UPPER(first_name) = 'LUIS')
+and manager_id in (select manager_id from employees where UPPER(first_name) = 'LUIS')
+
+Correlated Subquery ->
+SELECT employee_id, first_name,last_name,department_id, salary FROM employees a 
+      where salary = (SELECT max(salary) from employees b where b.department_id = a.department_id );
+
+Not exist operations
+We can use not in operator instead of not exist but we may not get exact result every time
+(if any row with null value returns in the subquery there will be an error)
+
+With Clause ->
+WITH MAX_SALARIES AS 
+(
+  SELECT MAX(SALARY) maximum_salary, trunc(AVG(salary)) average_salary, department_id 
+    from EMPLOYEES GROUP BY DEPARTMENT_ID) 
+SELECT employee_id, maximum_salary, average_salary, department_id FROM employees e 
+NATURAL JOIN MAX_SALARIES;
+
+Recursive with clause ->
+find all managers of all employees
+
+WITH ALL_MANAGERS(Employee,Manager,Department) AS 
+(
+SELECT employee_id, manager_id, department_id from employees // anchor
+UNION ALL
+SELECT all_managers.employee, employees.manager_id,all_managers.department FROM all_managers, employees  // recursive
+WHERE all_managers.manager = employees.employee_id
+)
+
+Anchor member and a recursive member can be combined with just UNION ALL operator
+
+WITH CHECK OPTION keyword prevents inserting or updating a row that is not suitable with the subquery
+restricts inserting data that does not satisfy where clause
+
+Correlated update ->
+create table employees_temp as select * from employees;
+select * from employees_temp;
+
+update employees_temp t set
+   (t.salary,t.commission_pct) = (
+   select avg(salary),avg(e.commission_pct) from employees e join departments d on (e.department_id = d.department_id)
+   where t.department_id = d.department_id
+   group by d.department_id
+   );
+
+Correlated delete ->
+delete from employees_temp
+where department_id in
+  (select department_id from departments d natural join locations l
+  where country_id = 'UK')
+
+**We can not use joins while inserting
+
+Advanced Data Manipulations
+===================================================================
+
+--Manipulating data
+create table departments_temp as select * from departments;
+select * from departments_temp;
+alter table departments_temp modify (manager_id number(6) default 100);
+
+insert into departments_temp (department_id,department_name,manager_id,location_id)
+values (310,'Temp Department',default,2000);
+update departments_temp set manager_id = default;
+
+Unconditional and Conditional insert statements ->
+insert all
+  into employees_history values (employee_id,first_name,last_name,hire_date)
+  into salary_history values (employee_id,extract (year from sysdate),extract (month from sysdate),salary,commission_pct)
+  select * from employees where hire_date > sysdate-365;
+
+INSERT ALL
+  WHEN hire_date > sysdate-365 THEN
+    INTO employees_history values (employee_id,first_name,last_name,hire_date)
+    INTO salary_history values (employee_id,extract (year from sysdate),extract (month from sysdate),salary,commission_pct)
+  WHEN job_id = 'IT_PROG' THEN
+    INTO IT_PROGRAMMERS values (employee_id,first_name,last_name,hire_date)
+  WHEN department_id in 
+  (select department_id from departments where location_id in (select location_id from locations where country_id = 'US')) THEN
+    INTO LIVING_IN_US values (employee_id,first_name,last_name,hire_date)
+  SELECT * FROM EMPLOYEES;
+
+FlaskBack & Purge ->
+We can restore a table back to a specific time or before a drop with FLASHBACK statement
+
+select * from recyclebin;
+ALTER TABLE EMPLOYEES_COPY ENABLE ROW MOVEMENT; 
+delete from employees_copy where salary > 5000;
+commit;
+select * from employees_copy;
+flashback table employees_copy to timestamp sysdate-1/1440;
+select dbms_flashback.get_system_change_number scn from dual;
+FLASHBACK TABLE EMPLOYEES_COPY TO SCN 202381;
+DROP TABLE EMPLOYEES_COPY PURGE;
+
+Version Queuries ->
+
+SELECT DBMS_FLASHBACK.GET_SYSTEM_CHANGE_NUMBER FROM DUAL;
+--6 VERSIONS
+SELECT * FROM V$TRANSACTION;
+System Change Number (SCN)
+
+SELECT * FROM employees_copy
+AS OF sysdate - 5
+WHERE employee_id= 100;
+
+SELECT * FROM employees_copy
+AS OF SCN 6167700
+WHERE employee_id= 100;
+
+SELECT versions_starttime,versions_starttime, salary FROM employees_copy
+VERSIONS  BETWEEN TIMESTAMP(sysdate - interval '13' minute)  AND sysdate
+WHERE employee_id= 100;
 
