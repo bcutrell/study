@@ -399,3 +399,151 @@ SELECT versions_starttime,versions_starttime, salary FROM employees_copy
 VERSIONS  BETWEEN TIMESTAMP(sysdate - interval '13' minute)  AND sysdate
 WHERE employee_id= 100;
 
+most important benefit of multitable insert statements?
+If you do not use multitable insert, you will need to retrieve the same data for all the inserts. 
+If you use, you get the data once, and insert many. So, this will reduce database work, and increase performance.
+
+In this query, we are selecting all the changes starting the beginning, till now.
+SELECT * FROM employees_copy VERSIONS BETWEEN SCN MINVALUE AND MAXVALUE;
+
+Controlling Schema Objects
+===================================================================
+ALTER TABLE employees_tmp drop primary key cascade ->
+Using cascade option will also drop all the associted foreign keys
+
+What does online mean?
+ALTER TABLE employees_temp DROP CONSTRAINT emp_pk ONLINE; 
+If you do not use this keyword, the table will be locked until the drop operation finishes.
+
+What is the usage of ON DELETE CASCADE keyword?
+ON DELETE SET NULL will also set NULL to all child rows to NULL when the parent row is deleted
+
+Normally, when you drop a column, NOT NULL, PRIMARY KEY and UNIQUE constraints are dropped.
+But when you drop a column that is usded within a FOREIGN KEY, or used with a multi-column constraints, you can not drop this column directly.
+ALTER TABLE departments_temp DROP COLUMN department_id CASCADE CONSTRAINTS;
+
+this option will not check the existing rows, but will check the new ones (after creation)
+ENABLE NOVALIDATE: No row is checked before-after enabling the constraint
+
+If you commit with a violation, all the DML operations will be rollbacked
+
+SET CONTRAINTS ALL DEFERRED;
+Sets all the deferrable constraints deferred;
+
+By default, it is ON COMMIT DELETE ROWS , means transaction specific. That means, the data will be truncated after the commit.
+
+alter table employees_temp add constraint
+temp_cons unique (employee_id);
+alter table employees_temp add constraint
+temp_cons2 unique (employee_id,first_name);
+alter table employees_temp add unique (phone_number);
+
+alter table employees_temp modify job_id constraint
+not_null_job not null;
+alter table employees_temp modify first_name not null;
+
+alter table employees_temp drop constraint temp_cons; 
+alter table employees_temp drop constraint SYS_C0010501;
+
+--cascading constraints
+select * from all_constraints where table_name = 'EMPLOYEES_TEMP';
+alter table departments_temp add constraint pk_dep_temp 
+primary key (department_id );
+ALTER TABLE employees_temp ADD CONSTRAINT emp_dp_man_fk
+FOREIGN KEY (department_id)
+REFERENCES departments_temp(department_id);
+
+--enabling and disabling constraints
+ALTER TABLE EMPLOYEES_TEMP DISABLE CONSTRAINT SYS_C0010502;
+
+--Deferring constraints
+create table dep_temp as select * from departments;
+ALTER TABLE DEP_TEMP
+ADD CONSTRAINT dep_id_pk
+PRIMARY KEY (department_id)
+DEFERRABLE INITIALLY DEFERRED;
+select * from dep_temp;
+insert into DEP_TEMP VALUES (10,'Temp Department',200,1700);
+commit;
+SET CONSTRAINTS dep_id_pk IMMEDIATE;
+ALTER SESSION SET CONSTRAINTS = IMMEDIATE;
+insert into DEP_TEMP VALUES (10,'Temp Department',200,1700);
+
+ALTER TABLE DEP_TEMP DROP CONSTRAINT dep_id_pk;
+
+ALTER TABLE DEP_TEMP
+ADD CONSTRAINT dep_id_pk
+PRIMARY KEY (department_id)
+NOT DEFERRABLE;
+
+SET CONSTRAINTS dep_id_pk IMMEDIATE;
+SET CONSTRAINTS dep_id_pk DEFERRED;
+
+Permissions and Roles
+===================================================================
+If you did not grant any privilege to a user, he/she even can not connect to the database.
+
+Every schema is owned by one user, and its user is created on the time of schema creation. So you can not create another user under your schema
+
+You can find all the system privileges under system_privilege_map
+
+A user who has the privilege is called Grantee
+A user who granted a privilege to a user is called a Grantor
+
+You can find all your priviledes under session_privs
+
+select * from system_privilege_map;
+select * from user_sys_privs;
+select * from session_privs;
+
+create user temp_user identified by 123;
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW TO TEMP_USER;
+DROP USER TEMP_USER;
+
+CREATE ROLE DEVELOPER;
+GRANT CREATE TABLE, CREATE VIEW TO DEVELOPER;
+GRANT DEVELOPER TO TEMP_USER;
+
+---CHANGE PASSWORD
+password;
+ALTER USER HR IDENTIFIED BY HR;
+
+Hierarchical Retrieval (Tree Structure)
+===================================================================
+For reporting hierarchy frequently in a specific order
+
+Hierarchical Queries are generated with using CONNECT BY and START WITH clauses
+
+where clause will not impact child rows
+
+Walking the tree 
+START WITH employee_id = '103';
+PRIOR refers to child rows
+
+SELECT employee_id, first_name,last_name, job_id, manager_id
+FROM employees
+START WITH employee_id = 102
+CONNECT BY PRIOR employee_id = manager_id ;
+
+Not including START WITH will return duplicate rows if row is in multiple trees
+
+The column name following the PRIOR keyword is the child record
+
+select level,...
+WHERE LEVEL = 2 (does not return root level)
+
+SELECT LPAD(last_name, LENGTH(last_name)+(LEVEL*2)-2,'> ')
+  AS employees_hierarchy
+  FROM employees
+START WITH employee_id =101
+CONNECT BY PRIOR employee_id=manager_id;
+
+--Pruning Branches of a Tree
+Using WHERE clause -> elimates records statisfying where clause
+Using CONNECT BY -> elimates records statisfying where clause and all the childs of these records
+
+SELECT employee_id,last_name,manager_id
+  FROM employees where employee_id <> 108
+START WITH employee_id =101
+CONNECT BY PRIOR employee_id=manager_id;
+
