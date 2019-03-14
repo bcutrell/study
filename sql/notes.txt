@@ -547,3 +547,101 @@ SELECT employee_id,last_name,manager_id
 START WITH employee_id =101
 CONNECT BY PRIOR employee_id=manager_id;
 
+Regex
+===================================================================
+
+SELECT first_name, last_name
+FROM employees
+WHERE REGEXP_LIKE (first_name, '^Ste(v|ph)en$');
+
+// Adds db  regex checks to columns
+ALTER TABLE employees_copy add constraint  number_format      
+      CHECK ( REGEXP_LIKE ( phone_number, '^\d{3}.\d{3}.\d{4}$' ) ) novalidate;
+      
+ select * from     employees_copy where  REGEXP_LIKE ( phone_number, '^\d{3}.\d{3}.\d{4}$' );
+
+create table employees_for_regex as select first_name,last_name,email from employees;
+alter table employees_for_regex add constraint regex_email_check check (regexp_like(email,'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')) novalidate;
+
+Dynamic SQL Scripts
+===================================================================
+SELECT 'CREATE TABLE ' || table_name || '_backup ' || 'AS SELECT * FROM '
+|| table_name AS 
+"Backup Scripts" FROM user_tables;
+
+
+SELECT 'CREATE TABLE ' || table_name || '_backup ' || 'AS SELECT * FROM '
+|| table_name || ';'  AS 
+"Backup Scripts" FROM user_tables;
+
+
+
+SELECT 'DROP TABLE ' || table_name || ';' 
+FROM user_tables WHERE table_name like '%_BACKUP%';
+
+Analytic Functions
+===================================================================
+
+Analytic functions computes aggregate values based on groups of rows
+and they differ from aggregate fcuntions because they can return multiple rows for each group
+**You could use joins and subqueries but it will never as fast -> why?
+
+function () over (partition by order by windowing clause)
+
+# average salaries for each department
+select department_id, avg(salary)
+from employees
+group by department_id;
+
+
+select employee_id, department_id, avg(salary) over
+(partition by department_id order by employee_id)
+from employees;
+
+ROW_NUMBERS() gives  an increasing serial number for every records starting from 1 for each position
+
+Find all employees who work in department 10,20,30 and give them numbers with the order of hiredate
+select employee_id, department_id, hire_date,
+ROW_NUMBER() OVER (partition by department_id order by hire_date NULLS LAST) row number
+from employees
+where department_id in (10,20,30)
+order by department_id;
+
+RANK and DENSE_RANK analytic functions return ranks for each record. The difference from ROW_NUMBER is, RANKs
+return same ranks for the same values. They start ranking with 1 for each partition
+
+The difference between RANK and DENSE_RANK:
+DENSE_RANK increments by 1 for each different valued row
+RANK increments the value by 1 even if the values are the same, but ranks the same valued row with the same rank.
+
+select employee_id, department_id, salary,
+RANK() OVER (partition by department_id order by salary desc NULLS LAST) rnk,
+DENSE_RANK() OVER (partition by department_id order by salary desc NULLS LAST) dns_rnk
+from employees
+where department_id in (10,20,30)
+order by department_id;
+
+LEAD function returns the NEXT row's value for the specified column
+LAG function returns the PREVIOUS row's value for the specified column
+
+select employee_id, department_id, salary,
+lead(salary, 1,0) over (partition by department_id order by salary nulls last) next_salary
+lag(salary, 1,0) over (partition by department_id order by salary nulls last) previous_salary
+from employees
+where department_id in (10,20,30)
+order by department_id;
+
+WINDOWING clause gives analytic functions a further degree of control over partitions
+if no window clause is selected, that means we selected the whole partition
+
+select employee_id, department_id, salary,
+sum(salary) over (partition by department_id order by salary rows 1 preceding) windowing 
+// rows between 0 preceding and 2 following
+from employees
+where department_id in (10,20,30)
+order by department_id;
+
+We can use INTERVAL keyword with windowing clauses and/or datetime values
+
+FIRST_VALUE returns the first value of the partitions after doing the order by clause
+LAST_VALUE returns the last value of the partitions after doing the order by clause
