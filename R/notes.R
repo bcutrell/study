@@ -264,7 +264,6 @@ names(pf_weights) <- colnames(returns)
 # Select optimum weights opt_weights
 opt_weights <- pf_weights[pf_weights >= 0.01]
 
-
 # Bar plot of opt_weights
 barplot(opt_weights)
 
@@ -309,4 +308,128 @@ sum(opt3$pw > .01)
 opt1$ps
 opt2$ps
 opt3$ps
+
+# Calculate each stocks mean returns
+stockmu <- colMeans(returns)
+
+# Create a grid of target values
+grid <- seq(0.01, max(stockmu), length.out = 50)
+
+# Create empty vectors to store means and deviations
+vpm <- vpsd <- rep(NA, length(grid))
+
+# Create an empty matrix to store weights
+mweights <- matrix(NA, 50, 30)
+
+# Create your for loop
+for(i in 1:length(grid)) {
+  opt <- portfolio.optim(x = returns , pm = grid[i])
+  vpm[i] <- opt$pm
+  vpsd[i] <- opt$ps
+  mweights[i, ] <- opt$pw
+}
+
+# Create weights_minvar as the portfolio with the least risk
+weights_minvar <- mweights[vpsd == min(vpsd), ]
+
+# Calculate the Sharpe ratio
+vsr <- (vpm - 0.0075) / vpsd
+
+# Create weights_max_sr as the portfolio with the maximum Sharpe ratio
+weights_max_sr <- mweights[vsr == max(vsr)]
+
+# Create bar plot of weights_minvar and weights_max_sr
+par(mfrow = c(2, 1), mar = c(3, 2, 2, 1))
+barplot(weights_minvar[weights_minvar > 0.01])
+barplot(weights_max_sr[weights_max_sr > 0.01])
+
+# Create returns_estim
+returns_estim <- window(returns, start = "1991-01-01", end = "2003-12-31")
+
+# Create returns_eval
+returns_eval <- window(returns, start = "2004-01-01", end = "2015-12-31")
+
+# Create vector of max weights
+max_weights <- rep(0.10, ncol(returns))
+
+
+# Create portfolio with estimation sample
+pf_estim <- portfolio.optim(returns_estim, reshigh = max_weights)
+
+# Create portfolio with evaluation sample
+pf_eval <- portfolio.optim(returns_eval, reshigh = max_weights)
+
+# Create a scatter plot with evaluation portfolio weights on the vertical axis
+plot(x=pf_estim$pw, y=pf_eval$pw)
+abline(a = 0, b = 1, lty = 3)
+
+# Create returns_pf_estim
+returns_pf_estim <- Return.portfolio(returns_estim, pf_estim$pw, rebalance_on = "months")
+
+# Create returns_pf_eval
+returns_pf_eval <- Return.portfolio(returns_eval, pf_estim$pw, rebalance_on = "months")
+
+# Print a table for your estimation portfolio
+table.AnnualizedReturns(returns_pf_estim)
+
+# Print a table for your evaluation portfolio
+ table.AnnualizedReturns(returns_pf_eval)
+
+######################################
+# Intermediate Portfolio Analysis
+######################################
+# Load the package
+library(PortfolioAnalytics)
+
+# Load the data
+data(indexes)
+
+# Subset the data
+index_returns <- indexes[,1:4]
+
+# Print the head of the data
+head(index_returns)
+
+# Create the portfolio specification
+port_spec <- portfolio.spec(colnames(index_returns))
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- add.constraint(portfolio = port_spec, type = "full_investment")
+
+# Add a long only constraint such that the weight of an asset is between 0 and 1
+port_spec <- add.constraint(portfolio = port_spec, type = "long_only")
+
+# Add an objective to minimize portfolio standard deviation
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "StdDev")
+
+# Solve the optimization problem
+opt <- optimize.portfolio(index_returns, portfolio = port_spec, optimize_method = "ROI")
+
+# Print the results of the optimization
+print(opt)
+
+# Extract the optimal weights
+extractWeights(opt)
+
+# Chart the optimal weights
+chart.Weights(opt)
+
+# Create the portfolio specification
+port_spec <- portfolio.spec(assets = colnames(index_returns))
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- add.constraint(portfolio = port_spec, type = "full_investment")
+
+# Add a long only constraint such that the weight of an asset is between 0 and 1
+port_spec <- add.constraint(portfolio = port_spec, type = "long_only")
+
+# Add an objective to maximize portfolio mean return
+port_spec <- add.objective(portfolio = port_spec, type = "return", name = "mean")
+
+# Add an objective to minimize portfolio variance
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "var", risk_aversion = 10)
+
+# Solve the optimization problem
+opt <- optimize.portfolio(R = index_returns, portfolio = port_spec, optimize_method = "ROI")
+
 
