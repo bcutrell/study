@@ -10,7 +10,7 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-//Set up mongoose connection
+// Set up mongoose connection
 var mongoose = require('mongoose');
 var mongoDB = config.db.url;
 mongoose.connect(mongoDB);
