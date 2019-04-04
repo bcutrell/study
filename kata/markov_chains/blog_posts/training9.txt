@@ -1,0 +1,49 @@
+Last week’s post, “The Case Against Sleeves”, generated a few questions. So we thought we’d follow up with a Q&A.
+
+ 
+
+Q: Why does a firm’s decision to go with or without sleeves “determine their entire program”? Why is this so important?
+A: The sleeve/no sleeve decision is important because it partially determines your value proposition and your client experience. If your value proposition is product focused, and your client experience is centered on the review of the performance of each product within the portfolio, you’re going to be happier with sleeves. For everyone else, especially those focused on goals-based investing, a holistic (sleeveless) approach will be a better choice. It’s less expensive, supports greater customization and tax efficiency, and does a better job of keeping portfolios in line with their target risk/return characteristics. 
+
+ 
+
+Q: Are sleeves always a bad idea?
+A: No, sleeves are not always bad. They’re required if you want to sub-contract trading of portions of a portfolio to multiple third-party specialists. And they’re appropriate for firms with product-oriented value propositions.
+
+ 
+
+Q: Diving into the details a bit, I get that sleeves are operationally complex, but isn’t that mainly the problem of the vendor of the sleeve/sub-accounting system, not the wealth advisor?
+A: Up to a point, yes. It’s the vendor’s responsibility to make sure their system can handle cash, swap tax lots between sleeves, prevent simultaneous buy/sells in the same security across sleeves, etc. But reconciling the sleeve accounts back to the original custodial system still falls on the wealth advisor firm (or it’s a service the firm has to pay for).
+
+ 
+
+Q: Is there a middle ground? If I choose to utilize sleeves/sub-accounts but ignore them for the purposes of rebalancing, do sleeves do any harm?
+A: If you have sleeves but ignore them and rebalance holistically, you’re not doing any harm to your portfolios. But sleeves are expensive, which is itself a type of harm, and if you ignore them for rebalancing, it’s not clear what function they serve.
+
+ 
+
+Q: Don’t sleeves at least help with product integrity?
+A: Yes and no. In sleeve-based portfolios, the individual sleeves will be more faithful to their individual models, but the portfolio as a whole will be less faithful to its objective, which means  sleeve-based programs will have more overall dispersion (for a given level of overall customization and tax management).
+
+ 
+
+Q: How do I know whether sleeves make sense for my firm?
+
+A: Work backwards from your desired client experience. If your client meeting is mostly about reviewing product performance, you’ll probably want sleeves. If not — if you’re more focused on helping clients meet goals, or if you greatly value customization and tax management — you should employ a holistic (sleeveless) approach.
+
+ 
+
+Q: If I’m considering a new platform, should I talk to both sleeve and sleeveless vendors?
+A: Yes. If you’re at all uncertain about which is right for you, we’d recommend that  you spend some time with both types of vendors early on, and let each make their case.
+
+ 
+
+Q: Does that mean I should include both sleeve and sleeveless vendors in my RFI or RFP?
+A: Probably not. As we said previously, it makes sense to talk to both types of vendors, but not to send both a nuts-and-bolts RFI/RFP that asks about interfaces, specific features sets, etc. The systems are just too different for this to be very helpful.
+
+ 
+
+Q: Last question, what’s the trend in the market? Sleeves or no sleeves?
+A: Product-oriented value propositions are in decline, so sleeves are in decline. As we noted earlier, a holistic approach is less expensive, more tax efficient and does a better job of keeping portfolios, as a whole, close to their targets. That makes holistic approaches a better fit for value propositions based on low costs, tax sensitivity and helping clients achieve their goals.
+
+

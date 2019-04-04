@@ -1,0 +1,106 @@
+If you’re considering creating a models-based Unified Managed Account (UMA) program, the single most important question you need to answer is: sleeves or no sleeves? The main case for sleeves is simple: it lets you generate sleeve-level performance reports that can be used to evaluate the performance of individual model managers. The case against sleeves is more subtle, but ultimately devastating: they're expensive, they lead to inferior tax and risk management, and, worst of all, they’re not useful for the purpose of evaluating model vendors.
+
+
+What Are Sleeves?
+A sleeve is a virtual sub-account, a portion of a portfolio that can be traded separately. It’s a “virtual” account because it doesn’t have its own custodial registration. That is, as far as the custodian knows, a portfolio with multiple sleeves is just one portfolio. The sleeves are entirely created and maintained in an accounting system.
+
+
+The Origins of Sleeves
+Sleeves were originally created to make it easier for wealth advisors to subcontract management of a single portfolio to multiple third-party specialist asset managers. The idea is that you would give each of these third-party specialists trading authority over a segment of the portfolio — a sleeve.
+
+The alternative to sleeves was to transfer funds to each of the third-party specialists, which was time consuming and operationally clumsy. Comparatively, just giving the specialists a sleeve to trade was an elegant solution.
+
+However, it was elegant only in contrast to the alternative of wiring funds. Having multiple specialists control portions of the same portfolio was still problematic: it remained difficult, if not impossible, to coordinate the different specialists to optimally manage transitions, taxes and restrictions. You could end up with wash-sale violations, even situations where one specialist would sell a security the same day another would buy it.
+
+To partially address these concerns, wealth advisors moved to a models-based approach, where the third-party specialists didn’t trade sub-accounts, they just sent models. Trading was handled by the wealth management firm, which might “overlay” tax and constraint considerations (hence the term “overlay management”).
+
+Having a third-party specialist directly control a portion of the account still makes sense if the underlying strategy requires a particular expertise in trading, as might be the case with municipal bonds or micro cap strategies. But for everything else, the models-based approach is operationally simpler and makes tax and risk management easier.
+
+Models-based approaches don’t require sleeves. After all, the third-party specialists no longer needed their own trading sandboxes. But sleeves didn’t disappear, at least not entirely. The reason was sleeve-level performance reporting.
+
+
+Sleeve-Level Performance Reports
+Sleeve-level performance is, naturally enough, just the returns of each sleeve. One of the consequences of using sleeves is that you can generate performance reports for each of the third-party specialists. This wasn’t the original purpose of sleeves — it was simply a consequence of having a sub-account. In fact, ironically, much of the early innovation in sleeves was devoted to making it possible to look above the sleeve-level and create consolidated performance reports for the client’s total portfolio.
+
+But wealth advisors and their clients got used to sleeve-level performance reports. So advisors kept the sleeve/sub-account structure, even after adopting models-based approaches that rendered them unnecessary. Not because they were needed to manage the accounts, but solely to provide reports.
+
+
+The upside of sleeve-level performance reports
+
+Sleeve-level performance reports fit comfortably into a traditional product- and return-oriented approach to client interactions. Sleeve-level reports are intended to be a form of product-level performance reports, similar to separately reporting the returns of each mutual fund in a client’s account. The core purpose is to aid in the evaluation of the specialists, to answer the question: how well are they performing? This type of product-level reporting is common in many programs, and some clients will expect to see it.
+
+ 
+
+The drawbacks of sleeve-level performance reports
+
+If sleeve-level reporting is common — often even expected — why not make sleeves the universal approach? The answer is that there are severe downsides to sleeves. They are expensive; they result in inferior tax and risk management. And, worst of all, they’re not always useful for their primary function: evaluating the third-party specialist managers.
+
+Let’s look at these drawbacks one at a time.
+
+
+1. Cost and Complexity
+
+Sleeves introduce complexity in multiple ways:
+
+Sleeves require a “shadow” accounting system that keeps records of the holdings of each sleeve, together with a reconciliation process to make sure that holdings in each sleeve, when combined, equal the holdings of the actual portfolio. And sleeves require a process for transferring assets between sleeves.
+
+Sleeves make cash management more complex. Every account will generate its own cash level from distributions. This complicates the task of funding withdrawals, paying fees and preventing overdrafts. Either the cash in every sleeve is systematically siphoned off in separate transfers to a sweep account or every account maintains its own cash balance level. 
+
+Related problems arise with any security that is held in more than one sleeve. Each will have to separately obey lot rounding and minimum trade size constraints, which will introduce some additional drift. Optimal tax-lot selection for sales requires some mechanism for swapping tax lots between sleeves so that any given sale can be done with the best tax lot available. And to avoid simultaneously buying and selling the same security across two different sleeves, you’ll need some sort of cross-selling matching process. 
+
+ 
+
+2. Inferior Tax Management 
+
+Risk and tax are properties of the portfolio as a whole, not any individual sleeve, so there’s no way to handle the tax and risk of the portfolio optimally if each sleeve is managed in isolation. As a result, sleeve-managed portfolios usually have more drift and are less tax efficient than portfolios managed holistically. This is because it makes both security level substitutions and asset-class rebalancing harder. We consider each, in turn:
+
+Security-level substitutions
+In the presence of a “never sell” or “never buy” constraint, the best way to minimize drift is to look across the portfolio to find the most correlated substitute securities. But this isn’t possible if you rebalance each sleeve separately. Suppose, for example, there is an overweight position in IBM in sleeve one that you can’t sell because of a constraint, or don’t want to sell for tax reasons. The best option for managing risk would be to counterbalance the overweight in IBM by underweighting a correlated security like HP. But if HP is in sleeve two and the sleeves are rebalanced separately, this won’t happen.
+
+In contrast, with a holistic, sleeveless approach, there’s no barrier to this type of “cross sleeve” substitutions, precisely because there are no sleeves.
+Asset-class rebalancing
+In a sleeve-based approach, rebalancing between asset classes involves selling down one sleeve and buying another, potentially involving dozens or even hundreds of trades. This high level of trading can be very inefficient in both tax and transaction costs. This dictates that asset-class rebalancing be infrequent. This is implemented by setting wide asset-class triggers, e.g. if there is a target allocation of 70% large cap, you might not rebalance unless large cap falls below 60% or above 80%. But this means that, on average, you’ll have about 5% asset-class drift.
+
+In contrast, in a holistically managed account, you could rebalance large cap when it gets to 69% or 71%. The reason is that there is no need to sell all of the large cap stocks, pro rata. Instead, you can:
+Choose to sell just a few stocks. In particular, you can preferentially sell those with the least appreciation, or possibly even those with losses.
+Narrow trades to those with the biggest impact on asset-class balance. Little is gained by selling securities that, while technically large cap, are just above the threshold of mid cap, only to buy securities that are technically mid cap securities, but just below the large cap threshold. In order to minimize taxes, it’s better to sell “larger cap” large cap stocks and buy “smaller cap” mid cap stocks.
+Take advantage of every large cap stock sale, even those primarily motivated by changes in the constituent securities of the large cap model, as an opportunity to correct for your overweight in large cap (e.g. if you sold Ford to buy GM, some or all of the proceeds of the Ford sale could be used to buy mid cap positions).
+Because it enables asset-class rebalancing one security at a time, a holistic approach enables you to simultaneously reduce taxes, turnover and expenses (because you can trade fewer securities and preferentially choose to trade those with the least tax impact) and reduce drift (because you can “fix” asset-class imbalances at much lower drift levels). 
+
+ 
+
+3. Not Useful for Evaluating Managers
+
+The high costs of sleeves and the harm they cause to the risk and tax management of the underlying portfolios are serious drawbacks. But, arguably, they’re not the main problem with sleeves. The main problem with sleeves is that they are not necessarily useful for evaluating the performance of model vendors. It’s not even clear that, in a models-based environment, sleeve-level performance reports are even meaningful.
+
+If your sleeve-level rebalancing is "pure" — that is, each sleeve is truly rebalanced in isolation from the others — then sleeve-level reporting can be used to judge the performance of the model vendor in the context of the overlay management program. It is not, strictly speaking, suitable for judging the model vendor in isolation. The sleeve-level performance will reflect the combined contributions of the overlay manager and the model vendor, and any poor performance may simply reflect the overlay manager’s poor execution. However, the combination of model vendor and overlay manager is what the client is buying, so combined performance may be the best measure. If, for example, the sleeve underperforms because the overlay manager is too slow in implementing the short-term signals of the model vendor, you can rightly conclude that the model is not a good choice given the overlay manager’s particular abilities.
+
+But there is very good reason not to manage the sleeves in isolation. As we mentioned earlier, risk and tax are properties of the portfolio as a whole, and you simply can’t manage a portfolio optimally if you manage its pieces in isolation. So all sleeve-based systems allow at least some cross-sleeve influence, meaning the holdings and trades in one sleeve affect the trades and holdings in another. For example:
+
+Wash sales — a trade in one sleeve prevents a trade in another.
+Tax and turnover budgets — trades in one sleeve are blocked because trades in other sleeves have caused the portfolio to come up against tax or turnover constraints.
+Cross-sleeve substitutions — an under or overweighted holding in one sleeve is counterbalanced in another (e.g. a “never buy” constraint on IBM in one sleeve is counterbalanced by an overweight in HP in another.)
+
+When there is cross influence of this sort, the performance of each sleeve reflects the combined influence of the model vendor + the overlay manager + the activity of other model vendors + the activity of the overlay manager in other sleeves. It’s worth looking at this in more detail. Here’s how each contributes separately to performance:
+The model vendor — Is their security selection good?
+The overlay manager — How good are they at executing the recommended trades? How good are they at implementing constraints in ways that limit return drift (i.e. what do they overweight/underweight when faced with a “never buy”/“never sell” constraint)? How good are they at balancing tax management and drift?
+The activity of other model vendors in other sleeves — This is the “cross influence” described earlier: The trade of one manager can, through wash sales, block the trades of another manager. Constraints can create an underweight or overweight that may spill into the holdings of another manager. And one manager’s activity can trigger tax and turnover budgets that block another from trading.
+The problem with all this is that it's not clear how a performance report that reflects the combined contributions of multiple parties can or should be used. In particular, it can't really be used to judge either the model vendor or the overlay manager. The contributions of each are obscured by the actions of the other and what’s happening in other sleeves. It’s a bit like reporting on the combined times in a relay race — it doesn’t help you evaluate any one runner.
+
+Sleeve-based accounting vendors recognize this problem and lean towards minimizing cross influence in their rebalancing analytics. It's not that they don't know how to rebalance more holistically, it's just the more they do it, the more degraded the sleeve reports become. However, this minimal cross-contamination comes at a significant price in terms of higher dispersion, higher taxes and excess cash. And minimal cross influence doesn’t mean none, so sleeve-level reports are still unreliable sources of information with which to judge managers. In practice, the only instance we see of pure sleeve-rebalancing is with institutional accounts, where taxes and minimum position sizes aren’t factors, and it’s practical to more or less follow models exactly.
+
+
+What Replaces Sleeve-Level Performance Reports?
+If sleeve-level performance reports can’t be used to judge managers who sell their models, how is a wealth management firm supposed to select (and deselect) model vendors?
+
+The answer is simple: every wealth manager with an open architecture program has a research and due diligence process for selecting managers (it is a legal requirement). Sometimes this process is done in house. Sometimes it’s outsourced to a third-party consultant. Regardless, there is a process to select managers. And the exact same process can and should be used to deselect managers. This is more than a substitute for sleeve-level reporting when it comes to evaluating managers. It’s the only method that makes sense.
+
+
+Why Some Firms Still Use Sleeves
+With all of the drawbacks of sleeves, why are they still used? If, in particular, sleeve-level performance reports aren’t really useful, what’s the point?
+
+The answer we see is that some clients, especially institutional clients, will ask for, or even require, sleeve-level reports. Logically, the case against sleeve-level reporting is strong: it’s costly, injurious to the interests of investors and usually doesn't provide useful information. However, this damning list can easily be viewed as unpersuasive if the client expects it. So the question becomes not about best practices, but client expectations.
+
+This sets up a conflict between doing what’s right for the client and doing what the client wants. It’s easy enough to say “do the right thing” but that isn’t helpful to the advisor or the client if the client simply walks away.
+
+What’s a firm to do? We’ll take a look in a subsequent post. 

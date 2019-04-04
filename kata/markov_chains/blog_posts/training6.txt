@@ -1,0 +1,13 @@
+Common wisdom holds that centralized portfolio rebalancing is great for efficiency but terrible for customization.  
+
+Common wisdom is wrong.
+
+Relative to the alternative of having investor-facing advisors rebalance portfolios (so-called “rep as PM”), centralization does support greater efficiency. But it also supports greater customization. The fact that centralization leads to greater efficiency is not surprising — the search for greater efficiency is why most centralized rebalancing groups were created in the first place. To that end, they strive to standardize and automate rebalancing to the greatest extent possible. This greater use of automation is key to the efficiency of centralized groups.
+
+However, this same automation is also the key to enabling centralized groups to improve customization. Because if implementing customization requests is automated, you can reduce the incremental cost of managing a customized portfolio to zero. And, as with anything you make free, folks consume more of it. It becomes economically viable for firms to offer every account high levels of customization. After all, it’s free, so why not make it universal?
+
+This zero-cost customization clearly makes it possible to increase the level of customization offered to smaller accounts that previously got little or no customization. Less obviously, automated rebalancing can also increase the customization of larger accounts, even ultra high net worth accounts. This is because there are some types of customization, such as tax and risk management, that require advanced technology that is impractical for most advisors to use. Which means that scalable, centralized rebalancing programs can increase the level of customization provided to all clients, including UHNW accounts. Even accounts that are “custom-tailored”, accounts that are so customized that they would seem impervious to automated rebalancing, and accounts that don’t even follow a “model”.¹
+
+In the past, moving towards more centralized rebalancing really did mean giving up customization. No more. There’s an industry-wide trend towards centralization, driven (for now) mostly by a desire to improve efficiency. But we’re also seeing folks move to centralization out of a desire to improve customization. The good news is you don't have to choose between customization and efficiency. You (and your clients) can have both.
+
+
