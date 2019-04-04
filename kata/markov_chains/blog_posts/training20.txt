@@ -1,0 +1,51 @@
+Last week’s post, Robo SMAs will Replace Mutual Funds, generated a fair bit of controversy, with strong reactions, both pro and con. We think that’s good. But, we’ve come to realize, the piece was also a bit confusing, which is not so good. While we’re delighted to have written something of interest, we’re a little embarrassed that our writing was muddled. We thought we’d try to clear things up by answering some of the questions we received.
+
+Q: So, what was the basic message you were trying to convey in last week’s post?
+
+A: SMAs are getting less expensive to operate, and for this reason they will increasingly displace mutual funds as a mechanism for transmitting intellectual capital from asset managers to investors. Costs aside, SMAs are intrinsically better than mutual funds, at least for taxable investors, because they are customizable and more tax efficient. But historically, the expense of managing them in an effective manner swamped their advantages for all but the wealthiest investors. Fractional shares, percentage-based trading costs, automated account setup, automated fund/transfers and automated rebalancing are changing this, making SMAs a cost-effective alternative to mutual funds.
+
+Q: What do you mean by the term “robo SMA”?
+
+A: A robo SMA is an SMA that leverages robo technology to radically reduce costs and minimums. The biggest cost hurdle for SMAs is account setup and funding, followed by the cost of rebalancing (at least for customized and tax-optimized accounts). In our minds, the most impressive thing about today’s robo advisors is their real-time account opening and funding. It’s a model of what’s possible. This type of robo account setup technology combined with “robo rebalancing” technology (like, yes, ours) is what will transform today’s SMAs.
+
+Q: Does “robo SMA” mean no people?
+
+A: No. Even the direct-to-consumer robos are bringing back real live human beings. Vanguard, for instance, has advisors giving financial planning advice. Robo technology doesn’t mean no—or even necessarily fewer—people. It means more effective use of people, especially advisors, letting technology simplify the more repetitive back-office tasks.
+
+Q: You mention that with fractional shares, automated setup, etc. you can cost effectively manage SMAs with as little as $100. Does that mean there’s a profitable market for providing SMAs to accounts worth as little as $100?
+
+A: That’s not our area of expertise, but our guess is probably not. Our point wasn’t that targeting $100 accounts was good business, only that the cost of managing a $100 SMA and a $100 mutual fund account is converging. But account management is not the only or even the main cost of running an asset management business. There’s still client acquisition costs and support costs to consider, and we haven’t seen much reason to think that these can be scaled down nearly as much as the costs of actually managing the accounts. Standalone robo advisors are a cautionary example. They don’t make money serving small accounts, and unless offering SMAs would enable them to raise fees, we don’t see why they would be any more profitable if they used SMAs—the only real implication of what we’re saying is that if robos switched to SMAs they wouldn’t lose any more money.
+
+Q: You state that SMAs can be cheaper than ETFs. Why?
+
+A:  Mutual funds are type of regulated investment company. They need to regularly post filings with the SEC, appoint a board of trustees, hold shareholder meetings, issue and distribute prospectuses, etc. And they need to maintain liquidity to support daily deposits and withdrawals. All of this costs money. ETFs are somewhat better, but similar. In contrast, while advisors need to register with regulators, SMAs are not separate legal structures and therefore don’t need SEC filings, a board of trustees, shareholder meetings, etc. And this saves money. For really big ETFs that are currently priced under 5 bps, the extra regulatory costs don’t matter that much, and there’s not much room for improvement. But for smaller ETFs and almost all mutual funds, SMAs have the potential to be much cheaper.
+
+Q: Don’t SMAs have to pay the same index licensing fees?
+
+A: Yes, they do. They don’t save money there. Where SMAs have the potential to save money is in the nuts and bolts of managing accounts. As mentioned above, there’s just less administrative and regulatory overhead.
+
+Q: The title of your post was “Robo SMAs will replace mutual funds,” the subtitle was “Robo technology is...a threat to mutual funds” and you showed a picture of a robot holding a skull. Are you saying mutual funds are dead?
+
+A: No, we don’t think mutual funds are going to disappear, but we do think SMAs will replace mutual funds in the sense that SMAs will take an increasing market share. SMAs are only efficient when they’re run in a model-based structure, and that only works for liquid asset classes that are easy to trade, like US large-cap equities. Mutual funds will continue to be a more efficient structure for securities that are not easy to trade, like corporate bonds, foreign stocks and foreign bonds. We could have titled the piece “Robo SMAs will take market share away from mutual funds in liquid asset classes.” But somehow that wouldn’t have been quite as snappy.
+
+(It is possible we took a little too much dramatic license with our phrasing. True story: LinkedIn blocked our ad linking to the post due to our use of “Inappropriate language or image.” We’re not sure the phrase “threat to mutual funds” or even an image of a robot holding a skull (probably a reference to the “Alas, poor Yorick!” monologue in Hamlet) really rises to the level of something that would be considered “offensive by any reasonable viewer”, but we consider ourselves duly chastised.)
+
+Q: You say “It’s all pretty disruptive.” Are mutual fund companies dead?
+
+A: No. In fact we think they’re going to be among the winners, as long as they adapt, which we think they will. We’re already seeing mutual fund companies actively exploring how to offer SMA services at scale. It’s disruptive in the sense that delivery models are going to change, not in the sense of firms dying off in droves.
+
+Q: Why will mutual fund companies win? Why not independent startups?
+
+A: Mutual fund companies have valuable brands, technical know-how, customer relationships and distribution networks. We’re skeptical that startups that don’t have an existing distribution network will get very far. They haven’t in the direct-to-consumer market, where Vanguard, an established player, created a robo service that has more AUM than everyone else combined. We similarly think traditional mutual fund companies will dominate the robo SMA space.
+
+Q: You mention you see mutual fund companies actively seeking to move into offering SMA services. Where are you getting this info?
+
+A: By talking to a half dozen or so mutual fund companies. We can’t go into details, but the interest is there.
+
+Q: What will mutual fund company SMA offerings look like?
+
+A: As we noted in the original post, we see mutual funds companies expanding their services to include asset allocation, customization and tax management—along with offering SMAs as a product choice. And we expect to see a lot of innovation in the underlying strategies, with more choices and a greater responsiveness to market needs. The SMA delivery structure will enable fund companies to roll out new strategies literally overnight and even offer customized models at scale (see Asset Managers Pivot to Sell Solutions, Not Just Product). Parametric and Aperio are examples of firms offering highly customized outsourced overlay services. They’re illustrative of where mutual funds are headed—the difference being that the new rollouts will use a lot more automation and will be offered at much lower price points.
+
+ 
+
+Well, there you have it. We hope (using only twice as many words as we used in the original post) that we’ve answered most of the questions generated by our previous post. The main point is that SMAs are becoming increasingly cost competitive with mutual funds and will attract a growing share of assets. Mutual fund companies themselves—at least the ones we’ve talked to—have accepted this and are preparing to support an SMA delivery model. Mutual funds, as a product, aren’t dead, but—dare we say it—they’re under threat.
