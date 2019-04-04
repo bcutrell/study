@@ -1,0 +1,74 @@
+We want to talk about risk profiling — the way advisors figure out the appropriate risk level for a client’s portfolio. Most risk profiling systems make the process seem scientific, with plenty of graphs and statistics. But the apparent rigor is deceptive. That’s not the fault of the risk profiling vendors or their users. Risk profiling just comes with a lot of uncertainty and compromise. Consider how two prominent wealth management firms with a national footprint (privately) described their risk profiling process:1
+
+“Our profile questionnaire takes about three hours to fill out. But there are actually only three questions we care about. The rest is for show.”
+
+“We have a questionnaire, but, in the end, it really just boils down to the client’s age."
+
+We don’t think these statements are representative of how most advisors approach risk profiling, but they do illustrate that, under the hood, there's a fair amount of guesswork. So what’s going on?
+
+ 
+
+The Basics
+Let’s start with the basics. While diversification can help investors reduce risk without giving up expected return, beyond some point (once you’re on “the efficient frontier,” to use the language of modern portfolio theory), there is a trade-off between lower risk and higher expected returns — if you want higher expected returns, you need to assume more risk. A key advisor responsibility is to determine what combination of risk and expected returns is right for a given client. Risk profiling describes the process advisors use to figure this out and make a risk-level recommendation to their clients.
+
+ 
+
+Four Different Ways to Think About Risk Profiling
+So far, so good. But there are at least four different schools of thought for how to determine the “right” risk level for a client. Some focus on selecting risk levels that are compatible with the client’s psychological makeup and beliefs. Others on selecting the risk level best suited to the client’s objective circumstances, such as their goals and time horizon. Most advisors use some combination of psychological and “objective” factors. But all of these approaches are more art than science.
+
+The client’s willingness to take risk
+
+This is also known as “risk tolerance.”2 It describes a client’s psychological comfort with risk. Risk-tolerance questionnaires will sometimes ask non-investment related personality questions, like “would you be comfortable riding a motorcycle?” (we’ve actually seen this). More typically, they present the client with a hypothetical loss scenario and ask for their response (e.g. “Suppose the market dropped 20%, what would you do?”).3 What advisors are really trying to get at is how much loss in portfolio value a client will tolerate before they give up on their investment plan (and possibly fire the advisor).
+
+Why it's more art than science: People are bad at predicting their own reactions to future events. Clients are notorious for claiming they have nerves of steel, only to panic when markets actually drop in value. More importantly, advisors have some capacity to change a client’s risk tolerance (or at least their responses) by providing reassurance or caution. For some advisors, this is the heart of what they do: they protect their clients from their own worst instincts — preventing the client from sabotaging themselves through either panic or euphoria.
+
+The client’s beliefs about the market
+
+This describes how risky a client perceives the market to be at any given moment Are they nervous about the specifics of current market conditions? Do they believe there’s a risk of a crash?
+
+Why it's more art than science: Client beliefs about the market are mostly noise, though seemingly more likely to be wrong than right. And here, too, advisors have some capacity to change a client’s beliefs through education — or at least persuade the client to prudently moderate their reactions.
+
+The client’s capacity to take on risk
+
+This really comes down to time horizon. The idea is that if you have a really long time horizon, you have the capacity to take on more risk, because there’s more time to recover losses.
+
+Why it's more art than science: Time horizons are not fixed. Clients may have a 20 year goal, but a lot can change in 20 years — and clients may need assets sooner than they planned for.
+
+In addition, the proposition that longer time horizons make it safer to invest in riskier portfolios is not completely obvious. It’s based on one or both of two underlying assumptions: The first is that markets are “mean reverting” in some way — that over the long term they will, in fact, return something like their expected return. There is reasonable evidence to support the notion that the market is mean reverting, but it’s not certain. A deeper reason that clients with long time horizons can take on greater risk is that they have more, well, time to fix a decline in their portfolio value by changing their goals or behavior. They can spend less, save more, pull back on their goals, etc. The argument is, I think, sound, but it doesn’t follow automatically from the math of risk and return alone.
+
+The level of risk that maximizes the client’s probability of meeting their goals 
+
+Money and investments are a means to an end. If we can state a client’s goals in monetary terms (e.g. “retire with $1mm”) and we make certain assumptions about expected returns and risk, we can calculate the risk/return combination that maximizes a client’s chance of meeting their goals. If the client is well off and the goals are modest, they may be fine with safe government bonds. If the goals are more ambitious, the only way to get there may be to invest heavily in riskier securities, like equities.
+
+Why it's more art than science: The idea of selecting portfolio risk levels that maximize the client’s likelihood of meeting their goals is appealing. It would seem take investing out of the realm of psychology and place it in on firmer footing. But there are problems — or more precisely, ambiguities.
+
+To begin with, most clients don't really know what their goals are. And the longer the time horizon, the more imprecise the goals become. Clients may be able to say they want to retire comfortably, but few will know what that means in terms of concrete financial goals.  Even if a client did have something very specific in mind, it should be considered contingent on whether it’s realistic, which the client is unlikely to know. And goals change. None of us knows what our life and resources will be like in twenty years. Divorce? Marriage? Sickness? Promotion? Unemployment? Appreciated home? Inheritance?
+
+Lastly, the strategy that has the maximum chance of meeting a client’s goals won’t work if the client doesn’t stick to the plan. The problem is that even if a client’s time horizon is long, they will react to intervening market events as they occur. If this causes the client to change their investments, the “rightness’ of the investment strategy for achieving a long-term goal is irrelevant. Advisors can try to tell clients “pay no attention to what’s happening now, we’re still 20 years off” and the advisor may be right, but if the client fires them, everyone is worse off. So most advisors looks at both what is best for achieving the goal and what won’t get them fired.
+ 
+
+What We See in Practice
+So, what do advisors do in practice? There are many variations, but we see two approaches dominating.
+
+In some firms, advisors describe the trade offs between risk and return as best they can and then let the client choose the risk return level they prefer. Describing the trade offs in language investors understand can be challenging.  Typically, an advisor would show various pairs of expected returns matched with their corresponding “worst case” loss scenario (it’s not actually worst case — more typically, it’s “returns from a 2008-like downturn” or “5th percentile returns,” or some such).  The higher the expected returns, the worse the loss scenario.
+
+More commonly, the advisors we talk with combine psychological and goals-based approaches. They basically follow a three-step approach:
+
+There’s a conversation between the advisor and the client to help the client set goals. It may start by the advisor asking clients to just state their goals. The advisor responds by telling the client whether the goals or realistic, and/or what changes the client would have to make (e.g. save more or retire later) to realize their goals. Clients will adjust their goals in light of this information. This may go back and forth several times. Out of this conversation comes a set of goals that both parties feel are realistic.
+
+The process will be a little different for every client. Some will want to get into the  specifics of the math. Others, once they’ve decided their advisor is trustworthy, will have no interest in details — they’ll just look for advice.
+
+The advisor will also ask risk tolerance questions to get a sense of the client’s willingness to take risk.
+
+The advisor selects a risk/return level that maximizes the probability of meeting the client’s goal, selecting from the set of risk/return levels that the client is actually likely to stick to. This is not necessarily the portfolio that, mathematically, maximizes the client’s probability of success. It’s a portfolio that’s a compromise between what’s theoretically best and what the client will realistically accept. If in response to the first market downturn the client sells everything and hides all their money under a mattress, it doesn’t matter how “correct” an advisor’s plan was. A good advisor has some influence over the client’s behavior — they can help prevent panic and tamp down euphoria — but influence is not the same as total control. So advisors, even advisors who wholly embrace a goals-based approach to investing, will take into account the client’s psychological willingness to take on risk.
+
+Rinse and repeat. Time passes. The client’s circumstances change. Their goals change. The portfolio performs better or worse than expected. So, from time to time, advisors and clients will need to revisit their plan, starting over with Step 1.
+This three-step process isn’t neat and tidy, but it’s realistic, and it acknowledges the limitations of risk profiling. Most importantly, it adds value not just by recommending portfolios matched to achieve client goals, but by shaping those goals and guiding client behavior along the way.
+
+ 
+
+ 
+
+The point of the previous discussion is not that risk profiling and planning is bad, just that it’s not a record-lots-of-data-and-get-a-precise-answer exercise. The response to this is not to double down on ever more complicated models. This won’t fix anything. Instead, it’s a good reason to go with a fairly simple approach4 and focus on the client’s behavior.
+
+More importantly, it points to the greater importance of the advisor. If risk profiling were a mechanical process fully captured by advanced software, the advisor wouldn’t really need to be involved. It is the very ambiguity and uncertainty of the exercise that requires the advisor’s input and ongoing involvement.  It is precisely because clients don’t know their own minds, precisely because their views can be shaped by, well, advice, that advisors can add value.
