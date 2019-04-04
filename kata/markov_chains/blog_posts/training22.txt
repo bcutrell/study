@@ -1,0 +1,64 @@
+April 15th is fast approaching, which of course caused us to think of taxes — and tax management. The basic idea of tax management is straightforward: reduce taxes without reducing pre-tax returns (or at least without reducing pre-tax returns more than you save in taxes). So far, so good. But what exactly does this mean and how is it done? We thought we’d break it down. Here it is, a guide to tax management.1
+
+ 
+
+The Components of Tax Management
+There are at least six tools in the basic tax management toolkit2:
+
+1. Short-term gains deferral:
+
+Postponing the sale of a short-term position you might otherwise wish to sell until the position is long-term (and therefore subject to the lower long-term capital gains tax rate).
+
+2.  Long-term gains deferral:
+
+Postponing the sale of long-term positions you might otherwise wish to sell. Even if you eventually do realize the gains, you will have postponed paying taxes, which you can view as an interest-free loan. If you postpone the sale until retirement, the gains may be subject to a lower tax rate. If you postpone the sale until death, you (or, more precisely, your estate) avoids the taxes completely.
+
+3. Loss harvesting:
+
+Selling a security at a loss in order to realize a loss that can be used to lower your tax bill. 
+
+4. Tax budget:
+
+Keeping taxes (or just taxes from realized gains) below a predetermined threshold. The two keys to implementing a tax budget well are 1) taking maximum advantage of tax-loss harvesting opportunities to “buy” yourself freedom to realize more gains, and 2) optimizing how you “spend” your limited tax budget to get the biggest risk and return improvement for every tax dollar. 
+
+5. Tax-efficient product selection:
+
+Purchasing securities that won’t generate a lot of taxable income because either the income is tax free or it takes the form of unrealized capital gains. Some securities are more tax efficient than others. Interest from bonds are taxed as ordinary income. The returns of some actively managed mutual funds take the form of short-term capital gains distributions. On the other hand, municipal bonds are tax free (though they also pay a lower interest rate). And index products, especially ETFs, tend to generate low capital gains distributions. 
+
+6. “Householding”:
+
+Holistically managing a group of accounts (e.g., 401Ks, taxable accounts, IRAs, etc.) belonging to a single investor or household in a manner that reduces taxes. There are three main householding tax management techniques:
+
+a. Householding - tax-optimized account section for asset class rebalancing:
+
+Choosing the accounts in which to sell overweighted asset classes so as to minimize taxes. Your first choice is to realize losses in taxable accounts; your second choice is to sell gains in tax-deferred accounts (like 401Ks); your third choice is to sell gains in taxable accounts (and if you have more than one taxable account, to sell in the accounts with the least gains).
+
+b. Householding - tax-optimized asset location for purchases:
+
+Purchasing your least tax efficient securities (e.g., bonds, hedge funds) in tax-deferred accounts. (Note, however, that there can be a tension between concentrating tax-inefficient securities in tax-deferred accounts and being able to rebalance at the asset class level in a tax-efficient manner.) 
+
+c. Householding - tax-optimized account selection for withdrawals:
+
+Choosing the accounts from which to withdraw funds in order to minimize taxes and other costs. Here, you need to consider not just tax impact, but rules governing withdrawals from tax-deferred accounts—there can be penalties for both early withdrawals and “late withdrawals” (i.e., not taking required minimum distributions).
+
+ 
+
+The Challenges of Tax Management
+Listing tax management techniques is fairly easy. Actually implementing them can be hard. We could go on about this at some length, but we’ve learned that not everyone is as interested in this stuff as we are. So here’s a sample of the issues involved:
+
+Trade-offs
+
+The biggest challenge is handling trade-offs. While reducing taxes is important, so is reducing costs and maintaining the desired risk and return characteristic of the portfolio. These goals will often conflict, so tax management involves a balancing act. It’s an optimization problem, which is why all sophisticated tax management programs are optimization based. Simple rules (e.g., “never sell positions with short term gains”) aren’t up to the task of handling trade-offs. Making the rules more complicated (e.g., “never sell positions with short term gains unless they are ranked “sell” or the gain is less than $10 or there is a cash withdrawal or the asset class is overweighted”) becomes unworkably complicated and unwieldy.
+
+Tax budgets
+
+Tax budgets present their own optimization problem. If you’ve got a limited tax budget, how should you spend it? Use it all to help draw down a concentrated position? Or use it to get asset classes closer to their target weights? Or some combination of the two?
+
+Loss harvesting
+
+What’s the right strategy for getting the most out of loss harvesting? You obviously don’t want to loss harvest unless the tax savings more than cover the extra trading costs. But by how much? The answer is complex. An optimal tax loss harvesting strategy depends on 1) the investor’s tax rates, 2) the transaction costs, 3) the stocks volatility, 4) the time till the lot is long term (if it’s currently short term), and 5) the time to year end.
+
+
+
+
+So there you have it. The basics of tax management. It was once a largely manual process, so it was only offered to high net worth investors. That is changing. Tax management is now automatable, and we’re seeing the type of tax management that was once the exclusive preserve of ultra high net worth investors being offered to mass affluent clients. Which is one piece of good news as we approach tax day.

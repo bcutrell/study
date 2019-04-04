@@ -1,0 +1,188 @@
+"What's the difference between an automated rebalancing system like Smartleaf and an optimizer like Axioma, Barra or Northfield?” We’re glad you asked.
+
+Optimizers are powerful and useful. They make it possible to adhere to constraints with the least possible cost, tax and risk impact. And they help make intelligent tradeoffs between the sometimes competing goals of low drift, low taxes and low expenses. But for an optimizer to be used at scale, it must be embedded in a system that, with minimal human input:
+
+Ensures that the optimizer is given the right data and the right settings.  
+Provides workflow tools to implement a firm’s wealth management program.
+It’s a little like the difference between an engine and a car. A car contains an engine, but it includes other components to make it more usable. An automated portfolio rebalancing system may have an optimizer inside, but it includes a lot of other useful things, as well.
+
+What are these other things? For a car, it’s a transmission, a gas tank, brakes, a steering system, wheels, a windshield, a dashboard, etc. For a rebalancing automation system, these other useful bits include:
+
+Calibration and plain-English inputs
+Data management
+Workflow management
+Settings management
+Model management
+Enterprise architecture
+Record keeping
+Reports
+Automated processes
+Hosting services
+If you’re planning to build your own optimization-based automated rebalancing system, you can view this as a basic “to do” list. It also serves as a decent summary of what we do — not of our purpose (which is supporting customization and tax management at scale) — but the actual nuts and bolts of what we’ve built and what we do every day.  
+
+We’ll take the above list one at a time.
+
+ 
+
+Calibration and Plain English Inputs
+Calibration & plain English inputs
+
+Optimizers are notoriously fickle. Small changes in inputs create large changes in output. Optimizers are therefore normally operated by specialists who carefully review all output and start over when they get results they don’t like. 
+
+In contrast, a rebalancing automation system asks users for plain English inputs, not optimizer settings. Part of what an automation system does is translate different combinations of user inputs into safe and appropriate optimizer settings that produce actionable results. There is no need for specially trained “quants” to make the system work. That function is built in.
+
+ 
+
+Data Management
+Optimizers analyze data. Getting the right data into the system and making sure it’s accurate, every time, is necessary to rebalance at scale. Automated rebalancing systems provide multiple services to make this happen.
+
+Data feeds
+
+Subscribing to and maintaining multiple data feeds, including (at least in our case):
+
+a multi-factor risk model
+price feeds
+corporate action feeds
+social criteria restriction lists
+Corporate action processing
+
+Updating data — including CUSIPS, tickers, restriction lists and model weights — for corporate actions such as splits, spin-offs, mergers, etc.
+
+New and unknown securities processing
+
+Adding new securities, mutual funds and ETFs to risk models, sectors lists, etc.
+
+Interfaces
+
+Supporting automated interfaces with core accounting systems and trade order management systems.
+
+Database management
+
+Storing and loading the data each account needs for analysis. In an automated rebalancing system, there’s a database to handle all this (we use Oracle, for example).
+
+Ancillary data fields
+
+Providing ancillary data fields to support rebalancing workflow.  To rebalance at scale, you need data beyond that which an optimizer uses to generate trades. You need data to decide which accounts to trade, which accounts need special attention, etc. For example, you’ll want to know whether the account is discretionary or non-discretionary; if it’s closed or suspended; if it has been approved for trading, etc. You may want to know if the client is a “Platinum” customer; if they are a member of the extended Smith family, with which the firm has a long-standing relationship, etc.
+
+
+Workflow Management
+Optimizers generate trades. If the data is right and the system is calibrated correctly, you’ll have actionable trades for each account. That’s the foundation of building a scalable rebalancing workflow.
+
+But it’s just the beginning. You also need workflow tools. Tools provided by rebalancing automation systems include:
+
+Filters
+
+Filters (structured queries) allow firms to identify accounts of interest to support the firm’s trading and review policies. They are configurable by each firm and each user. Sample uses:
+
+Select accounts for automated trading: This is a positive screen. Accounts meeting certain criteria will be traded in batch (“robo traded”). Sample selection criteria:
+Account is open and in good standing
+No data errors
+Small account size
+Trades required to satisfy mandates (such as cash out request) or trades above proscribed cost/benefit score
+Recommended turnover below review threshold
+Tax impact of recommended trades below review threshold
+Select accounts for review before trading: This is the flip side of automated trading. These are accounts that merit review before the suggested trades are executed. Typically the larger the account value, the lower the thresholds for review.
+Select accounts for suspension: In exceptional circumstances, accounts should not be traded. These include accounts:
+with bad data
+that are scheduled to be closed
+where the advisor anticipates an imminent large deposit or withdrawal
+with incomplete paperwork
+under compliance review
+Select accounts and/or advisors for compliance review: Compliance officers will want to review accounts with exceptional issues, in particular those where client-imposed constraints create risk issues. {Note, however, that automated rebalancing systems automate much of compliance, reducing the need for compliance reviews. With direct interfaces to profiling systems, you can ensure that every account has the right settings. With automated daily review and suitable filter-based rebalancing workflows, you can ensure that every portfolio is faithful to all of its settings. More generally, you can create a consistent process that implements firm policy consistently across all accounts.}
+Select accounts (and by extension personnel) that merit management review: An effective rebalancing program is a collaborative effort by many people—relationship managers, overlay managers, model managers, etc. Making sure that the system as a whole works requires oversight. Are all portfolios being traded that, according to program design, should be traded?
+Reports and alerts
+
+Reports and alerts guide actions required to keep automated rebalancing operations running. Critical reports include:
+
+Corporate actions: Are all data sources (holdings, price feeds, models) implementing corporate actions at the same time? If not, affected accounts need to be suspended until the data is resynchronized.
+Unknown securities: Are there unknown securities in the holdings data? If so, the missing securities need to be added to the security master.
+
+Settings Management
+Update settings across multiple accounts
+
+Suppose you want to alter the commission schedule for “platinum” clients. Or suppose you want to enter a “Do not trade IBM” constraint for all clients.
+
+Can you do so accurately and quickly? Can you exempt some accounts and record why?  Rebalancing automation makes this possible.
+
+ 
+
+Model Management
+All scalable rebalancing programs are models based, and this makes model management critical.  Rebalancing automation systems provide multiple tools to support giving each client the right models, including:
+
+A model hub
+
+If your program is “open-architecture,” you’ll need access to third-party models. That’s what a model hub does. Typically, model hubs take care of contracting, daily data upload, fee calculation and billing. They may also help with research.
+
+Equivalence sets
+
+While SPY may be your preferred large cap ETF, you would probably not want to sell another S&P 500 index product if a client already owned it. There are multiple ways to accomplish this. One is to create “equivalence sets”, groups of securities that are considered acceptable substitutes for each other. In effect, they create easy-to-maintain families of models.
+
+Asset allocation data structures
+
+A “model” is a weighted list of securities. An asset allocation is a weighted list of asset classes. These are not the same thing. You can have one asset allocation (say, “Aggressive Growth”) with very different security choices — all ETFs or all Fidelity mutual funds, etc. A portfolio management program that offers product flexibility needs to keep asset allocation structures and security models separate.
+
+Parent-child inheritance structures
+
+Suppose your firm enables asset allocation and product choice customization. That is, you enable a client to request “no exposure to Real Estate and Small Cap asset classes” to compensate for outside holdings; or you allow clients a choice of product for each asset class, e.g., ETFs, actively managed mutual funds, direct indexes and open-architecture UMA models. These are valuable customization options, but it means that you can end up having all your clients follow slightly different “targets”. And you then need a mechanism to update all the customized accounts to reflect changes in the firm’s asset allocation or product recommendations.
+
+The solution is to create a “parent-child” connection between the firm’s primary recommendations (the recommended products and asset allocation for clients with no customization) and modified variants. That way, all of the customized variants can still “inherit” changes in the primary recommendation set. So, for example, if the firm chooses to overweight Mid Cap relative to Large Cap, that change will automatically cascade down to all clients, even those that have replaced the firm’s ETF recommendations with Fidelity mutual funds and those that have eliminated Real Estate as an asset class.
+
+Model customization limits
+
+Customization is good, but it needs to be bounded. You do not want to permit clients or advisors to replace a US Large Cap mutual fund with an emerging market debt ETF. You also do not want to permit a client allocated to a Conservative asset allocation to change the equity allocation from 5% to 95%.
+
+
+Enterprise Architecture
+Support for multiple simultaneous users with roles-based permissioning
+
+Rebalancing at scale requires the cooperation of multiple individuals, each of whom should be given system access appropriate to their roles.
+
+Here is a partial list of roles that require separate permission levels:
+
+The client-facing advisor, who enters customization parameters for each account
+The investment policy committee, which creates strategic and tactical asset allocations, and selects primary and alternative approved products
+The overlay manager, who rebalances each account following the joint instructions of the advisors
+Compliance officers, who oversee all processes to make sure the firm is complying with regulations
+Management, who oversee operations to make sure that firm policy is being executed
+Data managers, who make sure that firm data is accurate
+Admins, who may work on behalf of any of the above.
+A rebalancing automation tool gives each group its own dashboard — its own information and tool set — for managing its responsibilities.
+
+
+Record Keeping
+Record keeping and retrieval
+
+It’s not enough to trade portfolios. You need to keep a record of the settings, analysis and reasons for every trade. This is required for regulatory reasons. It is also a source of business intelligence — data that management can use to evaluate and improve the firm’s program.  Rebalancing automation systems store and retrieve these records.
+
+
+Reports
+Reports on work and value
+
+Automated rebalancing systems analyze every portfolio daily.  And that generates a lot of data, data which can be used to generate reports that document the advisors work and value.  These include:
+
+Taxes Saved report: An estimate of how much each account has saved in taxes based on the advisor’s active tax management. For Smartleaf’s clients, the average taxes saved in 2017 was 1.62% of portfolio value.
+Portfolio health checks: A record of a daily review of each account’s conformity to its rebalancing parameters, along with a record of the firm’s prompt response to each “call to action.”
+Explained activity: A plain english explanation of each portfolio’s trades.
+
+Automated Processes
+An automated rebalancing system requires, well, automation — that is, processes, like data loading and analysis, that take place automatically. In particular, the system needs to analyze every portfolio daily, and automatically generate actionable trades.
+
+
+Hosting Services
+We’ve talked about “automated rebalancing systems,” but this is a bit of a misnomer. They’re not just systems. They include a variety of services. We’ve already mentioned a few (e.g., corporate action processing). Here are a few more:  
+
+Data file transfer monitoring
+
+Analyzing portfolios requires uploading data from multiple sources, including holdings data from the wealth management firm’s system of record. File transfers can fail, and automated rebalancing systems need to monitor transfers to ensure that everything went according to plan — and take appropriate action (usually in the middle of the night) when they don’t.
+
+Process monitoring
+
+When analyzing a book of business, you need to know that every account was analyzed completely. Processes do fail. An automated rebalancing system needs to monitor all processes and respond appropriately when something goes wrong.
+
+Software hosting
+
+There’s no practical way to deliver the service components of an automated rebalancing system unless the software is hosted. Installed solutions are possible, but it would require the user to assume responsibility for operational issues that are probably best left to someone else.
+
+ 
+
+At the beginning of this post, I used a car analogy to describe the difference between an optimizer and an automated rebalancing system: the optimizer is an engine. An automated rebalancing system is a car. Given the services involved, a better analogy might be to say an automated rebalancing system is a car that comes with all service and maintenance built into the contract. Its purpose is not optimization, per se. It’s to automate the process of implementing a portfolio management program that includes a high degree of customization and/or tax management.

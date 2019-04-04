@@ -1,0 +1,33 @@
+We’ve previously written about “Why the Days of Calendar-Based Rebalancing are Numbered,” making the case that rebalancing on a set periodic schedule has been made obsolete by the advent of what we called “cost-benefit rebalancing” — rebalancing not by the clock but whenever it is beneficial to the client, based on a cost-benefit analysis of each trade. Cost-benefit rebalancing has a triple advantage over more traditional approaches: it is more efficient, it reduces dispersion, and it supports greater tax efficiency. Simultaneously. But what, exactly, is cost-benefit rebalancing? We’ll lift the hood and show some of the mechanics.
+
+Cost-benefit rebalancing starts with the idea of a cost-benefit score.1 Any trade can have both costs and benefits. Costs include taxes, commissions and losses from bid/ask spreads. Benefits include risk and drift reduction, improving the average “ranking” (e.g. “strong buy” or “strong sell”) of the securities in the portfolio, and loss harvesting. To get a cost-benefit score, we assign every cost and benefit a numerical value and then, roughly speaking, add them up. Once you have this scoring mechanism in place, you can use optimization technology to find the set of trades that have the highest possible cost-benefit score for every portfolio. The higher the score, the more the trades benefit the investor.
+
+We then use these cost-benefit scores to implement a very simple rebalancing workflow: trade every account that either a) has a mandate, like a cash withdrawal or b) has a cost-benefit score above a predetermined threshold. That’s it. This two-step workflow is repeated every day.
+
+This approach not only makes it easy to implement investment ideas, tax manage, etc., it also makes it easy to deal with process failures like trade errors and suspensions, which makes cost-benefit rebalancing less error prone. For example, you no longer need to have a special process to deal with accounts that are temporarily suspended — as soon as they are unsuspended, the daily cost-benefit rebalancing workflow will step in, automatically.
+
+ 
+What actually goes into a cost-benefit score?
+On the benefit side, we include:
+
+Drift reduction: getting a portfolio closer to your recommended asset allocation and security selection. We use expected reduction in “tracking error” to measure drift reduction.3
+
+Rankings improvement: increasing the average quality of the securities in the portfolio as measured by your rankings (e.g. “strong buy”, “strong sell”).  
+
+Loss harvesting: selling a security, not because you want to get rid of it, but in order to reduce your taxes by realizing a loss.  
+
+On the cost side, we include:
+
+Commissions
+
+Taxes won realized capital gains
+
+The implicit costs of bid/ask spreads
+
+After we assign each of these factors a numeric value, we can add them together to get a single net cost-benefit score. Our users set a preference for how much they value “low drift and dispersion” vs. “low cost and taxes.” There’s no right answer, and different firms will choose differently. This preference is folded into the way we add up the numbers so that the final score reflects each firm’s beliefs and preferences.3
+
+Compared to common alternatives (like calendar-based or min/max weight rebalancing), cost-benefit rebalancing is better for investors. It enables wealth managers to simultaneously lower return dispersion and provide investors with higher levels of customization and tax management. We can quantify this. Compared with calendar-based rebalancing, cost-benefit rebalancing reduces BOTH return dispersion and taxes by more than 60% (see Are Your Portfolios Noisy?). As a general rule, you'd expect a tradeoff between low taxes and low dispersion. That it’s possible to simultaneously reduce both is a measure of the power of the cost-benefit approach.
+
+Have more questions? Wondering whether cost-benefit rebalancing would make sense in your firm? Give us a call at 617-453-0078 or write to us.
+
+

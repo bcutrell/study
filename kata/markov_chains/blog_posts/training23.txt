@@ -1,0 +1,53 @@
+wealth management solutions
+Note: This post is more technical than usual and may be of interest only to specialists.
+
+Economist Burton Malkiel, exploring the implications of the efficient market hypothesis,1 wrote in A Random Walk Down Wall Street that “a blindfolded monkey throwing darts at a newspaper’s financial pages could select a portfolio that would do just as well as one carefully selected by experts.”2 Empirical tests have supported Malkiel’s claim.3  
+
+While Malkiel may have intended his statement merely to illustrate a point about the implications of the efficient market hypothesis, it should not be overlooked that he was, in fact, providing a prescriptive method for stock selection that puts investors on par with experts. However, his dart-throwing monkey methodology has practical limitations. Monkeys can be dangerous,6 and some  states, including our home state of Massachusetts, prohibit individuals owning monkeys as pets.7 In addition, darts, while legal, also pose health risks, including an estimated 675 emergency room visits per year.8
+
+There is a gap in the market for a method for generating passive portfolios that does not suffer from the legal and safety defects of blindfolded monkeys throwing darts. A smartphone app has been developed that simulates dart-throwing monkeys.9 However, the app does not work with IOS 11 and does not price securities in US dollars. Index mutual funds and ETFs might be considered a substitute for dart-throwing monkeys as they are similarly premised on the inability of active managers to do better than chance. But index funds are dull. We observe that on Youtube, the top clip advocating index investing is an interview with Warren Buffet that has garnered 175 thousand views. To put this in perspective, a simple video of a surprised cat has garnered over 78 million views.
+
+These statistics suggest an opportunity to both overcome the safety and legal limitations of Malkiel’s monkey-dart approach and to advance investor awareness of the efficient market hypothesis. We challenged our financial engineers and marketing department to work together to develop a solution. They came back with a simple, breakthrough proposal: replace Malkiel’s dart-wielding monkeys with painted-paw cats. We describe the experiment and its results below.
+
+ 
+
+Methodology
+We selected as a test subject a 5-year old Maine Coon cat and two pages of stock listings from the March 14, 2018 edition of the WSJ. We painted the subject’s paws with non-toxic paint consistent with NIH animal test guidelines.10 The subject was placed on the newspaper and allowed to walk at its own discretion until approximately 60 stocks were marked with paint.  
+
+From this initial selection, we eliminated those securities that were not constituents of the S&P 500 Index as of January 1, 2010, then constructed an equal-weighted portfolio of the remaining 53 securities.10.5
+
+We then calculated the eight-year returns of this portfolio, without rebalancing, from  1/1/2010 to 12/31/ 2017. We compared the returns of the feline-selected, equal-weighted portfolio (FSP) with the returns of two ETFs: SPY, which tracks the S&P 500; and RSP, which tracks an index constructed by equally weighting the components of the S&P 500 index. Because FSP is equally weighted, we consider RSP to be the more appropriate benchmark.
+
+Some Notes on Methodology
+
+The experiment has low statistical power because of the small sample size (n = 1).  
+We declined  to join the “preregistration challenge.” The analyses were not pre-registered, the data were not collected by independent researchers and the results were not analyzed by independent statisticians in a blinded data set.
+In contravention of standard experimental protocols, we ran the experiment repeatedly until we got the results we desired, thus creating the risk of selection bias.
+The procedure of selecting a group of securities at the end of a test period and then excluding all those that were not in a large cap index at the beginning of the test period suffers from survivor bias. In particular, it excludes from the tested portfolio any company that declined in value enough to be dropped from the S&P 500.  It may be challenging to replicate this ex post screen ex ante.
+The experiment was not double blind. Both the subject and the testers were able to see the listings.  
+The selected securities will have an alphabetical clustering bias, as the securities are printed in the newspaper in alphabetical order, and the cat’s paw spans the width of several listings. We cannot dismiss the possibility that securities with alphabetical proximity will show correlated returns.
+The results have not been peer reviewed.
+ 
+
+Results
+The Feline Selected Equal-weighted Portfolio, FSP, had a total return over the eight year period of 259% (17.32%/year), compared to 188% (14.16%/year) for RSP and 182% (13.82%/year) for SPY. In addition, FSP has superior Sharpe, Sortino and Treynor Ratios. Most strikingly, FSP had lower excess kurtosis.11 See graph and table below. 
+
+ tax management services
+
+ 
+
+passive income investments
+
+ 
+
+Analysis
+The backtest performance of the FSP test portfolio demonstrates the power of the the feline selection method. Nearly a third of American households own cats12 and therefore, through the Feline Selection method, have access to a method for superior portfolio construction. We conjecture that, with minor modifications, a similar methodology could be utilized by dog owners, as well.
+
+All of the performance results are calculated on a pre-tax basis. Most cat owners are taxable entities, and therefore after-tax would be a more relevant metric. Future extension of the current study will include tax analysis. We note, however, that the Feline Selected Portfolio is a form of a direct index, which when properly tax managed is exceptionally tax efficient.13 We further note that prior to the invention of the Feline Selection Method, investors lacked a practical means to create a direct index portfolio.16
+
+ 
+
+Conclusion
+The average individual investor significantly underperforms the average equity fund,14 which, in turn, significantly underperforms index returns.15 This study provides evidence that the Feline Selection Method outperforms both.
+
+While Malkiel’s dart-wielding monkey methodology was groundbreaking and justly celebrated when first introduced, it is our expectation that it will be rapidly displaced by the superior Feline Selection Method.  

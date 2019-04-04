@@ -1,0 +1,66 @@
+It’s not news that wealth management is changing. And the change goes deep, affecting everything from the role of the advisor to the mechanics of rebalancing. Even the core value proposition is changing. So what, exactly, does the “new” wealth management look like? There’s a lot going on. We thought we’d try our hand at describing the changes and the forces driving them.
+
+
+Value proposition
+
+Let’s start with the core value proposition of wealth management. Historically, the main focus has been on the search for performance. The advisor’s value proposition was that they were experts on stocks and bonds — and, at least implicitly, that the client would benefit from the advisor’s security selection acumen and access to alternative investments.
+
+This is changing. Firms are moving away from value propositions centered on the uncertain task of beating a benchmark and towards value propositions centered on services that the firm knows it can deliver, such as financial planning, coordinating financial service providers, education, etc.
+
+
+The old:
+Value propositions centered on the performance value of the advisor’s security selection and active asset allocation.
+
+Why it’s old:
+Most advisors and firms are not able to deliver performance superior to index investing, and virtually none can do so consistently. Moreover, involving clients in trade decision making is inefficient. Worse, it’s counterproductive: it focuses clients on performance, which they can’t really control, and away from planning, which they can.
+
+The new:
+Value propositions centered on providing holistic guidance that helps clients meet their financial needs. This includes:
+
+Delivering a customized, tax-optimized solution using low-cost products.
+Acting as the client’s “general contractor”, coordinating efforts of the client’s accountants, trust & estate lawyers and insurance brokers.
+Providing financial planning.
+Acting as a “coach” and counselor, guiding clients to make wise financial decisions.
+ 
+
+Security selection and tactical asset allocation
+With old wealth management, the advisor picked stocks from a buy list created by the firm and guided tactical asset allocation, within bounds set by the firm. This is sometimes called “Advisor (or rep) as PM.”
+
+The preferred current approach is to replace buy lists with models selected by an internal investment policy committee (IPC) or a third-party firm.
+
+
+The old:
+“Rep (or advisor) as PM” — client-facing advisors selecting securities from firm-created buy lists, subject to firm-created asset allocation guidelines.
+
+Why it’s old:
+Constructing portfolios from buy lists is manual, expensive and error prone.There’s little evidence that advisors add value through selecting securities or active asset allocation. More importantly, advisors have better ways to spend their time. Others can select securities. Advisors alone can best understand and guide their clients.
+
+The new:
+Delegation of security selection and basic asset allocation to third parties or internal IPCs who deliver their best thinking in the form of model portfolios.
+
+ 
+
+Rebalancing, customization & tax management
+Traditionally, advisors rebalanced their own accounts, and one of the main rationales for this was that it facilitated customization. It was believed that there was no other way to deliver customization other than to have advisors make per-account manual adjustments to trades.
+
+There’s a better way: centralize rebalancing, parameterize customization and then automate its implementation.
+
+
+The old:
+Rep (or advisor) as PM — client-facing advisors trading all accounts. Customization and tax management are inconsistently applied “extras” that are implemented manually as “on the fly” adjustments to trades.
+
+Why it’s old:
+Manual customization and tax management by client-facing advisors is ineffficient, expensive and error prone, and this results in customization and tax management being kept to a minimum. When customization preferences are captured as settings (e.g. “never buy tobacco”), their implementation can be automated and efficiently handled by dedicated specialists, which enables firms to make high levels of customization and tax management standard offerings. And, as with security selection, advisors have better ways to spend their time than manually rebalancing accounts.
+
+The new:
+Parameterized customization, with implementation delegated to specialists within the firm or to a third party, who oversee a largely automated process. This:
+
+Reduces costs
+Increases consistency and compliance
+Increases the level of customization and tax management that can be economically provided
+ 
+
+The new wealth management is better than the old. It’s better for clients, who benefit from greater customization, superior tax management and more time with their advisors. And it’s better for most advisors, many of whom have struggled uncomfortably with the traditional industry norm of having to project that they add value through superior performance. It is replaced by a steadier, more certain value proposition based on guiding clients to meet their financial needs.
+
+
+(On the topic of automated, centralized rebalancing, see Stop. It’s Time to Rethink Rebalancing, An Inside Look at Automated Rebalancing Systems, and The Art of Centralized Rebalancing. On the topic of customization and tax management, see A User's Guide to Portfolio Customization and A Guide to Tax Management.)

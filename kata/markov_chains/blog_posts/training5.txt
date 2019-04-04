@@ -1,0 +1,9 @@
+John “Jack” Bogle died earlier this month at age 89. Bogle, the founder of Vanguard, is responsible for taking an academic thought piece and turning it into the modern index fund. In the process, he has saved investors over $100 billion a year. That’s stunning. That’s $3,000 per American. Per year. No wonder Warren Buffett concluded that, "Jack did more for American investors as a whole than any individual I've known.”
+
+We, also, have something to thank Bogle for. 
+
+Bogle, indexing, and the importance of low cost and low taxes were very much in our minds when we started Smartleaf 20 years ago. Our objective was to take Bogle’s ideas to the next level, to bring cost and tax management not just to one product, an index fund, but to the management of an investor’s entire portfolio.
+
+We even wanted to improve on index funds themselves. Index funds outperform 80% to 90% of all investments, but we knew there was something even better than an ETF, if it could just be delivered at scale. It’s called a direct index, a basket of securities that tracks an index. In a way, it’s simpler than an index fund because there’s no “fund” — investors just own a bunch of stocks. Direct indexes outperform ETFs and index funds on an after-tax expected basis — but only if they’re expertly tax managed, and at the time we started Smartleaf, tax management was a largely manual and expensive process. So, unless you had lots of money, direct indexes didn’t really make sense. We wanted to lower the costs of direct indexing through automation and thereby create an investment for all investors that can outperform even an index fund.
+
+We’re nowhere close to saving investors $100 billion a year. But we’re working on it.
