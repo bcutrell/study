@@ -1,5 +1,5 @@
 #
-# Notes from the Datacamp Course: Intro To Portfolio Risk Management 
+# Notes from the Datacamp Course: Intro To Portfolio Risk Management
 # bcutrell13@gmail.com - April 2019
 #
 
@@ -157,13 +157,13 @@ import seaborn as sns
 # Create a heatmap
 sns.heatmap(correlation_matrix,
             annot=True,
-            cmap="YlGnBu", 
+            cmap="YlGnBu",
             linewidths=0.3,
             annot_kws={"size": 8})
 
 # Plot aesthetics
 plt.xticks(rotation=90)
-plt.yticks(rotation=0) 
+plt.yticks(rotation=0)
 plt.show()
 
 # Calculate the covariance matrix
@@ -177,7 +177,7 @@ print(cov_mat_annual)
 
 # The formula for portfolio volatility is:
 # σPortfolio= (wt⋅Σ⋅w)**0.5
-# 
+#
 # σPortfolio: Portfolio volatility
 # Σ: Covariance matrix of returns
 # w: Portfolio weights (wT is transposed portfolio weights)
@@ -228,3 +228,91 @@ StockReturns['Portfolio_GMV'] = StockReturns.iloc[:, 0:numstocks].mul(GMV_weight
 
 # Plot the cumulative returns
 cumulative_returns_plot(['Portfolio_EW', 'Portfolio_MCap', 'Portfolio_MSR', 'Portfolio_GMV'])
+
+#
+# Factor Investing
+#
+
+# Calculate excess portfolio returns
+FamaFrenchData['Portfolio_Excess'] = FamaFrenchData['Portfolio'] - FamaFrenchData['RF']
+
+# Plot returns vs excess returns
+CumulativeReturns = ((1+FamaFrenchData[['Portfolio','Portfolio_Excess']]).cumprod()-1)
+CumulativeReturns.plot()
+plt.show()
+
+# Calculate the co-variance matrix between Portfolio_Excess and Market_Excess
+covariance_matrix = FamaFrenchData[['Portfolio_Excess', 'Market_Excess']].cov()
+
+# Extract the co-variance co-efficient
+covariance_coefficient = covariance_matrix.iloc[0, 1]
+print(covariance_coefficient)
+
+# Calculate the benchmark variance
+benchmark_variance = FamaFrenchData['Market_Excess'].var()
+print(benchmark_variance)
+
+# Calculating the portfolio market beta
+portfolio_beta = covariance_coefficient/benchmark_variance
+print(portfolio_beta)
+
+# Import statsmodels.formula.api
+import statsmodels.formula.api as smf
+
+# Define the regression formula
+CAPM_model = smf.ols(formula='Portfolio_Excess ~ Market_Excess', data=FamaFrenchData)
+
+# Print adjusted r-squared of the fitted regression
+CAPM_fit = CAPM_model.fit()
+print(CAPM_fit.rsquared_adj)
+
+# Extract the beta
+regression_beta = CAPM_fit.params["Market_Excess"]
+print(regression_beta)
+
+# Import statsmodels.formula.api
+import statsmodels.formula.api as smf
+
+# Define the regression formula
+FamaFrench_model = smf.ols(formula='Portfolio_Excess ~ Market_Excess + SMB + HML', data=FamaFrenchData)
+
+# Fit the regression
+FamaFrench_fit = FamaFrench_model.fit()
+
+# Extract the adjusted r-squared
+regression_adj_rsq = FamaFrench_fit.rsquared_adj
+print(regression_adj_rsq)
+
+# Extract the p-value of the SMB factor
+smb_pval = FamaFrench_fit.pvalues['SMB']
+
+# If the p-value is significant, print significant
+if smb_pval < 0.05:
+    significant_msg = 'significant'
+else:
+    significant_msg = 'not significant'
+
+# Print the SMB coefficient
+smb_coeff = FamaFrench_fit.params['SMB']
+print("The SMB coefficient is ", smb_coeff, " and is ", significant_msg)
+
+# Calculate your portfolio alpha
+portfolio_alpha = FamaFrench_fit.params["Intercept"]
+print(portfolio_alpha)
+
+# Annualize your portfolio alpha
+portfolio_alpha_annualized = (((1+portfolio_alpha)**252))-1
+print(portfolio_alpha_annualized)
+
+# Import statsmodels.formula.api
+import statsmodels.formula.api as smf
+
+# Define the regression formula
+FamaFrench5_model = smf.ols(formula='Portfolio_Excess ~ Market_Excess + SMB + HML + RMW + CMA ', data=FamaFrenchData)
+
+# Fit the regression
+FamaFrench5_fit = FamaFrench5_model.fit()
+
+# Extract the adjusted r-squared
+regression_adj_rsq = FamaFrench5_fit.rsquared_adj
+print(regression_adj_rsq)
