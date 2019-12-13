@@ -27,7 +27,7 @@ amzn = quandl.get('WIKI/AMZN.11',start_date=start, end_date=end)
 aapl.iloc[0]['Adj. Close']
 
 for stock_df in (aapl, cisco, ibm, amzn):
- stock_df['Normed Return'] = stock_df['Adj. Close'] / stock_df.iloc[0]['Adj. Close'] 
+ stock_df['Normed Return'] = stock_df['Adj. Close'] / stock_df.iloc[0]['Adj. Close']
 
 # 30% in aapl
 # 20% in cisco
@@ -129,7 +129,7 @@ ret_arr = np.zeros(num_ports)
 vol_arr = np.zeros(num_ports)
 share_arr = np.zeros(num_ports)
 
-for indx in rnage(num_ports):
+for indx in range(num_ports):
 
   weights = np.array(np.random.random(4))
   weights = weights/np.sum(weights)
@@ -200,7 +200,7 @@ frontier_volatility = []
 for possible_return in frontier_y:
 
   # get ret and subtract possible return
-  cons = ({ 'type': 'eq', 'fun': check_sum }, 
+  cons = ({ 'type': 'eq', 'fun': check_sum },
           { 'type': 'eq', 'fun': lambda w: get_ret_vol_sr(w)[0] - possible_return })
 
   result = minimize(neg_sharpe, init_guess, method='SLSQP', bounds=bounds, constraints=cons)
