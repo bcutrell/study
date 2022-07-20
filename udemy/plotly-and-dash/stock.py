@@ -16,6 +16,9 @@ import datetime as dt
 import json
 import code
 
+import os
+os.environ["IEX_API_KEY"] = "pk_7d1b4c89d141403e82baec52b6a4f874"
+
 class Portfolio(object):
 
     def __init__(self, initial_ticker):
@@ -36,7 +39,7 @@ class Portfolio(object):
 
     def traces(self):
         data = [] # list of traces
-        # TODO 
+        # TODO
         # store parts of the df so that calculations do not need to be repeated
 
         for ticker in self.tickers:
@@ -58,7 +61,7 @@ def ticker_options():
 
 # Use the awesome nes css library
 external_stylesheets = [
-        'https://fonts.googleapis.com/css?family=Press+Start+2P', 
+        'https://fonts.googleapis.com/css?family=Press+Start+2P',
         'https://unpkg.com/nes.css@2.0.0/css/nes.min.css'
 ]
 
@@ -97,7 +100,7 @@ html.Div(children=[
 
 # Use object to store DataReader calls
 # and perform any dataframe calculations
-portfolio = Portfolio('AAPL')
+# portfolio = Portfolio('AAPL')
 
 #
 # Callbacks
@@ -113,10 +116,10 @@ def update_closing_prices(n_clicks, tickers, start_date, end_date):
     start_date = dt.datetime.strptime(start_date[:10], '%Y-%m-%d')
     end_date = dt.datetime.strptime(end_date[:10], '%Y-%m-%d')
 
-    portfolio.set_tickers(tickers)
+    # portfolio.set_tickers(tickers)
 
     return {
-        'data': portfolio.traces(),
+        'data': go.Scatter(x=[0,1,2], y=[1,2,3], name=ticker),
         'layout': go.Layout()
     }
 
