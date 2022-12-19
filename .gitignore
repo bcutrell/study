@@ -15,3 +15,6 @@ static
 data.sqlite
 .idea
 cache.sqlite
+
+kata/advent_of_code/2022/data/
+a.out
