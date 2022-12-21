@@ -170,6 +170,9 @@ void day_4() {
     // initialize a count
     int count = 0;
 
+    // initialize a count
+    int part_two_count = 0;
+
     // Read line by line
     while (std::getline(file, str)) {
         std::string left1;
@@ -210,28 +213,36 @@ void day_4() {
         int min2 = std::stoi(right1);
         int max2 = std::stoi(right2);
 
-        if ((min1 >= min2 && max1 <= max2) || (min2 >= min1 && max2 <= max1)) {
-            if (DEBUG) {
-                std::cout << "Invalid range" << std::endl;
-            
+        if (DEBUG) {
                 // Print min and max
                 std::cout << "min1: " << min1 << std::endl;
                 std::cout << "max1: " << max1 << std::endl;
                 std::cout << "min2: " << min2 << std::endl;
                 std::cout << "max2: " << max2 << std::endl;
             }
-            
 
+        // check if one range is contained in the other
+        if ((min1 >= min2 && max1 <= max2) || (min2 >= min1 && max2 <= max1)) {
             // add to count
             count++;
         }
+
+        // check if there is any overlap between the two ranges
+        if (min1 <= max2 && max1 >= min2) {
+            part_two_count++;
+        }
+
     }
-    // print count
-    std::cout << "Result: " << count << std::endl;
+    // print counts
+    std::cout << "Part 1: " << count << std::endl;
+    std::cout << "Part 2: " << part_two_count << std::endl;
 }
 
 int main() {
+    std::cout << "Day 3" << std::endl;
     day_3();
+
+    std::cout << "Day 4" << std::endl;
     day_4();
 
     return 0;
