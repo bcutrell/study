@@ -1,6 +1,5 @@
 
 def main():
-
     #
     # day 1
     #
