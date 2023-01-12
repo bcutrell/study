@@ -44,8 +44,6 @@ class Board:
                 # print a horizontal bar at the bottom of the board
                 print('-' * 33)
 
-
-
     def move_piece(self, start, end):
         # move a piece from the start square to the end square
         self.grid[start[0]][start[1]].piece = None
