@@ -1,8 +1,26 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 // Declare global DEBUG boolean
-bool DEBUG = false;
+bool DEBUG = true;
+
+// read file to a vector
+std::vector<std::string> read_file(std::string file_name) {
+    // Read txt file
+    std::ifstream file(file_name);
+    std::string str;
+
+    // initialize a vector
+    std::vector<std::string> vec;
+
+    // Read line by line
+    while (std::getline(file, str)) {
+        vec.push_back(str);
+    }
+
+    return vec;
+}
 
 void day_3() {
     // Read txt file
@@ -16,6 +34,11 @@ void day_3() {
         // Skip newline
         if (str == "") {
             continue;
+        }
+
+        // print string
+        if (DEBUG) {
+            std::cout << str << std::endl;
         }
 
         // Count the number of characters
