@@ -1,5 +1,20 @@
 import os
 
+class Piece:
+    def __init__(self, color, position):
+        self.color = color
+        self.position = position
+        self.has_moved = False
+        self.symbol = '♟' if color == 'black' else '♙'
+
+    def move(self, new_position):
+        # move the piece to a new position on the board
+        pass
+
+    def get_possible_moves(self):
+        # return a list of all possible positions that the piece can move to
+        pass
+
 class Square:
     def __init__(self, row, col):
         self.piece = None
@@ -20,9 +35,15 @@ class Board:
             print('|', end=' ')
 
             for j, square in enumerate(row):
+                # add a piece to the board if it's the starting position
+                if i in [0,1,6,7]:
+                    square.piece = Piece('black', (i, j))
+
                 # get the symbol for the piece on the square, or a space if the square is empty
-                piece = square.piece
-                symbol = piece.symbol if piece else ' '
+                if square.piece is not None:
+                    symbol = square.piece.symbol
+                else:
+                    symbol = ' '
 
                 # color the square black or white based on its color attribute
                 if square.color == 'black':
@@ -54,20 +75,6 @@ class Board:
 
     def check_game_over(self):
         # check if the game is over (e.g. checkmate or stalemate)
-        pass
-
-class Piece:
-    def __init__(self, color, position):
-        self.color = color
-        self.position = position
-        self.has_moved = False
-
-    def move(self, new_position):
-        # move the piece to a new position on the board
-        pass
-
-    def get_possible_moves(self):
-        # return a list of all possible positions that the piece can move to
         pass
 
 class Player:
