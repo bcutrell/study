@@ -1,11 +1,37 @@
 import os
 
+DEFAULT_SQUARE_WIDTH = 3
+
+DEFAULT_SYMBOLS = {
+    'pawn': 'p',
+    'knight': 'n',
+    'bishop': 'b',
+    'rook': 'r',
+    'queen': 'q',
+    'king': 'k'
+}
+
+# define starting positions of the pieces
+DEFAULT_POSTIONS = {
+    'rook': [(0, 0), (0, 7), (7, 0), (7, 7)],
+    'knight': [(0, 1), (0, 6), (7, 1), (7, 6)],
+    'bishop': [(0, 2), (0, 5), (7, 2), (7, 5)],
+    'queen': [(0, 3), (7, 3)],
+    'king': [(0, 4), (7, 4)],
+    'pawn': [(1, i) for i in range(8)] + [(6, i) for i in range(8)]
+}
+
 class Piece:
-    def __init__(self, color, position):
+    def __init__(self, name, color, symbol, position=None):
+        self.name = name
         self.color = color
+        if color == 'white':
+            self.symbol = f"\033[32m {symbol} \033[0m" # red
+        else:
+            self.symbol = f"\033[31m {symbol} \033[0m" # green
+
         self.position = position
         self.has_moved = False
-        self.symbol = '♟' if color == 'black' else '♙'
 
     def move(self, new_position):
         # move the piece to a new position on the board
@@ -19,6 +45,7 @@ class Square:
     def __init__(self, row, col):
         self.piece = None
         self.color = 'black' if (row + col) % 2 else 'white'
+        self.label = chr(col + 97) + str(8 - row)
 
 class Board:
     def __init__(self):
@@ -27,7 +54,9 @@ class Board:
 
     def draw(self):
         # print a horizontal bar at the top of the board
-        print('-' * 33)
+        board_width = DEFAULT_SQUARE_WIDTH * 8 * 2
+        horizontal_border = "-" * board_width + "-"
+        print(horizontal_border)
 
         # loop through each row and column of the board
         for i, row in enumerate(self.grid):
@@ -35,15 +64,8 @@ class Board:
             print('|', end=' ')
 
             for j, square in enumerate(row):
-                # add a piece to the board if it's the starting position
-                if i in [0,1,6,7]:
-                    square.piece = Piece('black', (i, j))
-
                 # get the symbol for the piece on the square, or a space if the square is empty
-                if square.piece is not None:
-                    symbol = square.piece.symbol
-                else:
-                    symbol = ' '
+                symbol = square.piece.symbol if square.piece else DEFAULT_SQUARE_WIDTH * ' '
 
                 # color the square black or white based on its color attribute
                 if square.color == 'black':
@@ -56,14 +78,10 @@ class Board:
                     print('|', end=' ')
 
             # print a vertical bar at the end of the row
-            print('|')
+            print('|', len(self.grid)-i)
+            print(horizontal_border)
 
-            # print a horizontal bar after each row, except the last one
-            if i < 7:
-                print('-' * 33)
-            else:
-                # print a horizontal bar at the bottom of the board
-                print('-' * 33)
+        print("  ", ((DEFAULT_SQUARE_WIDTH + 2) * " ").join(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']))
 
     def move_piece(self, start, end):
         # move a piece from the start square to the end square
@@ -72,6 +90,9 @@ class Board:
 
         # redraw the board
         self.draw()
+
+    def add_piece(self, piece, row, col):
+        self.grid[row][col].piece = piece
 
     def check_game_over(self):
         # check if the game is over (e.g. checkmate or stalemate)
@@ -110,6 +131,17 @@ def draw_board():
 if __name__ == '__main__':
     # create a new board and player
     board = Board()
+
+    # create pieces and add them to the board
+    for piece_type, positions in DEFAULT_POSTIONS.items():
+        for position in positions:
+            if piece_type == 'pawn':
+                color = 'white' if position[0] == 1 else 'black'
+            else:
+                color = 'white' if position[0] == 0 else 'black'
+
+            piece = Piece(piece_type, color, DEFAULT_SYMBOLS[piece_type])
+            board.add_piece(piece, *position)
 
     # create a new player
     player = Player('white')
