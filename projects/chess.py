@@ -98,6 +98,10 @@ class Board:
         # check if the game is over (e.g. checkmate or stalemate)
         pass
 
+    def print_board(self):
+        pass
+
+
 class Player:
     def __init__(self, color):
         self.color = color
