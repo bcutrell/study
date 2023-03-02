@@ -4,11 +4,11 @@ DEFAULT_SQUARE_WIDTH = 3
 
 DEFAULT_SYMBOLS = {
     'pawn': 'p',
-    'knight': 'n',
-    'bishop': 'b',
-    'rook': 'r',
-    'queen': 'q',
-    'king': 'k'
+    'knight': 'N',
+    'bishop': 'B',
+    'rook': 'R',
+    'queen': 'Q',
+    'king': 'K'
 }
 
 # define starting positions of the pieces
@@ -50,7 +50,10 @@ class Square:
 class Board:
     def __init__(self):
         # create a 8x8 grid of squares
-        self.grid = [[Square(i, j) for j in range(8)] for i in range(8)]
+        self.grid = [
+            [Square(i, j) for j in range(8)] for i in range(8)
+        ]
+        self.turn = 'white'
 
     def draw(self):
         # print a horizontal bar at the top of the board
@@ -85,11 +88,9 @@ class Board:
 
     def move_piece(self, start, end):
         # move a piece from the start square to the end square
+        piece = self.grid[start[0]][start[1]].piece
         self.grid[start[0]][start[1]].piece = None
         self.grid[end[0]][end[1]].piece = piece
-
-        # redraw the board
-        self.draw()
 
     def add_piece(self, piece, row, col):
         self.grid[row][col].piece = piece
@@ -123,16 +124,7 @@ class Player:
         row = int(input_str[1]) - 1
         return row, col
 
-def clear_terminal():
-    # clear the terminal using the 'clear' command
-    os.system('clear')
-
-def draw_board():
-    # redraw the board
-    board.draw()
-
-
-if __name__ == '__main__':
+def main():
     # create a new board and player
     board = Board()
 
@@ -148,14 +140,23 @@ if __name__ == '__main__':
             board.add_piece(piece, *position)
 
     # create a new player
-    player = Player('white')
+    white_player = Player('white')
+    black_player = Player('black')
 
     # start the game loop
     while True:
         # clear the terminal and redraw the board
-        clear_terminal()
-        draw_board()
+        os.system('clear')
+        board.draw()
 
         # get the player's move and make it
-        move = player.get_move()
+        if board.turn == 'white':
+            move = white_player.get_move()
+        else:
+            move = black_player.get_move()
+
         board.move_piece(*move)
+
+if __name__ == '__main__':
+    main()
+    
