@@ -1,5 +1,13 @@
 '''
 bcutrell13@gmail.com - January 2020
+
+This file contains functions for analyzing portfolios.
+
+Requirements:
+    ALPHAVANTAGE_API_KEY - API key for alphavantage.co
+        $ export ALPHAVANTAGE_API_KEY=12345
+
+
 '''
 
 '''
@@ -11,6 +19,7 @@ import urllib.request
 import zipfile
 import json
 import time
+import yfinance as yf
 
 import numpy as np
 import pandas as pd
@@ -21,8 +30,6 @@ from datetime import datetime
 
 from scipy import stats
 from scipy.optimize import minimize
-
-import config
 
 '''
 constants
@@ -93,11 +100,11 @@ def get_fama_french():
 
 def _get_prices(ticker):
     params = {
-        'function': 'TIME_SERIES_DAILY_ADJUSTED',
+        'function': 'TIME_SERIES_DAILY',
         'datatype': 'csv',
         'outputsize': 'full',
         'symbol': ticker,
-        'apikey': config.ALPHAVANTAGE_API_KEY
+        'apikey': os.environ.get('ALPHAVANTAGE_API_KEY')
     }
 
     src_url = ALPHAVANTAGE_URL + urllib.parse.urlencode(params)
@@ -105,11 +112,23 @@ def _get_prices(ticker):
     resp_text = resp.read().decode("utf-8")
 
     try:
-        df = pd.read_csv(StringIO(resp_text), usecols=['adjusted_close', 'timestamp'], index_col=0)
+        df = pd.read_csv(StringIO(resp_text), usecols=['timestamp', 'close'], index_col=0)
         df.index = pd.to_datetime(df.index)
     except:
         if json.loads(resp_text)['Note'] == ALPHAVANTAGE_CALL_LIMIT_NOTE:
             raise AlphavantageCallLimitException
+        else:
+            raise AlphavantageException
+
+    return df
+
+def _get_prices_yf(ticker):
+    try:
+        df = yf.download(ticker, start="1900-01-01")
+        df = df[['Close']]
+        df.columns = ['close']
+    except:
+        raise Exception("Failed to fetch data from yfinance")
 
     return df
 
@@ -118,9 +137,8 @@ def get_prices(ticker):
     Get prices from alphavantage API.
     For now, only handle the per minute call limit error
     """
-
     try:
-        return _get_prices(ticker)
+        return _get_prices_yf(ticker)
     except AlphavantageCallLimitException:
         print("Call frequency exceeded, sleeping for 1 minute")
         time.sleep(60) # wait 1 minute
@@ -131,7 +149,7 @@ def get_prices(ticker):
 def get_batch_prices(tickers, merge_df=None):
     for ticker in tickers:
         df = get_prices(ticker)
-        df.rename(columns={ 'adjusted_close': ticker }, inplace=True)
+        df.rename(columns={ 'close': ticker }, inplace=True)
 
         if merge_df is not None:
             merge_df = merge_df.merge(df, how='outer', left_index=True, right_index=True)
@@ -294,4 +312,3 @@ if __name__ == '__main__':
     get_beta(prices['NFLX'])
 
     run_monte_carlo_optimization(prices)
-    
