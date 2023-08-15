@@ -19,6 +19,7 @@ import urllib.request
 import zipfile
 import json
 import time
+import yfinance as yf
 
 import numpy as np
 import pandas as pd
@@ -121,13 +122,23 @@ def _get_prices(ticker):
 
     return df
 
+def _get_prices_yf(ticker):
+    try:
+        df = yf.download(ticker, start="1900-01-01")
+        df = df[['Close']]
+        df.columns = ['close']
+    except:
+        raise Exception("Failed to fetch data from yfinance")
+
+    return df
+
 def get_prices(ticker):
     """
     Get prices from alphavantage API.
     For now, only handle the per minute call limit error
     """
     try:
-        return _get_prices(ticker)
+        return _get_prices_yf(ticker)
     except AlphavantageCallLimitException:
         print("Call frequency exceeded, sleeping for 1 minute")
         time.sleep(60) # wait 1 minute
