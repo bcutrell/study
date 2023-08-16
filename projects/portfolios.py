@@ -98,7 +98,7 @@ def get_fama_french():
 
     return factors
 
-def _get_prices(ticker):
+def _get_prices_alphavantage(ticker):
     params = {
         'function': 'TIME_SERIES_DAILY',
         'datatype': 'csv',
@@ -116,13 +116,15 @@ def _get_prices(ticker):
         df.index = pd.to_datetime(df.index)
     except:
         if json.loads(resp_text)['Note'] == ALPHAVANTAGE_CALL_LIMIT_NOTE:
-            raise AlphavantageCallLimitException
+            print("Call frequency exceeded, sleeping for 1 minute")
+            time.sleep(60) # wait 1 minute
+            return _get_prices_alphavantage(ticker)
         else:
             raise AlphavantageException
 
     return df
 
-def _get_prices_yf(ticker):
+def _get_prices_yfinance(ticker):
     try:
         df = yf.download(ticker, start="1900-01-01")
         df = df[['Close']]
@@ -132,19 +134,15 @@ def _get_prices_yf(ticker):
 
     return df
 
-def get_prices(ticker):
+def get_prices(ticker, data_source='yfinance'):
     """
     Get prices from alphavantage API.
     For now, only handle the per minute call limit error
     """
-    try:
-        return _get_prices_yf(ticker)
-    except AlphavantageCallLimitException:
-        print("Call frequency exceeded, sleeping for 1 minute")
-        time.sleep(60) # wait 1 minute
-        return get_prices(ticker)
-    except Exception as err:
-        print("Failed to get prices from alphavantage: {}".format(err))
+    if data_source == 'alphavantage':
+        return _get_prices_alphavantage(ticker)
+    elif data_source == 'yfinance':
+        return _get_prices_yfinance(ticker)
 
 def get_batch_prices(tickers, merge_df=None):
     for ticker in tickers:
