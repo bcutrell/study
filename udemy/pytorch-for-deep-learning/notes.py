@@ -41,3 +41,103 @@ print(y)
 
 # 10. Find the matrix product of x and y
 print(x.mm(y))
+
+#
+# Linear Regression
+#
+# Create a column matrix of X values
+X = torch.linspace(1,50,50).reshape(-1,1)
+
+# Create a "random" array of error values
+torch.manual_seed(71) # to obtain reproducible results
+e = torch.randint(-8,9,(50,1),dtype=torch.float)
+print(e.sum())
+
+# Create a column matrix of y values
+y = 2*X + 1 + e
+print(y.shape)
+
+plt.scatter(X.numpy(), y.numpy())
+plt.ylabel('y')
+plt.xlabel('x')
+
+torch.manual_seed(59)
+
+model = nn.Linear(in_features=1, out_features=1)
+print(model.weight)
+print(model.bias)
+
+class Model(nn.Module):
+    def __init__(self, in_features, out_features):
+        super().__init__()
+        self.linear = nn.Linear(in_features, out_features)
+
+    def forward(self, x):
+        y_pred = self.linear(x)
+        return y_pred
+
+torch.manual_seed(59)
+model = Model(1, 1)
+print(model)
+print('Weight:', model.linear.weight.item())
+print('Bias:  ', model.linear.bias.item())
+
+for name, param in model.named_parameters():
+    print(name, '\t', param.item())
+
+x = torch.tensor([2.0])
+print(model.forward(x))
+
+x1 = np.array([X.min(),X.max()])
+print(x1)
+
+w1,b1 = model.linear.weight.item(), model.linear.bias.item()
+print(f'Initial weight: {w1:.8f}, Initial bias: {b1:.8f}')
+print()
+
+y1 = x1*w1 + b1
+print(y1)
+
+plt.scatter(X.numpy(), y.numpy())
+plt.plot(x1,y1,'r')
+plt.title('Initial Model')
+plt.ylabel('y')
+plt.xlabel('x');
+
+criterion = nn.MSELoss()
+
+optimizer = torch.optim.SGD(model.parameters(), lr = 0.001)
+
+
+epochs = 50
+losses = []
+
+for i in range(epochs):
+    i+=1
+    y_pred = model.forward(X)
+    loss = criterion(y_pred, y)
+    losses.append(loss)
+    print(f'epoch: {i:2}  loss: {loss.item():10.8f}  weight: {model.linear.weight.item():10.8f}  \
+bias: {model.linear.bias.item():10.8f}')
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+plt.plot(range(epochs), losses)
+plt.ylabel('Loss')
+plt.xlabel('epoch');
+
+w1,b1 = model.linear.weight.item(), model.linear.bias.item()
+print(f'Current weight: {w1:.8f}, Current bias: {b1:.8f}')
+print()
+
+y1 = x1*w1 + b1
+print(x1)
+print(y1)
+
+plt.scatter(X.numpy(), y.numpy())
+plt.plot(x1,y1,'r')
+plt.title('Current Model')
+plt.ylabel('y')
+plt.xlabel('x');
+
