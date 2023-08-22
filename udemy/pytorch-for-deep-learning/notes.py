@@ -141,3 +141,15 @@ plt.title('Current Model')
 plt.ylabel('y')
 plt.xlabel('x');
 
+# Building train/test split tensors
+from sklearn.model_selection import train_test_split
+
+train_X, test_X, train_y, test_y = train_test_split(df.drop('target',axis=1).values,
+                                                    df['target'].values, test_size=0.2,
+                                                    random_state=33)
+
+X_train = torch.FloatTensor(train_X)
+X_test = torch.FloatTensor(test_X)
+y_train = torch.LongTensor(train_y).reshape(-1, 1)
+y_test = torch.LongTensor(test_y).reshape(-1, 1)
+
