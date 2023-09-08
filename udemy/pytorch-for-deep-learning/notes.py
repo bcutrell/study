@@ -291,3 +291,38 @@ with torch.no_grad():
     print(new_model(mystery_iris))
     print()
     print(labels[new_model(mystery_iris).argmax()])
+
+
+#
+# Income Exercises
+#
+df = pd.read_csv('../Data/income.csv')
+
+cat_cols = ['sex', 'education', 'marital-status', 'workclass', 'occupation']
+cont_cols = ['age', 'hours-per-week']
+y_col = ['label']
+
+print(f'cat_cols  has {len(cat_cols)} columns')  # 5
+print(f'cont_cols has {len(cont_cols)} columns') # 2
+print(f'y_col     has {len(y_col)} column')      # 1
+
+for cat in cat_cols:
+    df[cat] = df[cat].astype('category')
+
+cat_szs = [len(df[col].cat.categories) for col in cat_cols]
+emb_szs = [(size, min(50, (size+1)//2)) for size in cat_szs]
+emb_szs
+
+sx = df['sex'].cat.codes.values
+ed = df['education'].cat.codes.values
+ms = df['marital-status'].cat.codes.values
+wc = df['workclass'].cat.codes.values
+oc = df['occupation'].cat.codes.values
+
+cats = np.stack([sx,ed,ms,wc,oc], 1)
+
+# convert to tensor
+cats = torch.tensor(cats, dtype=torch.int64)
+
+conts = np.stack([df[col].values for col in cont_cols], 1)
+conts[:5]
