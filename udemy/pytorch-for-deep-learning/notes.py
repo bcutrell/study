@@ -389,3 +389,18 @@ class TabularModel(nn.Module):
         # Set up model layers
         x = self.layers(x)
         return x
+
+#
+# GPU
+#
+# Get Id of default device
+torch.cuda.current_device()
+torch.cuda.get_device_name(0)
+torch.cuda.memory_allocated()
+torch.cuda.memory_cached()
+
+# CPU
+a = torch.FloatTensor([1.,2.])
+
+# GPU
+a = torch.FloatTensor([1., 2.]).cuda()
