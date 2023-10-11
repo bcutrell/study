@@ -1,3 +1,17 @@
+"""
+Testing various backtesting frameworks for Python
+
+Frameworks:
+https://github.com/nautechsystems/nautilus_trader
+https://github.com/mementum/backtrader
+https://github.com/polakowo/vectorbt
+
+Resources:
+https://www.backtrader.com/blog/2019-07-19-rebalancing-conservative/rebalancing-conservative/
+https://www.backtrader.com/blog/posts/2017-07-05-order-history/order-history/
+https://www.backtrader.com/blog/posts/2017-04-09-multi-example/multi-example/
+https://community.backtrader.com/topic/3760/csv-with-1000-tickers-and-only-monthly-revenue-and-close-price-data/3
+"""
 from datetime import datetime
 import argparse
 
@@ -5,13 +19,16 @@ import yfinance as yf
 import backtrader as bt
 import vectorbt as vbt
 
-
-
 #
 # Vectorbt
 #
 def vectorbt_example():
     # Download daily close data for Apple stock
+    data = vbt.YFData.download('AAPL', interval='1d')
+    pf = vbt.Portfolio.from_holding(data, init_cash=100)
+    pf.total_profit()
+
+def vectorbt_from_signals():
     data = vbt.YFData.download('AAPL', interval='1d')
 
     # Calculate the 10-day and 50-day moving averages
@@ -48,9 +65,9 @@ class BuyAndHoldTarget(bt.Strategy):
 
     def next(self):
         """ called every period """
-        # log the closing price of the series from the reference
-        if self.data.tick_last:
-            self.log('Tick Last, %.2f' % self.data.tick_last)
+        # log any orders
+        for order in self.broker.orders:
+            self.log('Order %d: %s - %s' % (order.ref, order.data._name, order))
 
     def stop(self):
         # calculate the actual returns
@@ -69,8 +86,8 @@ def backtrader_example():
     cerebro = bt.Cerebro()
 
     # Add data from a file
-    # data = bt.feeds.BacktraderCSVData(dataname="../data/data.txt")
-    # cerebro.adddata(data)
+    data = bt.feeds.BacktraderCSVData(dataname="data/random_stocks_5yr.csv")
+    cerebro.adddata(data)
 
     # Add a data feed for AAPL
     aapl_data = bt.feeds.PandasData(dataname=yf.download('AAPL', '2022-01-01', '2023-01-01'))
@@ -88,7 +105,7 @@ def backtrader_example():
 
 def main():
     backtrader_example()
-    vectorbt_example()
+    # vectorbt_example()
 
 if __name__ == "__main__":
     main()
