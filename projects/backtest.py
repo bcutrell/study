@@ -2,15 +2,20 @@
 Testing various backtesting frameworks for Python
 
 Frameworks:
-https://github.com/nautechsystems/nautilus_trader
-https://github.com/mementum/backtrader
-https://github.com/polakowo/vectorbt
+    https://github.com/nautechsystems/nautilus_trader
+    https://github.com/mementum/backtrader
+    https://github.com/polakowo/vectorbt
 
 Resources:
-https://www.backtrader.com/blog/2019-07-19-rebalancing-conservative/rebalancing-conservative/
-https://www.backtrader.com/blog/posts/2017-07-05-order-history/order-history/
-https://www.backtrader.com/blog/posts/2017-04-09-multi-example/multi-example/
-https://community.backtrader.com/topic/3760/csv-with-1000-tickers-and-only-monthly-revenue-and-close-price-data/3
+    Backtrader ->
+        https://github.com/mementum/backtrader/blob/master/samples/multidata-strategy/multidata-strategy.py
+        https://github.com/mementum/backtrader/blob/master/samples/multitrades/multitrades.py
+        https://www.backtrader.com/blog/2019-07-19-rebalancing-conservative/rebalancing-conservative/
+        https://www.backtrader.com/blog/posts/2017-07-05-order-history/order-history/
+        https://www.backtrader.com/blog/posts/2017-04-09-multi-example/multi-example/
+
+    VectorBT ->
+        https://github.com/polakowo/vectorbt/blob/master/examples/PortfolioOptimization.ipynb
 """
 from datetime import datetime
 import argparse
