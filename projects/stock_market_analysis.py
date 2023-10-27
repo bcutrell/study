@@ -108,8 +108,8 @@ def value_at_risk(rets):
     # The 0.05 empirical quantile of daily returns
     rets['AAPL'].quantile(0.05)
     # >> -0.019
-    # The 0.05 empirical quantile of daily returns is at -0.019. 
-    # That means that with 95% confidence, our worst daily loss will not exceed 1.9%. 
+    # The 0.05 empirical quantile of daily returns is at -0.019.
+    # That means that with 95% confidence, our worst daily loss will not exceed 1.9%.
     # If we have a 1 million dollar investment, our one-day 5% VaR is 0.019 * 1,000,000 = $19,000.
 
 def var_monte_carlo(rets):
@@ -199,11 +199,10 @@ def var_monte_carlo(rets):
     plt.title(u"Final price distribution for Google Stock after %s days" % days, weight='bold');
 
     # interpretation
-    # This basically menas for every initial stock you purchase your putting about $18.38 
+    # This basically menas for every initial stock you purchase your putting about $18.38
     # at risk 99% of the time from our Monte Carlo Simulation.
 
 
 if __name__ == '__main__':
     collect_stock_data()
-    print(AAPL)
 
