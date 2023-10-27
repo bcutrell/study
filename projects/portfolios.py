@@ -6,8 +6,6 @@ This file contains functions for analyzing portfolios.
 Requirements:
     ALPHAVANTAGE_API_KEY - API key for alphavantage.co
         $ export ALPHAVANTAGE_API_KEY=12345
-
-
 '''
 
 '''
