@@ -2,7 +2,6 @@
 Testing various backtesting frameworks for Python
 
 Frameworks:
-    https://github.com/nautechsystems/nautilus_trader
     https://github.com/mementum/backtrader
     https://github.com/polakowo/vectorbt
 
@@ -18,7 +17,6 @@ Resources:
         https://github.com/polakowo/vectorbt/blob/master/examples/PortfolioOptimization.ipynb
 """
 from datetime import datetime
-import argparse
 
 import yfinance as yf
 import backtrader as bt
@@ -29,7 +27,7 @@ import vectorbt as vbt
 #
 def vectorbt_example():
     # Download daily close data for Apple stock
-    data = vbt.YFData.download('AAPL', interval='1d')
+    data = vbt.YFData.download('AAPL', interval='1d').get('Close')
     pf = vbt.Portfolio.from_holding(data, init_cash=100)
     pf.total_profit()
 
@@ -91,8 +89,8 @@ def backtrader_example():
     cerebro = bt.Cerebro()
 
     # Add data from a file
-    data = bt.feeds.BacktraderCSVData(dataname="data/random_stocks_5yr.csv")
-    cerebro.adddata(data)
+    # data = bt.feeds.BacktraderCSVData(dataname="data/random_stocks_5yr.csv")
+    # cerebro.adddata(data)
 
     # Add a data feed for AAPL
     aapl_data = bt.feeds.PandasData(dataname=yf.download('AAPL', '2022-01-01', '2023-01-01'))
@@ -110,7 +108,7 @@ def backtrader_example():
 
 def main():
     backtrader_example()
-    # vectorbt_example()
+    vectorbt_example()
 
 if __name__ == "__main__":
     main()
