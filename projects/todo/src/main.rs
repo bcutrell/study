@@ -2,6 +2,14 @@
 // Learning about rust and htmx by following this great post:
 // https://www.joeymckenzie.tech/blog/templates-with-rust-axum-htmx-askama
 //
+// pnpm dlx tailwindcss -i styles/tailwind.css -o assets/main.css --watch
+//
+//  Run server:
+//  $ cargo watch -x run
+//
+//  Run tailwind:
+//  $ pnpm dlx tailwindcss -i styles/tailwind.css -o assets/main.css --watch && cargo watch -x run
+//
 use anyhow::Context;
 use askama::Template;
 use axum::{
@@ -10,6 +18,7 @@ use axum::{
     routing::get,
     Router,
 };
+use tower_http::services::ServeDir;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
  
@@ -24,11 +33,14 @@ async fn main() -> anyhow::Result<()> {
         .init();
  
     info!("initializing router...");
- 
-    let router = Router::new().route("/", get(hello));
+    let assets_path = std::env::current_dir().unwrap();
     let port = 8000_u16;
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
- 
+    let router = Router::new().route("/", get(hello)).nest_service(
+        "/assets",
+        ServeDir::new(format!("{}/assets", assets_path.to_str().unwrap())),
+    );
+
     info!("router initialized, now listening on port {}", port);
  
     axum::Server::bind(&addr)
@@ -70,4 +82,3 @@ where
         }
     }
 }
-// https://www.shuttle.rs/blog/2023/10/25/htmx-with-rust#using-htmx
