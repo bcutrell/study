@@ -4,8 +4,13 @@
     <link href="/assets/main.css" rel="stylesheet" />
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
 
-    <!-- Allow child to extend title+assets -->
+    <!-- Allow child to extend title -->
     <title>{% block title %}{{ title }}{% endblock %}</title>
+
+    <!-- htmx from the unpkg CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+
+    <!-- Allow child to extend assets -->
     {% block head %}{% endblock %}
   </head>
   <body>
