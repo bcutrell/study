@@ -37,6 +37,20 @@ use tracing::info;
 
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+use serde_json::json;
+
+
+struct Todo {
+    id: i32,
+    description: String,
+}
+
+#[derive(Template)]
+#[template(path = "todos.html")]
+struct Records {
+    todos: Vec<Todo>,
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
@@ -52,10 +66,11 @@ async fn main() -> anyhow::Result<()> {
     let port = 8000_u16;
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
 
-    let api_router = Router::new().route("/hello", get(hello_from_the_server));
+    // let api_router = Router::new().route("/todos", get(todos_from_the_server));
 
     let router = Router::new()
         .route("/", get(hello))
+        .route("/todos", get(todos_from_the_server))
         .nest("/api", api_router)
         .nest_service(
             "/assets",
@@ -72,8 +87,19 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn hello_from_the_server() -> &'static str {
-    "Hello!"
+async fn todos_from_the_server() -> impl IntoResponse {
+    let todo = vec![
+        Todo {
+            id: 1,
+            description: "Buy milk".to_string(),
+        },
+        Todo {
+            id: 2,
+            description: "Buy eggs".to_string(),
+        }
+    ];
+
+    Records { todos }
 }
 
 async fn hello() -> impl IntoResponse {
