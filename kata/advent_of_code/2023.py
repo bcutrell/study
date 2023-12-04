@@ -1,7 +1,14 @@
+import argparse
 import typing
 
 def day1():
+    """
+        $ Part 1:  53334
+        $ Part 2:  52834
+    """
     data = []
+
+    # START: Part 1
     total = 0
     with open('day1_input.txt', 'r') as f:
         for line in f:
@@ -14,8 +21,8 @@ def day1():
             combined_num = int(nums[0] + nums[-1])
             total += combined_num
             data.append(line) # add line to data
-
     print("Part 1: ", total)
+    # END: Part 1
 
     num_words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
     word_to_num_str = { "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
@@ -62,14 +69,77 @@ def day1():
             print(f"first_num={first_num}, second_num={second_num} line={line}")
             raise Exception("first_num or second_num is empty")
         else:
-            print(f"first_num={first_num}, second_num={second_num} line={line}")
+            pass
 
         combined_num = int(first_num + second_num)
         updated_total += combined_num
     print("Part 2: ", updated_total)
 
+
+def day2():
+    """
+        $ Part 1: 2505
+    """
+    game_log = {}
+    # Part 1:
+    # 12 red cubes, 13 green cubes, and 14 blue cubes
+    with open('day2_input.txt', 'r') as f:
+        valid_games = 0
+        valid_ids = []
+        game_log = {}
+
+        for line in f:
+            line = line.strip()
+            game_id, games = line.split(":")
+            key = int(game_id.split(" ")[-1])
+            game_log[key] = []
+            games = games.split(";")
+            for game in games:
+                marbels = game.split(",")
+
+                color_counts = {
+                    "red": 0,
+                    "green": 0,
+                    "blue": 0
+                }
+                for g in game.split(","):
+                    count, color = g.strip().split(" ")
+                    color_counts[color] += int(count)
+
+                invalid = False
+                for color in color_counts:
+                    if color == "red" and color_counts[color] > 12:
+                        invalid = True
+                        break
+
+                    if color == "green" and color_counts[color] > 13:
+                        invalid = True
+                        break
+
+                    if color == "blue" and color_counts[color] > 14:
+                        invalid = True
+                        break
+
+                if invalid:
+                    break
+
+            if not invalid:
+                valid_games += 1
+                valid_ids.append(game_id)
+
+        total = 0
+        for id in valid_ids:
+            id_num = int(id.split(" ")[-1])
+            total += id_num
+
+        print("Part 1: ", total)
+
+
+
 def main():
-    day1()
+    # day1()
+    day2()
+
 
 if __name__ == "__main__":
     main()
