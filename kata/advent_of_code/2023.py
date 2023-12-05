@@ -79,24 +79,23 @@ def day1():
 def day2():
     """
         $ Part 1: 2505
+        $ Part 2:  70265
     """
     game_log = {}
     # Part 1:
     # 12 red cubes, 13 green cubes, and 14 blue cubes
     with open('day2_input.txt', 'r') as f:
-        valid_games = 0
-        valid_ids = []
         game_log = {}
+        invalid_game_ids = set()
 
         for line in f:
             line = line.strip()
             game_id, games = line.split(":")
-            key = int(game_id.split(" ")[-1])
-            game_log[key] = []
-            games = games.split(";")
-            for game in games:
-                marbels = game.split(",")
 
+            game_id = int(game_id.split(" ")[-1])
+            game_log[game_id] = []
+
+            for game in games.split(";"):
                 color_counts = {
                     "red": 0,
                     "green": 0,
@@ -106,38 +105,48 @@ def day2():
                     count, color = g.strip().split(" ")
                     color_counts[color] += int(count)
 
-                invalid = False
+                game_log[game_id].append(color_counts)
+
                 for color in color_counts:
                     if color == "red" and color_counts[color] > 12:
-                        invalid = True
-                        break
+                        invalid_game_ids.add(game_id)
 
                     if color == "green" and color_counts[color] > 13:
-                        invalid = True
-                        break
+                        invalid_game_ids.add(game_id)
 
                     if color == "blue" and color_counts[color] > 14:
-                        invalid = True
-                        break
-
-                if invalid:
-                    break
-
-            if not invalid:
-                valid_games += 1
-                valid_ids.append(game_id)
+                        invalid_game_ids.add(game_id)
 
         total = 0
-        for id in valid_ids:
-            id_num = int(id.split(" ")[-1])
-            total += id_num
-
+        for id in game_log:
+            if id in invalid_game_ids:
+                continue
+            else:
+                total += id
         print("Part 1: ", total)
 
+        # Part 2:
+        powers = []
+        for key, games in game_log.items():
+            # find maximum count for each color
+            max_red = 0
+            max_green = 0
+            max_blue = 0
+            for game in games:
+                if game["red"] > max_red:
+                    max_red = game["red"]
+                if game["green"] > max_green:
+                    max_green = game["green"]
+                if game["blue"] > max_blue:
+                    max_blue = game["blue"]
 
+            power = max_red*max_green*max_blue
+            powers.append(power)
+
+        print("Part 2: ", sum(powers))
 
 def main():
-    # day1()
+    day1()
     day2()
 
 
