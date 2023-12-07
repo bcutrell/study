@@ -145,9 +145,93 @@ def day2():
 
         print("Part 2: ", sum(powers))
 
+def day3():
+    """
+    """
+    # Part 1:
+    data = []
+    with open('day3_input.txt', 'r') as f:
+        data = []
+        for line in f:
+            line = line.strip()
+            data.append(line)
+
+    symbols = ['*', '-', '@', '#', '+', '&', '=', '%', '/', '$']
+    numbers_adjacent_to_symbols = []
+    is_digit = False
+    is_valid = False
+    digit = ""
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            point = data[i][j]
+            left_point = None
+            right_point = None
+            up_point = None
+            down_point = None
+            upper_left_point = None
+            upper_right_point = None
+            lower_left_point = None
+            lower_right_point = None
+
+            if point.isdigit():
+                is_digit = True
+                digit += point
+
+                # check all adjacent points in grid
+                # check left
+                if j-1 >= 0:
+                    left_point = data[i][j-1]
+
+                # check right
+                if j+1 < len(data[i]):
+                    right_point = data[i][j+1]
+
+                # check up
+                if i-1 >= 0:
+                    up_point = data[i-1][j]
+
+                # check down
+                if i+1 < len(data):
+                    down_point = data[i+1][j]
+
+                # check diagonals
+                # check upper left
+                if i-1 >= 0 and j-1 >= 0:
+                    upper_left_point = data[i-1][j-1]
+
+                # check upper right
+                if i-1 >= 0 and j+1 < len(data[i]):
+                    upper_right_point = data[i-1][j+1]
+
+                # check lower left
+                if i+1 < len(data) and j-1 >= 0:
+                    lower_left_point = data[i+1][j-1]
+
+                # check lower right
+                if i+1 < len(data) and j+1 < len(data[i]):
+                    lower_right_point = data[i+1][j+1]
+
+
+                # check if any adjacent points are symbols
+                for _point in [left_point, right_point, up_point, down_point, upper_left_point, upper_right_point, lower_left_point, lower_right_point]:
+                    if _point in symbols:
+                        is_valid = True
+
+            else:
+                if is_digit and digit != "" and is_valid:
+                    numbers_adjacent_to_symbols.append(digit)
+
+                is_digit = False
+                digit = ""
+                is_valid = False
+
+    print(numbers_adjacent_to_symbols)
+    print("Part 1: ", sum([int(num) for num in numbers_adjacent_to_symbols]))
+
 def main():
-    day1()
-    day2()
+    # day1()
+    # day2()
+    day3()
 
 
 if __name__ == "__main__":
