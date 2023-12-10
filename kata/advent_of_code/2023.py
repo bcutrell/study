@@ -145,8 +145,87 @@ def day2():
 
         print("Part 2: ", sum(powers))
 
+def get_adjacent_points(data, i, j):
+    points = {}
+
+    # check all adjacent points in grid
+    # check left
+    if j-1 >= 0:
+        points['left_point'] = data[i][j-1]
+
+    # check right
+    if j+1 < len(data[i]):
+        points['right_point'] = data[i][j+1]
+
+    # check up
+    if i-1 >= 0:
+        points['up_point'] = data[i-1][j]
+
+    # check down
+    if i+1 < len(data):
+        points['down_point'] = data[i+1][j]
+
+    # check diagonals
+    # check upper left
+    if i-1 >= 0 and j-1 >= 0:
+        points['upper_left_point'] = data[i-1][j-1]
+
+    # check upper right
+    if i-1 >= 0 and j+1 < len(data[i]):
+        points['upper_right_point'] = data[i-1][j+1]
+
+    # check lower left
+    if i+1 < len(data) and j-1 >= 0:
+        points['lower_left_point'] = data[i+1][j-1]
+
+    # check lower right
+    if i+1 < len(data) and j+1 < len(data[i]):
+        points['lower_right_point'] = data[i+1][j+1]
+
+    return points
+
+def get_adjacent_indexes(data, i, j):
+    indexes = {}
+
+    # check all adjacent points in grid
+    # check left
+    if j-1 >= 0:
+        indexes['left_point'] = (i, j-1)
+
+    # check right
+    if j+1 < len(data[i]):
+        indexes['right_point'] = (i, j+1)
+
+    # check up
+    if i-1 >= 0:
+        indexes['up_point'] = (i-1, j)
+
+    # check down
+    if i+1 < len(data):
+        indexes['down_point'] = (i+1, j)
+
+    # check diagonals
+    # check upper left
+    if i-1 >= 0 and j-1 >= 0:
+        indexes['upper_left_point'] = (i-1, j-1)
+
+    # check upper right
+    if i-1 >= 0 and j+1 < len(data[i]):
+        indexes['upper_right_point'] = (i-1, j+1)
+
+    # check lower left
+    if i+1 < len(data) and j-1 >= 0:
+        indexes['lower_left_point'] = (i+1, j-1)
+
+    # check lower right
+    if i+1 < len(data) and j+1 < len(data[i]):
+        indexes['lower_right_point'] = (i+1, j+1)
+
+    return indexes
+
 def day3():
     """
+        $ Part 1:  557705
     """
     # Part 1:
     data = []
@@ -178,42 +257,10 @@ def day3():
                 digit += point
 
                 # check all adjacent points in grid
-                # check left
-                if j-1 >= 0:
-                    left_point = data[i][j-1]
-
-                # check right
-                if j+1 < len(data[i]):
-                    right_point = data[i][j+1]
-
-                # check up
-                if i-1 >= 0:
-                    up_point = data[i-1][j]
-
-                # check down
-                if i+1 < len(data):
-                    down_point = data[i+1][j]
-
-                # check diagonals
-                # check upper left
-                if i-1 >= 0 and j-1 >= 0:
-                    upper_left_point = data[i-1][j-1]
-
-                # check upper right
-                if i-1 >= 0 and j+1 < len(data[i]):
-                    upper_right_point = data[i-1][j+1]
-
-                # check lower left
-                if i+1 < len(data) and j-1 >= 0:
-                    lower_left_point = data[i+1][j-1]
-
-                # check lower right
-                if i+1 < len(data) and j+1 < len(data[i]):
-                    lower_right_point = data[i+1][j+1]
-
+                points = get_adjacent_points(data, i, j)
 
                 # check if any adjacent points are symbols
-                for _point in [left_point, right_point, up_point, down_point, upper_left_point, upper_right_point, lower_left_point, lower_right_point]:
+                for _point in points.values():
                     if _point in symbols:
                         is_valid = True
 
@@ -225,8 +272,48 @@ def day3():
                 digit = ""
                 is_valid = False
 
-    print(numbers_adjacent_to_symbols)
     print("Part 1: ", sum([int(num) for num in numbers_adjacent_to_symbols]))
+
+    # Part 2:
+    index_to_digit = {}
+    digit = ""
+    is_digit = False
+    indexes = []
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            point = data[i][j]
+            if point.isdigit():
+                indexes.append((i, j))
+                is_digit = True
+                digit += point
+            else:
+                if is_digit and digit != "":
+                    for index in indexes:
+                        index_to_digit[index] = digit
+                is_digit = False
+                digit = ""
+                indexes = []
+
+    numbers_adjacent_to_star = []
+    result = 0
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            point = data[i][j]
+            if point == "*":
+                indexes = get_adjacent_indexes(data, i, j)
+                nums = []
+                for idx in indexes.values():
+                    if idx in index_to_digit:
+                        num = index_to_digit[idx]
+                        if num not in nums:
+                            nums.append(num)
+                print(nums)
+                if len(nums) == 2:
+                    result += (int(nums[0]) * int(nums[1]))
+                nums = []
+
+    print("Part 2: ", result)
+
 
 def main():
     # day1()
