@@ -226,6 +226,7 @@ def get_adjacent_indexes(data, i, j):
 def day3():
     """
         $ Part 1:  557705
+        $ Part 2:  84266818
     """
     # Part 1:
     data = []
@@ -314,11 +315,40 @@ def day3():
 
     print("Part 2: ", result)
 
+def day4():
+    """
+        $ Part 1:  25174
+        $ Part 2:  6420979
+    """
+    with open("day4_input.txt", "r") as file:
+        data = file.read()
+
+    cards = [line.split(":")[1].strip().split("|") for line in data.splitlines()]
+    sum = 0
+    copy_count = 0
+    copies = [0] * len(cards)
+    for i, card in enumerate(cards):
+        winners = set(map(int, card[0].split()))
+        match_count = len([int(num) for num in card[1].split() if int(num) in winners])
+
+        repeat_count = 1 + copies[i]
+        copy_count += repeat_count
+
+        for j in range(i + 1, i + match_count + 1):
+            if j < len(copies):
+                copies[j] += repeat_count
+
+        sum += 2 ** (match_count - 1) if match_count > 0 else 0
+
+    print(f"First part results: {sum}")
+    print(f"Second part results: {copy_count}\n")
+
 
 def main():
     # day1()
     # day2()
-    day3()
+    # day3()
+    day4()
 
 
 if __name__ == "__main__":
