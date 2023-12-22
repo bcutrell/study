@@ -74,6 +74,7 @@ def day1():
         combined_num = int(first_num + second_num)
         updated_total += combined_num
     print("Part 2: ", updated_total)
+    return (total, updated_total)
 
 
 def day2():
@@ -320,7 +321,7 @@ def day4():
         $ Part 1:  25174
         $ Part 2:  6420979
     """
-    with open("day4_input.txt", "r") as file:
+    with open("test.txt", "r") as file:
         data = file.read()
 
     cards = [line.split(":")[1].strip().split("|") for line in data.splitlines()]
@@ -328,6 +329,7 @@ def day4():
     copy_count = 0
     copies = [0] * len(cards)
     for i, card in enumerate(cards):
+        print(f"card={card}, i={i}, copies={copies}, sum={sum}, copy_count={copy_count}, repeat_count={1 + copies[i]}")
         winners = set(map(int, card[0].split()))
         match_count = len([int(num) for num in card[1].split() if int(num) in winners])
 
@@ -343,13 +345,29 @@ def day4():
     print(f"First part results: {sum}")
     print(f"Second part results: {copy_count}\n")
 
-
+#
+# Main
+#
 def main():
-    # day1()
-    # day2()
-    # day3()
+    day1()
+    day2()
+    day3()
     day4()
 
+#
+# Tests
+#
+def test_day1():
+    assert day1() == (53334, 52834)
+
+def test_day2():
+    assert day2() == None
+
+def test_day3():
+    assert day3() == None
+
+def test_day4():
+    assert day4() == None
 
 if __name__ == "__main__":
     main()
