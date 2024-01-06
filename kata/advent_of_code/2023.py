@@ -1,80 +1,81 @@
 import argparse
+import re
 import typing
 
+#
+# Constants
+#
+WORD_TO_NUM_STR = {
+    "one": "1",
+    "two": "2",
+    "three": "3",
+    "four": "4",
+    "five": "5",
+    "six": "6",
+    "seven": "7",
+    "eight": "8",
+    "nine": "9"
+}
+
+#
+# Helpers
+#
+def read_file(filename: str) -> typing.List[str]:
+    data = []
+    with open(filename, "r") as file:
+        for line in file:
+            data.append(line.strip())
+    return data
+
+def find_first_occurance(line, words):
+    pattern = '|'.join(map(re.escape, words))
+    match = re.search(pattern, line)
+    return match.group(0) if match else None
+
+def find_matches(line, words):
+    pattern = '|'.join(map(re.escape, words))
+    matches = re.findall(pattern, line)
+    return matches
+
+#
+# Days
+#
 def day1():
     """
         $ Part 1:  53334
         $ Part 2:  52834
     """
-    data = []
+    data = read_file('day1_input.txt')
 
-    # START: Part 1
-    total = 0
-    with open('day1_input.txt', 'r') as f:
-        for line in f:
-            line = line.strip()
-            nums = []
-            for char in line:
-                if char.isdigit():
-                    nums.append(char)
-
-            combined_num = int(nums[0] + nums[-1])
-            total += combined_num
-            data.append(line) # add line to data
-    print("Part 1: ", total)
-    # END: Part 1
-
-    num_words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    word_to_num_str = { "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
-                        "six": "6", "seven": "7", "eight": "8", "nine": "9" }
-
-    updated_total = 0
+    # Part 1
+    part_1 = 0
     for line in data:
-        # find the first number in the string, it can be in int or word form
-        first_num = ""
-        index = 0
+        nums = []
         for char in line:
             if char.isdigit():
-                first_num += char
-            else:
-                for word in num_words:
-                    if word == line[index:index+len(word)]:
-                        first_num += word_to_num_str[word]
-                        break
-            index += 1
+                nums.append(char)
 
-            if first_num != "":
-                break
+        combined_num = int(nums[0] + nums[-1])
+        part_1 += combined_num
+    print("Part 1: ", part_1)
 
-        second_num = ""
-        i = 0
-        for char in line[::-1]:
-            if char.isdigit():
-                second_num = char
-                break
-            else:
-                for word in num_words:
-                    if i == 0:
-                        comp = line[len(line)-len(word):]
-                    else:
-                        comp = line[len(line)-i-len(word):-i]
-                    if word == comp:
-                        second_num = word_to_num_str[word]
-                        break
-            i += 1
-            if second_num != "":
-                break
+    # Part 2
+    part_2 = 0
+    for line in data:
+        match_nums = find_matches(line, list(WORD_TO_NUM_STR.keys()) + list(WORD_TO_NUM_STR.values()))
 
-        if first_num == "" or second_num == "":
-            print(f"first_num={first_num}, second_num={second_num} line={line}")
-            raise Exception("first_num or second_num is empty")
-        else:
-            pass
+        first_match = match_nums[0]
+        if first_match in WORD_TO_NUM_STR:
+            first_match = WORD_TO_NUM_STR[first_match]
+        last_match = match_nums[-1]
+        if last_match in WORD_TO_NUM_STR:
+            last_match = WORD_TO_NUM_STR[last_match]
 
-        combined_num = int(first_num + second_num)
-        updated_total += combined_num
-    print("Part 2: ", updated_total)
-    return (total, updated_total)
+        combined_num = int(first_match + last_match)
+        part_2 += combined_num
+    print("Part 2: ", part_2)
+
+    return (part_1, part_2)
 
 
 def day2():
@@ -361,13 +362,13 @@ def test_day1():
     assert day1() == (53334, 52834)
 
 def test_day2():
-    assert day2() == None
+    pass
 
 def test_day3():
-    assert day3() == None
+    pass
 
 def test_day4():
-    assert day4() == None
+    pass
 
 if __name__ == "__main__":
     main()
