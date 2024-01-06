@@ -27,11 +27,6 @@ def read_file(filename: str) -> typing.List[str]:
             data.append(line.strip())
     return data
 
-def find_first_occurance(line, words):
-    pattern = '|'.join(map(re.escape, words))
-    match = re.search(pattern, line)
-    return match.group(0) if match else None
-
 def find_matches(line, words):
     pattern = '|'.join(map(re.escape, words))
     matches = re.findall(pattern, line)
