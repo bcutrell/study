@@ -32,6 +32,12 @@ def find_matches(line, words):
     matches = re.findall(pattern, line)
     return matches
 
+def convert_to_num(word):
+    if word in WORD_TO_NUM_STR:
+        word = WORD_TO_NUM_STR[word]
+
+    return int(word)
+
 #
 # Days
 #
