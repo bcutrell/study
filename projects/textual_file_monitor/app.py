@@ -11,8 +11,8 @@ https://dev.to/wiseai/textual-the-definitive-guide-part-3-2gl
 https://textual.textualize.io/styles/grid/#__tabbed_1_1
 """
 from textual.app import App, ComposeResult
-from textual.containers import ScrollableContainer
-from textual.widgets import Button, Footer, Header, DataTable, TabbedContent, Tab
+from textual.containers import Container, Horizontal, VerticalScroll
+from textual.widgets import Button, Footer, Header, DataTable, TabbedContent, Tab, Static, Tree
 from textual.containers import Horizontal, Vertical
 from textual.binding import Binding
 
@@ -47,15 +47,25 @@ class MyApp(App):
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
+        tree: Tree[dict] = Tree("Dune")
+        tree.root.expand()
+        characters = tree.root.add("Characters", expand=True)
+        characters.add_leaf("Paul")
+        characters.add_leaf("Jessica")
+        characters.add_leaf("Chani")
+
+        vs = VerticalScroll(id="left-pane")
+        vs.border_title = "sidebar"
+
         yield Header()
-        yield DataTable()
-
-        # with Horizontal():
-        #     yield Menu()
-        #     with Vertical(id="main"):
-        #         yield DataTable()
-
-        yield Footer()
+        with Container(id="app-grid"):
+            with vs:
+                yield Static(f"sidebar")
+                yield tree
+            with Horizontal(id="top-right"):
+                yield Static("Top Right")
+            # with Container(id="bottom-right"):
+            yield DataTable(id="bottom-right")
 
     def on_mount(self) -> None:
         table = self.query_one(DataTable)
