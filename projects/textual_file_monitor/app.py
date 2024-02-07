@@ -12,9 +12,11 @@ https://textual.textualize.io/styles/grid/#__tabbed_1_1
 """
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, VerticalScroll
-from textual.widgets import Button, Footer, Header, DataTable, TabbedContent, Tab, Static, Tree
+from textual.widgets import Button, Footer, Header, DataTable, TabbedContent, Tab, Static, Tree, RichLog
 from textual.containers import Horizontal, Vertical
 from textual.binding import Binding
+from textual.reactive import reactive
+
 
 ROWS = [
     ("task", "time", "status"),
@@ -23,22 +25,17 @@ ROWS = [
     ("Fix bugs", "2h", "in progress"),
 ]
 
-class Menu(TabbedContent, can_focus=True):
-    BORDER_TITLE = "Data Catalog"
+class TopRight(Container):
 
-    BINDINGS = [
-        Binding("j", "switch_tab(-1)", "Previous Tab", show=False),
-        Binding("k", "switch_tab(1)", "Next Tab", show=False),
-    ]
+    command = reactive("command")
 
-    def compose(self) -> ComposeResult:
-        yield Tab("Tables", id="tables")
-        yield Tab("Views", id="views")
-        yield Tab("Procedures", id="procedures")
-        yield Tab("Functions", id="functions")
-
-    def on_mount(self) -> None:
-        self.border_title = "Data Catalog"
+    def render(self):
+        if self.command == "Paul":
+            return "Paul is the main character of Dune."
+        elif self.command == "Jessica":
+            return "Jessica is the mother of Paul."
+        else:
+            return f"Command: {self.command}"
 
 class MyApp(App):
     """ A Textual App to monitor files. """
@@ -54,18 +51,22 @@ class MyApp(App):
         characters.add_leaf("Jessica")
         characters.add_leaf("Chani")
 
-        vs = VerticalScroll(id="left-pane")
-        vs.border_title = "sidebar"
+        left_pane = Container(id="left-pane")
+        left_pane.border_title = "Sidebar"
 
-        yield Header()
+        top_right = TopRight(id="top-right") # Container(id="top-right")
+        top_right.border_title = "Input"
+
+        bottom_right = Container(id="bottom-right")
+        bottom_right.border_title = "Output"
+
         with Container(id="app-grid"):
-            with vs:
-                yield Static(f"sidebar")
+            with left_pane:
                 yield tree
-            with Horizontal(id="top-right"):
-                yield Static("Top Right")
-            # with Container(id="bottom-right"):
-            yield DataTable(id="bottom-right")
+            with top_right:
+                yield RichLog(highlight=True, markup=True)
+            with bottom_right:
+                yield DataTable()
 
     def on_mount(self) -> None:
         table = self.query_one(DataTable)
@@ -73,6 +74,18 @@ class MyApp(App):
         table.zebra_stripes = True
         table.add_columns(*ROWS[0])
         table.add_rows(ROWS[1:])
+
+    def on_tree_node_selected(self, node: dict) -> None:
+        text_log = self.query_one(RichLog)
+        text_log.write(f"Selected: {node.node}")
+        # read data.csv and write it to text_log
+        with open("data.csv") as f:
+            text_log.write(f.read())
+
+        query = self.query_one(TopRight)
+        query.command = node.node
+        text_log.write(f"Command: {query.command}")
+
 
 if __name__ == "__main__":
     app = MyApp()
