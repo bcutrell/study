@@ -10,6 +10,10 @@ Resources
 https://dev.to/wiseai/textual-the-definitive-guide-part-3-2gl
 https://textual.textualize.io/styles/grid/#__tabbed_1_1
 """
+import argparse
+
+import toml
+
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, VerticalScroll
 from textual.widgets import Button, Footer, Header, DataTable, TabbedContent, Tab, Static, Tree, RichLog
@@ -42,14 +46,20 @@ class MyApp(App):
 
     CSS_PATH = "style.tcss"
 
-    def compose(self) -> ComposeResult:
+    def __init__(self, config):
+        # read config.toml file
+        self.config = toml.load(config)
+        super().__init__()
+
+    def compose(self):
         """Create child widgets for the app."""
-        tree: Tree[dict] = Tree("Dune")
+
+        tree = Tree("App")
         tree.root.expand()
-        characters = tree.root.add("Characters", expand=True)
-        characters.add_leaf("Paul")
-        characters.add_leaf("Jessica")
-        characters.add_leaf("Chani")
+
+        tasks = tree.root.add("Tasks")
+        for task in self.config['tasks']:
+            tasks.add_leaf(task)
 
         left_pane = Container(id="left-pane")
         left_pane.border_title = "Sidebar"
@@ -77,6 +87,7 @@ class MyApp(App):
 
     def on_tree_node_selected(self, node: dict) -> None:
         text_log = self.query_one(RichLog)
+        text_log.write(f"Config: {self.config}")
         text_log.write(f"Selected: {node.node}")
         # read data.csv and write it to text_log
         with open("data.csv") as f:
@@ -88,5 +99,9 @@ class MyApp(App):
 
 
 if __name__ == "__main__":
-    app = MyApp()
+    # read command line arguments
+    parser = argparse.ArgumentParser(description='Monitor files.')
+    parser.add_argument('--config', type=str, help='Path to config file.', required=True)
+    args = parser.parse_args()
+    app = MyApp(args.config)
     app.run()
