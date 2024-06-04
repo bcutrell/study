@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -23,7 +23,7 @@ func fetchLocationAreas() ([]LocationArea, error) {
 	}
 	defer response.Body.Close()
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,10 @@ func fetchLocationAreas() ([]LocationArea, error) {
 
 func main() {
 	var input string
+	// print instructions
+	fmt.Println("Type 'help' for instructions, 'exit' to quit, or 'map' to view the first 20 location areas.")
+
+	// prompt user for input
 	fmt.Print("pokedex > ")
 	fmt.Scanln(&input)
 
