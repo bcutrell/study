@@ -24,8 +24,11 @@ type Snake struct {
 	alive bool
 }
 
-var snake Snake
-var food Point
+var (
+	snake Snake
+	food  Point
+	score int
+)
 
 func main() {
 	err := termbox.Init()
@@ -41,6 +44,7 @@ func main() {
 	}
 
 	placeFood()
+	score = 0
 
 	go func() {
 		for snake.alive {
@@ -51,6 +55,9 @@ func main() {
 	}()
 
 	eventLoop()
+
+	termbox.Close()
+	fmt.Printf("Game Over! Your score: %d\n", score)
 }
 
 func placeFood() {
@@ -76,6 +83,7 @@ func update() {
 
 	if newHead == food {
 		snake.body = append([]Point{newHead}, snake.body...)
+		score++
 		placeFood()
 	} else {
 		snake.body = append([]Point{newHead}, snake.body[:len(snake.body)-1]...)
@@ -133,6 +141,4 @@ func eventLoop() {
 			panic(ev.Err)
 		}
 	}
-
-	fmt.Println("Game Over")
 }
