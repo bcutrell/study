@@ -1,4 +1,5 @@
 // Entertaining my 6 year old with chatGPT and a snake game
+// Other inspiration: https://github.com/DyegoCosta/snake-game
 package main
 
 import (
@@ -61,7 +62,6 @@ func main() {
 }
 
 func placeFood() {
-	rand.Seed(time.Now().UnixNano())
 	food = Point{rand.Intn(width-2) + 1, rand.Intn(height-2) + 1}
 }
 
