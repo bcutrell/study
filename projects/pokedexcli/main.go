@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 type LocationArea struct {
@@ -17,6 +18,8 @@ type LocationAreasResponse struct {
 	Next     string         `json:"next"`
 	Previous string         `json:"previous"`
 }
+
+var cache = NewCache(20 * time.Second)
 
 func fetchLocationAreas(url string) (LocationAreasResponse, error) {
 	if url == "" {
