@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import shutil
 from datetime import datetime
-from df_to_db import FileAdapter
+from df_to_db import FileAdapter, SQLiteAdapter
 
 @pytest.fixture
 def sample_df():
@@ -35,3 +35,30 @@ def test_list_dataframes(file_adapter, sample_df, date):
 
 def test_load_nonexistent(file_adapter, date, key):
     assert file_adapter.load(date, key) is None
+
+@pytest.fixture
+def sqlite_adapter():
+    return SQLiteAdapter(":memory:")  # Use in-memory database for testing
+
+def test_sqlite_adapter_store_and_load(sqlite_adapter):
+    date = datetime(2023, 1, 1)
+    key = "test_key"
+    filename = "test_file"
+    df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
+    
+    sqlite_adapter.store(date, key, filename, df)
+    loaded_df = sqlite_adapter.load(date, key)
+    
+    assert loaded_df is not None
+    assert loaded_df.equals(df)
+
+def test_sqlite_adapter_list_dataframes(sqlite_adapter):
+    date1 = datetime(2023, 1, 1)
+    date2 = datetime(2023, 1, 2)
+    sqlite_adapter.store(date1, "key1", "file1", pd.DataFrame({"A": [1, 2]}))
+    sqlite_adapter.store(date2, "key2", "file2", pd.DataFrame({"B": [3, 4]}))
+    
+    dataframes = sqlite_adapter.list_dataframes()
+    assert len(dataframes) == 2
+    assert ("2023-01-01", "key1", "file1", "csv") in dataframes
+    assert ("2023-01-02", "key2", "file2", "csv") in dataframes
