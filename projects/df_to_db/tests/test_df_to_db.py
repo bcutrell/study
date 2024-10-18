@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import shutil
 from datetime import datetime
-from df_to_db import FileAdapter, SQLiteAdapter
+from df_to_db import FileAdapter, SQLiteAdapter, DuckDBAdapter
 
 @pytest.fixture
 def sample_df():
@@ -62,3 +62,41 @@ def test_sqlite_adapter_list_dataframes(sqlite_adapter):
     assert len(dataframes) == 2
     assert ("2023-01-01", "key1", "file1", "csv") in dataframes
     assert ("2023-01-02", "key2", "file2", "csv") in dataframes
+
+@pytest.fixture
+def duckdb_adapter(tmp_path):
+    db_path = str(tmp_path / "test.duckdb")
+    return DuckDBAdapter(db_path)
+
+def test_store_and_load(duckdb_adapter):
+    date = datetime(2023, 4, 18)
+    key = "test_key"
+    filename = "test_file"
+    df = pd.DataFrame({"A": [1, 2, 3], "B": ["a", "b", "c"]})
+
+    duckdb_adapter.store(date, key, filename, df)
+    loaded_df = duckdb_adapter.load(date, key)
+
+    assert loaded_df is not None
+    pd.testing.assert_frame_equal(df, loaded_df)
+
+def test_list_dataframes(duckdb_adapter):
+    date1 = datetime(2023, 4, 18)
+    date2 = datetime(2023, 4, 19)
+    df1 = pd.DataFrame({"A": [1, 2, 3]})
+    df2 = pd.DataFrame({"B": [4, 5, 6]})
+
+    duckdb_adapter.store(date1, "key1", "file1", df1)
+    duckdb_adapter.store(date2, "key2", "file2", df2)
+
+    dataframes = duckdb_adapter.list_dataframes()
+    assert len(dataframes) == 2
+    assert ("2023-04-18", "key1", "file1", "csv") in dataframes
+    assert ("2023-04-19", "key2", "file2", "csv") in dataframes
+
+def test_load_nonexistent(duckdb_adapter):
+    date = datetime(2023, 4, 18)
+    key = "nonexistent_key"
+
+    loaded_df = duckdb_adapter.load(date, key)
+    assert loaded_df is None
