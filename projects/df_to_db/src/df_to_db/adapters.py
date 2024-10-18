@@ -3,21 +3,12 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, List, Tuple
 import io
+import duckdb
 
 
 import sqlite3
 import pandas as pd
 
-class Context:
-    def __init__(self) -> None:
-        self.config = {
-            "adapters": {
-                "sqlite": {"path": "db.sqlite"},
-                "file": {"path": "data"},
-                "duckdb": {"path": "db.duckdb"},
-            }
-        }
-        self.db = None
 
 class FileAdapter:
     def __init__(self, base_dir: str) -> None:
@@ -71,7 +62,8 @@ class FileAdapter:
                     extension = file_path.suffix[1:]  # Remove the leading dot
                     dataframes.append((date_str, key, filename, extension))
         return dataframes
-    
+
+
 class SQLiteAdapter:
     def __init__(self, db_path: str) -> None:
         self.db_path = db_path
@@ -102,7 +94,7 @@ class SQLiteAdapter:
         with self.conn:
             self.conn.execute(
                 "INSERT OR REPLACE INTO dataframes (date, key, filename, data) VALUES (?, ?, ?, ?)",
-                (date_str, key, filename, data)
+                (date_str, key, filename, data),
             )
 
     def load(self, date: datetime, key: str) -> Optional[pd.DataFrame]:
@@ -110,7 +102,7 @@ class SQLiteAdapter:
         with self.conn:
             cursor = self.conn.execute(
                 "SELECT data FROM dataframes WHERE date = ? AND key = ?",
-                (date_str, key)
+                (date_str, key),
             )
             result = cursor.fetchone()
             if result:
@@ -120,4 +112,54 @@ class SQLiteAdapter:
     def list_dataframes(self) -> List[Tuple[str, str, str, str]]:
         with self.conn:
             cursor = self.conn.execute("SELECT date, key, filename FROM dataframes")
-            return [(date, key, filename, "csv") for date, key, filename in cursor.fetchall()]
+            return [
+                (date, key, filename, "csv")
+                for date, key, filename in cursor.fetchall()
+            ]
+
+
+class DuckDBAdapter:
+    def __init__(self, db_path: str) -> None:
+        self.db_path = db_path
+        self.conn = duckdb.connect(db_path)
+        self.create_tables()
+
+    def create_tables(self) -> None:
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS dataframes (
+                date VARCHAR,
+                key VARCHAR,
+                filename VARCHAR,
+                data BLOB,
+                PRIMARY KEY (date, key, filename)
+            )
+        """)
+
+    def store(
+        self,
+        date: datetime,
+        key: str,
+        filename: str,
+        df: pd.DataFrame,
+    ) -> None:
+        date_str = date.strftime("%Y-%m-%d")
+        data = df.to_csv(index=False).encode()
+        self.conn.execute(
+            "INSERT OR REPLACE INTO dataframes (date, key, filename, data) VALUES (?, ?, ?, ?)",
+            [date_str, key, filename, data],
+        )
+
+    def load(self, date: datetime, key: str) -> Optional[pd.DataFrame]:
+        date_str = date.strftime("%Y-%m-%d")
+        result = self.conn.execute(
+            "SELECT data FROM dataframes WHERE date = ? AND key = ?", [date_str, key]
+        ).fetchone()
+        if result:
+            return pd.read_csv(io.StringIO(result[0].decode()))
+        return None
+
+    def list_dataframes(self) -> List[Tuple[str, str, str, str]]:
+        result = self.conn.execute(
+            "SELECT date, key, filename FROM dataframes"
+        ).fetchall()
+        return [(date, key, filename, "csv") for date, key, filename in result]
