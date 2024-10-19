@@ -163,3 +163,6 @@ class DuckDBAdapter:
             "SELECT date, key, filename FROM dataframes"
         ).fetchall()
         return [(date, key, filename, "csv") for date, key, filename in result]
+    
+    def schema_to_df(self):
+        return self.conn.execute("SELECT * FROM dataframes").fetchdf()

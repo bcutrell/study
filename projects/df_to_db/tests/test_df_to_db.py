@@ -100,3 +100,21 @@ def test_load_nonexistent(duckdb_adapter):
 
     loaded_df = duckdb_adapter.load(date, key)
     assert loaded_df is None
+
+def test_schema_to_df(duckdb_adapter):
+    df = duckdb_adapter.schema_to_df()
+    assert df.empty
+    
+    date = datetime(2023, 4, 18)
+    key = "test_key"
+    filename = "test_file"
+    _df = pd.DataFrame({"A": [1, 2, 3], "B": ["a", "b", "c"]})
+    duckdb_adapter.store(date, key, filename, _df)
+
+    df = duckdb_adapter.schema_to_df()
+    assert df.shape == (1, 4)
+    row = df.iloc[0]
+    assert row["date"] == "2023-04-18"
+    assert row["key"] == "test_key"
+    assert row["filename"] == "test_file"
+    assert row["data"] == _df.to_csv(index=False).encode()
