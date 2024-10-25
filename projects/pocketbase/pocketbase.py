@@ -4,6 +4,7 @@ import json
 from typing import Dict, List, Any, Optional, Union
 import urllib.parse
 
+
 class PocketBaseClient:
     """Python client for PocketBase API"""
 
@@ -55,7 +56,9 @@ class PocketBaseClient:
         if collection == "admins":
             endpoint = f"{self.base_url}/api/admins/auth-with-password"
         else:
-            endpoint = f"{self.base_url}/api/collections/{collection}/auth-with-password"
+            endpoint = (
+                f"{self.base_url}/api/collections/{collection}/auth-with-password"
+            )
 
         data = {"identity": email, "password": password}
 
@@ -136,6 +139,38 @@ class PocketBaseClient:
         response = self._session.delete(endpoint, headers=self._get_headers())
         return self._handle_response(response)
 
+    def delete_records(
+        self, collection: str, filter_str: Optional[str] = None, batch_size: int = 100
+    ) -> dict:
+        """
+        Delete multiple records from a collection with optional filtering
+
+        Args:
+            collection: Collection name
+            filter_str: Filter query string to select specific records
+            batch_size: Number of records to delete in each batch
+
+        Returns:
+            dict: Summary of deletion operation
+        """
+        deleted_count = 0
+        while True:
+            # Get a batch of records
+            records = self.list_records(
+                collection=collection,
+                filter_str=filter_str,
+                per_page=batch_size,
+                page=1,  # Always get first page since we're deleting
+            )
+            if not records["items"]:
+                break
+
+            # Delete each record in the batch
+            for record in records["items"]:
+                self.delete_record(collection, record["id"])
+                deleted_count += 1
+        return {"deleted_count": deleted_count}
+
     def list_records(
         self,
         collection: str,
@@ -194,6 +229,106 @@ class PocketBaseClient:
             )
 
         return self._handle_response(response)
+
+
+def to_dataframe(
+    self,
+    collection: str,
+    filter_str: Optional[str] = None,
+    sort: Optional[str] = None,
+    flatten: bool = True,
+    exclude_fields: Optional[List[str]] = None,
+):
+    """
+    Convert collection records to a pandas DataFrame
+
+    Args:
+        collection: Collection name
+        filter_str: Optional filter query string
+        sort: Optional sort query string
+        flatten: Whether to flatten nested JSON structures into columns
+        exclude_fields: List of fields to exclude from the DataFrame
+
+    Returns:
+        pd.DataFrame: DataFrame containing the records
+
+    Raises:
+        ImportError: If pandas is not installed
+        Exception: If there's an error fetching or processing the records
+    """
+    try:
+        import pandas as pd
+    except ImportError:
+        raise ImportError(
+            "pandas is required for this function. "
+            "Install it with: pip install pandas"
+        )
+
+    # Initialize list to store all records
+    all_records = []
+    page = 1
+
+    # Fetch all records with pagination
+    while True:
+        records = self.list_records(
+            collection=collection,
+            page=page,
+            per_page=100,
+            filter_str=filter_str,
+            sort=sort,
+        )
+
+        if not records["items"]:
+            break
+
+        all_records.extend(records["items"])
+        page += 1
+
+    if not all_records:
+        # Return empty DataFrame with appropriate columns
+        return pd.DataFrame()
+
+    # Convert records to DataFrame
+    df = pd.DataFrame(all_records)
+
+    # Handle exclude_fields
+    if exclude_fields:
+        df = df.drop(columns=exclude_fields, errors="ignore")
+
+    if flatten:
+        # Function to flatten nested dictionaries
+        def flatten_dict(
+            d: Dict[str, Any], parent_key: str = "", sep: str = "_"
+        ) -> Dict[str, Any]:
+            items: List[Tuple[str, Any]] = []
+            for k, v in d.items():
+                new_key = f"{parent_key}{sep}{k}" if parent_key else k
+                if isinstance(v, dict):
+                    items.extend(flatten_dict(v, new_key, sep=sep).items())
+                elif isinstance(v, list):
+                    # Convert lists to string representation
+                    items.append((new_key, str(v)))
+                else:
+                    items.append((new_key, v))
+            return dict(items)
+
+        # Flatten nested structures
+        flattened_records = []
+        for record in all_records:
+            flattened_records.append(flatten_dict(record))
+
+        df = pd.DataFrame(flattened_records)
+
+    # Convert PocketBase's ISO timestamps to pandas datetime
+    timestamp_columns = ["created", "updated"]
+    for col in timestamp_columns:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col])
+
+    # Sort index
+    df = df.sort_index(axis=1)
+
+    return df
 
 
 # Example usage
