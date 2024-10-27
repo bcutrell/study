@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 from typing import Dict, List, Any, Optional, Union
-import urllib.parse
+from dataclasses import asdict
 
 
 class PocketBaseClient:
@@ -67,7 +67,6 @@ class PocketBaseClient:
 
         if "token" in result:
             self.token = result["token"]
-            # Set token expiry to 14 days from now (PocketBase default)
             self.token_expiry = datetime.now() + timedelta(days=14)
 
         return result
@@ -333,6 +332,8 @@ def to_dataframe(
 
 # Example usage
 if __name__ == "__main__":
+    from models import *
+
     # Initialize client
     pb = PocketBaseClient("http://localhost:8090")
 
@@ -343,30 +344,31 @@ if __name__ == "__main__":
         )
         print("Authenticated:", auth_data)
 
-        # Create a record
-        new_record = pb.create_record(
-            collection="posts",
-            data={"title": "Test Post", "content": "This is a test post"},
-        )
-        print("Created record:", new_record)
+        # Create a new firm using dataclass
+        new_firm = Firms(name="Big Firm")
+        created_firm = pb.create_record("firms", asdict(new_firm))
+        print("Created firm:", created_firm)
 
-        # List records with filtering
-        records = pb.list_records(
-            collection="posts", filter_str='title ~ "Test"', sort="-created"
+        # Create an account linked to the firm
+        new_account = Accounts(
+            cash=100,
+            firm=created_firm['id']
         )
-        print("Found records:", records)
+        created_account = pb.create_record("accounts", asdict(new_account))
+        print("Created account:", created_account)
 
-        # Update a record
-        updated_record = pb.update_record(
-            collection="posts",
-            record_id=new_record["id"],
-            data={"content": "Updated content"},
+         # List accounts with filtering
+        accounts = pb.list_records(
+            collection="accounts",
+            filter_str=f'firm = "{created_firm['id']}"',
+            sort="-created"
         )
-        print("Updated record:", updated_record)
+        print("Found accounts:", accounts)
 
-        # Delete the record
-        pb.delete_record(collection="posts", record_id=new_record["id"])
-        print("Record deleted")
+        # Update firm
+        created_firm['name'] = "Updated Big Firm"
+        updated_firm = pb.update_record("firms", created_firm["id"], created_firm)
+        print("Updated firm:", updated_firm)
     except Exception as e:
         print(f"Error: {e}")
     finally:
