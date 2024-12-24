@@ -2,148 +2,143 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/term"
 	"os"
 	"os/exec"
 	"time"
-
-	"github.com/eiannone/keyboard"
 )
 
 const (
-	WIDTH  = 40
-	HEIGHT = 20
+	width        = 40
+	height       = 8
+	playerChar   = "@"
+	obstacleChar = "#"
 )
 
-func handleInput(p *Player) {
-	char, _, err := keyboard.GetKey()
-	if err != nil {
-		return
-	}
-
-	switch char {
-	case 'a':
-		p.x--
-	case 'd':
-		p.x++
-	case ' ':
-		if !p.jumping {
-			p.jumping = true
-			p.velY = -2.0
-		}
-	}
-}
-
-type Player struct {
-	x, y    int
-	sprite  rune
-	jumping bool
-	velY    float64
-}
-
-func NewPlayer() *Player {
-	return &Player{
-		x:      5,
-		y:      HEIGHT - 5,
-		sprite: '@',
-	}
-}
-
-func (p *Player) update() {
-	// Apply gravity
-	if p.jumping {
-		p.velY += 0.5 // gravity
-		p.y += int(p.velY)
-
-		// Hit ground
-		if p.y >= HEIGHT-1 {
-			p.y = HEIGHT - 1
-			p.jumping = false
-			p.velY = 0
-		}
-	}
-}
-
-type Platform struct {
-	x, y, width int
-}
-
-func NewPlatform(x, y, width int) *Platform {
-	return &Platform{
-		x:     x,
-		y:     y,
-		width: width,
-	}
-}
-
-func (p *Platform) collidesWith(player *Player) bool {
-	return player.y == p.y &&
-		player.x >= p.x &&
-		player.x < p.x+p.width
+type Position struct {
+	x int
+	y int
 }
 
 type Game struct {
-	screen    [][]rune
-	player    *Player
-	platforms []*Platform
+	playerPos  Position
+	obstacles  []Position
+	score      int
+	isGameOver bool
 }
 
-func (g *Game) render() {
-	cmd := exec.Command("clear")
+func clearScreen() {
+	cmd := exec.Command("clear") // Use "cls" for Windows
 	cmd.Stdout = os.Stdout
 	cmd.Run()
+}
 
-	for _, row := range g.screen {
-		fmt.Println(string(row))
+func (g *Game) draw() {
+	clearScreen()
+
+	// Draw score
+	fmt.Printf("Score: %d\n", g.score)
+
+	// Draw game area
+	for h := 0; h < height; h++ {
+		for w := 0; w < width; w++ {
+			if h == g.playerPos.y && w == g.playerPos.x {
+				fmt.Print(playerChar)
+			} else if g.hasObstacle(w, h) {
+				fmt.Print(obstacleChar)
+			} else {
+				fmt.Print(" ")
+			}
+		}
+		fmt.Println()
 	}
 }
-func NewGame() *Game {
-	g := &Game{
-		screen:    make([][]rune, HEIGHT),
-		player:    NewPlayer(),
-		platforms: make([]*Platform, 0),
-	}
 
-	// Add platforms
-	g.platforms = append(g.platforms, NewPlatform(5, HEIGHT-3, 10))
-	g.platforms = append(g.platforms, NewPlatform(20, HEIGHT-6, 8))
-
-	for i := range g.screen {
-		g.screen[i] = make([]rune, WIDTH)
+func (g *Game) hasObstacle(x, y int) bool {
+	for _, obs := range g.obstacles {
+		if obs.x == x && obs.y == y {
+			return true
+		}
 	}
-	return g
+	return false
 }
 
 func (g *Game) update() {
-	// Clear screen
-	for i := range g.screen {
-		for j := range g.screen[i] {
-			g.screen[i][j] = ' '
+	// Move obstacles left
+	newObstacles := []Position{}
+	for _, obs := range g.obstacles {
+		obs.x--
+		if obs.x >= 0 {
+			newObstacles = append(newObstacles, obs)
 		}
 	}
+	g.obstacles = newObstacles
+	g.score += len(g.obstacles) - len(newObstacles)
 
-	// Update player
-	g.player.update()
-
-	// Draw platforms
-	for _, platform := range g.platforms {
-		for i := 0; i < platform.width; i++ {
-			g.screen[platform.y][platform.x+i] = '='
-		}
+	// Add new obstacle
+	if len(g.obstacles) < 5 && time.Now().UnixNano()%7 == 0 {
+		// Random y position for obstacle
+		y := int(time.Now().UnixNano()%int64(height-2)) + 1
+		g.obstacles = append(g.obstacles, Position{width - 1, y})
 	}
 
-	// Draw player
-	g.screen[g.player.y][g.player.x] = g.player.sprite
+	// Check collision
+	if g.hasObstacle(g.playerPos.x, g.playerPos.y) {
+		g.isGameOver = true
+	}
 }
 
 func main() {
-	game := NewGame()
-	keyboard.Open()
-	defer keyboard.Close()
-
-	for {
-		handleInput(game.player)
-		game.update()
-		game.render()
-		time.Sleep(50 * time.Millisecond)
+	game := &Game{
+		playerPos:  Position{5, height / 2},
+		obstacles:  []Position{},
+		score:      0,
+		isGameOver: false,
 	}
+
+	// Save current terminal state
+	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+	if err != nil {
+		panic(err)
+	}
+	defer term.Restore(int(os.Stdin.Fd()), oldState)
+
+	// Input handling goroutine
+	go func() {
+		var b []byte = make([]byte, 1)
+		for {
+			os.Stdin.Read(b)
+			switch string(b) {
+			case "a":
+				if game.playerPos.x > 0 {
+					game.playerPos.x--
+				}
+			case "d":
+				if game.playerPos.x < width-1 {
+					game.playerPos.x++
+				}
+			case "w":
+				if game.playerPos.y > 0 {
+					game.playerPos.y--
+				}
+			case "s":
+				if game.playerPos.y < height-1 {
+					game.playerPos.y++
+				}
+			case "q":
+				game.isGameOver = true
+				return
+			}
+		}
+	}()
+
+	// Main game loop
+	for !game.isGameOver {
+		game.draw()
+		game.update()
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	clearScreen()
+	fmt.Printf("\nGame Over! Final score: %d\n", game.score)
 }
