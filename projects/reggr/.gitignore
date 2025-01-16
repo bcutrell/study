@@ -1,0 +1,8 @@
+/target
+Cargo.lock
+**/*.rs.bk
+
+notes.txt
+
+data
+random_sleep
