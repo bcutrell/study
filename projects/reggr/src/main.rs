@@ -2,6 +2,9 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use serde_derive::Deserialize;
 use std::path::PathBuf;
+use std::process::Command;
+use std::fs::{self, read_dir};
+use std::path::Path;
 
 #[derive(Debug, Clone, Deserialize)]
 struct Config {
@@ -87,7 +90,7 @@ impl Config {
     }
 
     fn validate(&self) -> Result<()> {
-        // Add validation logic here if needed
+        // Placeholder for validation logic
         Ok(())
     }
 }
@@ -113,11 +116,91 @@ fn get_config(args: &Args) -> Result<Config> {
     Ok(config)
 }
 
+fn execute_sequential(config: &Config) -> Result<()> {
+    // Create output directory if it doesn't exist
+    fs::create_dir_all(&config.output_dir)?;
+
+     // Get all files from input directory
+     let input_files = read_dir(&config.input_dir)
+        .with_context(|| format!("Failed to read input directory: {}", config.input_dir.display()))?;
+
+    // Execute commands for each input file
+    for file in input_files {
+        let file = file?;
+        let input_path = file.path();
+        if !input_path.is_file() {
+            continue;
+        }
+        let file_stem = input_path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| anyhow::anyhow!("Invalid input filename"))?;
+
+        println!("Processing file: {}", file_stem);
+
+        // Old command
+        let old_output_path = config.output_dir.join(format!("{}_old.txt", file_stem));
+        execute_command(&config.old_cmd, &config.old_cmd_args, &input_path, &old_output_path)?;
+
+        // New command
+        let new_output_path = config.output_dir.join(format!("{}_new.txt", file_stem));
+        execute_command(&config.new_cmd, &config.new_cmd_args, &input_path, &new_output_path)?;
+    }
+
+    Ok(())
+}
+
+fn execute_command(
+    cmd: &str,
+    args: &Option<String>,
+    input_path: &Path,
+    output_path: &Path,
+) -> Result<()> {
+    // Build command with arguments
+    let mut command = Command::new(cmd);
+
+    if let Some(args) = args {
+        // Replace placeholders in arguments with actual paths
+        let args = args
+            .replace("{input}", input_path.to_str().unwrap())
+            .replace("{output}", output_path.to_str().unwrap());
+
+        // Split args string into individual arguments
+        command.args(args.split_whitespace());
+
+        println!("Executing: {} {}", cmd, args);
+    } else {
+        println!("Executing: {}", cmd);
+    }
+
+    // Execute command and capture output
+    let output = command
+        .output()
+        .with_context(|| format!("Failed to execute command: {}", cmd))?;
+
+    // Write command output and metadata to file
+    let mut content = String::new();
+    content.push_str(&format!("exit_status: {}\n", output.status));
+    content.push_str("---stdout---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stdout));
+    content.push_str("\n---stderr---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stderr));
+
+    fs::write(output_path, content)
+        .with_context(|| format!("Failed to write output to: {}", output_path.display()))?;
+
+    if !output.status.success() {
+        println!("Warning: Command '{}' failed with status: {}", cmd, output.status);
+    }
+
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let args = Args::parse();
     let config = get_config(&args)?;
 
-    println!("Final configuration:");
+    println!("Configuration:");
     println!("  Old command: {}", config.old_cmd);
     println!("  Old command args: {:?}", config.old_cmd_args);
     println!("  New command: {}", config.new_cmd);
@@ -126,6 +209,8 @@ fn main() -> Result<()> {
     println!("  Output directory: {}", config.output_dir.display());
     println!("  Preprocess script: {:?}", config.preprocess);
     println!("  Postprocess script: {:?}", config.postprocess);
+
+    execute_sequential(&config)?;
 
     Ok(())
 }
