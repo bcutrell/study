@@ -1,164 +1,316 @@
+use anyhow::{Context, Result};
 use clap::Parser;
-use std::error::Error;
-use std::fs;
-use std::path::{Path, PathBuf};
+use serde_derive::Deserialize;
+use std::path::PathBuf;
 use std::process::Command;
+use std::fs::{self, read_dir};
+use std::path::Path;
+
+#[derive(Debug, Clone, Deserialize)]
+struct Config {
+    preprocess: Option<String>,
+    old_cmd: String,
+    old_cmd_args: Option<String>,
+    new_cmd: String,
+    new_cmd_args: Option<String>,
+    input_dir: PathBuf,
+    output_dir: PathBuf,
+    postprocess: Option<String>,
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// First script/executable to test
-    #[arg(short = 'a', long)]
-    script_a: String,
+    /// Path to config file
+    #[arg(short, long)]
+    config: Option<PathBuf>,
 
-    /// Second script/executable to test
-    #[arg(short = 'b', long)]
-    script_b: String,
+    /// Old command/script to test
+    #[arg(long)]
+    old_cmd: Option<String>,
 
-    /// Directory containing input files
-    #[arg(short = 'i', long)]
-    input_dir: String,
+    /// New command/script to test
+    #[arg(long)]
+    new_cmd: Option<String>,
 
-    /// Working directory for outputs
-    #[arg(short = 'w', long)]
-    work_dir: String,
+    /// Input directory containing test files
+    #[arg(long)]
+    input_dir: Option<PathBuf>,
+
+    /// Output directory for results
+    #[arg(long)]
+    output_dir: Option<PathBuf>,
 }
 
-fn run_single_test(
-    script_path: &Path,
-    input_file: &Path,
-    output_file: &Path,
-) -> Result<(), Box<dyn Error>> {
-    // Check if script exists
-    if !script_path.exists() {
-        return Err(format!("Script not found: {}", script_path.display()).into());
+impl Config {
+    fn from_file(path: &PathBuf) -> Result<Self> {
+        let content = std::fs::read_to_string(path)
+            .with_context(|| format!("Failed to read config file: {}", path.display()))?;
+        let config: Config = toml::from_str(&content)
+            .with_context(|| format!("Failed to parse config file: {}", path.display()))?;
+        Ok(config)
     }
 
-    // Check if input file exists
-    if !input_file.exists() {
-        return Err(format!("Input file not found: {}", input_file.display()).into());
+    fn from_cli_args(args: &Args) -> Result<Self> {
+        let old_cmd = args.old_cmd.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Missing required argument: --old_cmd"))?;
+        let new_cmd = args.new_cmd.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Missing required argument: --new_cmd"))?;
+        let input_dir = args.input_dir.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Missing required argument: --input-dir"))?;
+        let output_dir = args.output_dir.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("Missing required argument: --output-dir"))?;
+
+        Ok(Config {
+            preprocess: None,
+            old_cmd: old_cmd.clone(),
+            old_cmd_args: None,
+            new_cmd: new_cmd.clone(),
+            new_cmd_args: None,
+            input_dir: input_dir.clone(),
+            output_dir: output_dir.clone(),
+            postprocess: None,
+        })
     }
 
-    let extension = script_path.extension().and_then(|e| e.to_str());
-
-    let output = match extension {
-        Some("py") => Command::new("python")
-            .arg(script_path)
-            .args(["-i", input_file.to_str().unwrap()])
-            .args(["-o", output_file.to_str().unwrap()])
-            .output()
-            .map_err(|e| {
-                format!(
-                    "Failed to execute Python script {}: {}",
-                    script_path.display(),
-                    e
-                )
-            })?,
-        Some("exe") | None => {
-            // For executables, first check if the file exists and is executable
-            if !script_path.exists() {
-                return Err(format!("Executable not found: {}", script_path.display()).into());
-            }
-
-            // Make a copy of PathBuf for modification if needed
-            let exec_path = if cfg!(windows) {
-                // On Windows, try with and without .exe
-                let mut path = script_path.to_path_buf();
-                if path.extension().is_none() {
-                    path.set_extension("exe");
-                }
-                path
-            } else {
-                script_path.to_path_buf()
-            };
-
-            Command::new(&exec_path)
-                .args(["-i", input_file.to_str().unwrap()])
-                .args(["-o", output_file.to_str().unwrap()])
-                .output()
-                .map_err(|e| format!("Failed to execute {}: {}", exec_path.display(), e))?
+    fn merge_cli_args(mut self, args: &Args) -> Self {
+        if let Some(old_cmd) = &args.old_cmd {
+            self.old_cmd = old_cmd.clone();
         }
-        _ => return Err(format!("Unsupported script type: {}", script_path.display()).into()),
+        if let Some(new_cmd) = &args.new_cmd {
+            self.new_cmd = new_cmd.clone();
+        }
+        if let Some(input_dir) = &args.input_dir {
+            self.input_dir = input_dir.clone();
+        }
+        if let Some(output_dir) = &args.output_dir {
+            self.output_dir = output_dir.clone();
+        }
+        self
+    }
+
+    fn validate(&self) -> Result<()> {
+        // Placeholder for validation logic
+        Ok(())
+    }
+}
+
+fn get_config(args: &Args) -> Result<Config> {
+    let config = if let Some(config_path) = &args.config {
+        // Read from config file
+        let mut config = Config::from_file(config_path)?;
+        
+        // If CLI args are also present, merge them with precedence
+        if args.old_cmd.is_some() || args.new_cmd.is_some() || 
+           args.input_dir.is_some() || args.output_dir.is_some() {
+            println!("Note: CLI arguments will override config file values where present");
+            config = config.merge_cli_args(args);
+        }
+        config
+    } else {
+        // Use only CLI arguments
+        Config::from_cli_args(args)?
     };
 
+    config.validate()?;
+    Ok(config)
+}
+
+fn execute_sequential(config: &Config) -> Result<()> {
+    // Create output directory if it doesn't exist
+    fs::create_dir_all(&config.output_dir)?;
+
+     // Get all files from input directory
+     let input_files = read_dir(&config.input_dir)
+        .with_context(|| format!("Failed to read input directory: {}", config.input_dir.display()))?;
+
+    // Execute commands for each input file
+    for file in input_files {
+        let file = file?;
+        let input_path = file.path();
+        if !input_path.is_file() {
+            continue;
+        }
+        let file_stem = input_path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| anyhow::anyhow!("Invalid input filename"))?;
+
+        println!("Processing file: {}", file_stem);
+
+        // Old command
+        let old_output_path = config.output_dir.join(format!("{}_old.txt", file_stem));
+        execute_command(&config.old_cmd, &config.old_cmd_args, &input_path, &old_output_path)?;
+
+        // New command
+        let new_output_path = config.output_dir.join(format!("{}_new.txt", file_stem));
+        execute_command(&config.new_cmd, &config.new_cmd_args, &input_path, &new_output_path)?;
+    }
+
+    Ok(())
+}
+
+fn execute_command(
+    cmd: &str,
+    args: &Option<String>,
+    input_path: &Path,
+    output_path: &Path,
+) -> Result<()> {
+    // Build command with arguments
+    let mut command = Command::new(cmd);
+
+    if let Some(args) = args {
+        // Replace placeholders in arguments with actual paths
+        let args = args
+            .replace("{input}", input_path.to_str().unwrap())
+            .replace("{output}", output_path.to_str().unwrap());
+
+        // Split args string into individual arguments
+        command.args(args.split_whitespace());
+
+        println!("Executing: {} {}", cmd, args);
+    } else {
+        println!("Executing: {}", cmd);
+    }
+
+    // Execute command and capture output
+    let output = command
+        .output()
+        .with_context(|| format!("Failed to execute command: {}", cmd))?;
+
+    // Write command output and metadata to file
+    let mut content = String::new();
+    content.push_str(&format!("exit_status: {}\n", output.status));
+    content.push_str("---stdout---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stdout));
+    content.push_str("\n---stderr---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stderr));
+
+    fs::write(output_path, content)
+        .with_context(|| format!("Failed to write output to: {}", output_path.display()))?;
+
     if !output.status.success() {
-        return Err(format!("Script failed: {}", String::from_utf8_lossy(&output.stderr)).into());
+        println!("Warning: Command '{}' failed with status: {}", cmd, output.status);
     }
 
     Ok(())
 }
 
-fn setup_workspace(work_dir: &Path) -> Result<(), Box<dyn Error>> {
-    fs::create_dir_all(work_dir).map_err(|e| {
-        format!(
-            "Failed to create working directory {}: {}",
-            work_dir.display(),
-            e
-        )
-    })?;
-    fs::create_dir_all(work_dir.join("script_a"))
-        .map_err(|e| format!("Failed to create script_a output directory: {}", e))?;
-    fs::create_dir_all(work_dir.join("script_b"))
-        .map_err(|e| format!("Failed to create script_b output directory: {}", e))?;
-    Ok(())
-}
-
-fn get_input_files(input_dir: &Path) -> Result<Vec<PathBuf>, Box<dyn Error>> {
-    if !input_dir.exists() {
-        return Err(format!("Input directory not found: {}", input_dir.display()).into());
-    }
-
-    let files: Vec<_> = fs::read_dir(input_dir)
-        .map_err(|e| {
-            format!(
-                "Failed to read input directory {}: {}",
-                input_dir.display(),
-                e
-            )
-        })?
-        .filter_map(|entry| entry.ok())
-        .map(|entry| entry.path())
-        .collect();
-
-    if files.is_empty() {
-        return Err(format!("No input files found in directory: {}", input_dir.display()).into());
-    }
-
-    Ok(files)
-}
-
-fn run_tests(args: Args) -> Result<(), Box<dyn Error>> {
-    let work_dir = PathBuf::from(&args.work_dir);
-    let input_dir = PathBuf::from(&args.input_dir);
-
-    setup_workspace(&work_dir)?;
-
-    // Get and validate input files
-    let input_files = get_input_files(&input_dir)?;
-
-    // Run tests for script A
-    println!("Running tests for script A...");
-    for (i, input_file) in input_files.iter().enumerate() {
-        let output_file = work_dir
-            .join("script_a")
-            .join(format!("output_{}.txt", i + 1));
-        run_single_test(Path::new(&args.script_a), input_file, &output_file)?;
-    }
-
-    // Run tests for script B
-    println!("Running tests for script B...");
-    for (i, input_file) in input_files.iter().enumerate() {
-        let output_file = work_dir
-            .join("script_b")
-            .join(format!("output_{}.txt", i + 1));
-        run_single_test(Path::new(&args.script_b), input_file, &output_file)?;
-    }
-
-    println!("All tests completed successfully");
-    Ok(())
-}
-
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<()> {
     let args = Args::parse();
-    run_tests(args)
+    let config = get_config(&args)?;
+
+    println!("Configuration:");
+    println!("  Old command: {}", config.old_cmd);
+    println!("  Old command args: {:?}", config.old_cmd_args);
+    println!("  New command: {}", config.new_cmd);
+    println!("  New command args: {:?}", config.new_cmd_args);
+    println!("  Input directory: {}", config.input_dir.display());
+    println!("  Output directory: {}", config.output_dir.display());
+    println!("  Preprocess script: {:?}", config.preprocess);
+    println!("  Postprocess script: {:?}", config.postprocess);
+
+    execute_sequential(&config)?;
+
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+    use tempfile::NamedTempFile;
+
+    fn create_test_config() -> (NamedTempFile, Config) {
+        let config_content = r#"
+            old_cmd = "script_a.py"
+            old_cmd_args = "-i input.txt -o output.txt"
+            new_cmd = "script_b.py"
+            new_cmd_args = "-i input.txt -o output.txt"
+            input_dir = "inputs/"
+            output_dir = "outputs/"
+            preprocess = "preprocess.sh"
+            postprocess = "postprocess.sh"
+        "#;
+
+        let mut temp_file = NamedTempFile::new().unwrap();
+        write!(temp_file, "{}", config_content).unwrap();
+
+        let config: Config = toml::from_str(config_content).unwrap();
+        (temp_file, config)
+    }
+
+    #[test]
+    fn test_config_file_parsing() -> Result<()> {
+        let (temp_file, expected_config) = create_test_config();
+        let config = Config::from_file(&temp_file.path().to_path_buf())?;
+
+        assert_eq!(config.old_cmd, expected_config.old_cmd);
+        assert_eq!(config.old_cmd_args, expected_config.old_cmd_args);
+        assert_eq!(config.new_cmd, expected_config.new_cmd);
+        assert_eq!(config.input_dir, expected_config.input_dir);
+        assert_eq!(config.output_dir, expected_config.output_dir);
+        assert_eq!(config.preprocess, expected_config.preprocess);
+        assert_eq!(config.postprocess, expected_config.postprocess);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cli_override_config() -> Result<()> {
+        let (temp_file, _) = create_test_config();
+        
+        let args = Args {
+            config: Some(temp_file.path().to_path_buf()),
+            old_cmd: Some("new_script_a.py".to_string()),
+            new_cmd: Some("new_script_b.py".to_string()),
+            input_dir: Some(PathBuf::from("new_inputs/")),
+            output_dir: None,
+        };
+
+        let config = get_config(&args)?;
+
+        assert_eq!(config.old_cmd, "new_script_a.py");
+        assert_eq!(config.new_cmd, "new_script_b.py");
+        assert_eq!(config.input_dir, PathBuf::from("new_inputs/"));
+        assert_eq!(config.output_dir, PathBuf::from("outputs/")); // From config file
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cli_only() -> Result<()> {
+        let args = Args {
+            config: None,
+            old_cmd: Some("script_a.py".to_string()),
+            new_cmd: Some("script_b.py".to_string()),
+            input_dir: Some(PathBuf::from("inputs/")),
+            output_dir: Some(PathBuf::from("outputs/")),
+        };
+
+        let config = get_config(&args)?;
+
+        assert_eq!(config.old_cmd, "script_a.py");
+        assert_eq!(config.new_cmd, "script_b.py");
+        assert_eq!(config.input_dir, PathBuf::from("inputs/"));
+        assert_eq!(config.output_dir, PathBuf::from("outputs/"));
+        assert_eq!(config.preprocess, None);
+        assert_eq!(config.postprocess, None);
+
+        Ok(())
+    }
+
+    #[test]
+    #[should_panic(expected = "Missing required argument")]
+    fn test_cli_missing_required_args() {
+        let args = Args {
+            config: None,
+            old_cmd: Some("script_a.py".to_string()),
+            new_cmd: None, // Missing required argument
+            input_dir: Some(PathBuf::from("inputs/")),
+            output_dir: Some(PathBuf::from("outputs/")),
+        };
+
+        get_config(&args).unwrap();
+    }
 }
