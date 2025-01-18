@@ -2,7 +2,7 @@
 Cargo.lock
 **/*.rs.bk
 
-notes.txt
+notes
 
 data
 random_sleep

@@ -283,6 +283,7 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use anyhow::Ok;
     use std::fs::File;
     use std::io::Write;
     use tempfile::NamedTempFile;
@@ -451,4 +452,3 @@ echo "Output: $2"
         Ok(())
     }
 }
-
