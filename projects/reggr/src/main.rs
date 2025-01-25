@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use std::path::PathBuf;
+use tokio;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -31,12 +32,15 @@ struct Args {
 
     #[arg(long)]
     output_dir: Option<PathBuf>,
+
+    #[arg(long)]
+    concurrent: bool,
 }
 
 fn get_config(args: &Args) -> Result<reggr::Config> {
     let config = if let Some(config_path) = &args.config {
         let mut config = reggr::Config::from_file(config_path)?;
-        
+
         if args.old_cmd.is_some()
             || args.new_cmd.is_some()
             || args.input_dir.is_some()
@@ -54,13 +58,21 @@ fn get_config(args: &Args) -> Result<reggr::Config> {
         }
         config
     } else {
-        let old_cmd = args.old_cmd.as_ref()
+        let old_cmd = args
+            .old_cmd
+            .as_ref()
             .ok_or_else(|| anyhow::anyhow!("Missing required argument: --old_cmd"))?;
-        let new_cmd = args.new_cmd.as_ref()
+        let new_cmd = args
+            .new_cmd
+            .as_ref()
             .ok_or_else(|| anyhow::anyhow!("Missing required argument: --new_cmd"))?;
-        let input_dir = args.input_dir.as_ref()
+        let input_dir = args
+            .input_dir
+            .as_ref()
             .ok_or_else(|| anyhow::anyhow!("Missing required argument: --input-dir"))?;
-        let output_dir = args.output_dir.as_ref()
+        let output_dir = args
+            .output_dir
+            .as_ref()
             .ok_or_else(|| anyhow::anyhow!("Missing required argument: --output-dir"))?;
 
         reggr::Config::from_cli_args(
@@ -77,7 +89,8 @@ fn get_config(args: &Args) -> Result<reggr::Config> {
     Ok(config)
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let args = Args::parse();
     let config = get_config(&args)?;
 
@@ -91,7 +104,11 @@ fn main() -> Result<()> {
     println!("  Preprocess script: {:?}", config.preprocess);
     println!("  Postprocess script: {:?}", config.postprocess);
 
-    reggr::execute_sequential(&config)?;
+    if args.concurrent {
+        reggr::execute_concurrent(&config).await?;
+    } else {
+        reggr::execute_sequential(&config)?;
+    }
 
     Ok(())
 }
