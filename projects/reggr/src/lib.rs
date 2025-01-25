@@ -3,6 +3,8 @@ use serde_derive::Deserialize;
 use std::fs::{self, read_dir};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::sync::Arc;
+use tokio::sync::Semaphore;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
@@ -172,6 +174,95 @@ fn execute_command(
             cmd, output.status
         );
     }
+
+    Ok(())
+}
+
+pub async fn execute_concurrent(config: &Config) -> Result<()> {
+    let max_concurrent = std::thread::available_parallelism()?.get();
+    let semaphore = Arc::new(Semaphore::new(max_concurrent));
+    let mut handles = Vec::new();
+
+    for file in read_dir(&config.input_dir)? {
+        let permit = semaphore.clone().acquire_owned().await?;
+        let config = config.clone();
+        let file = file?;
+        let input_path = file.path();
+        let file_stem = input_path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| anyhow::anyhow!("Invalid input filename"))?;
+
+        let old_output_path = config.output_dir.join(format!("{}_old.txt", file_stem));
+        let new_output_path = config.output_dir.join(format!("{}_new.txt", file_stem));
+
+        handles.push(tokio::spawn(async move {
+            let old_result = execute_command_async(
+                &config.old_cmd,
+                &config.old_cmd_args,
+                &input_path,
+                &old_output_path,
+            );
+            let new_result = execute_command_async(
+                &config.new_cmd,
+                &config.new_cmd_args,
+                &input_path,
+                &new_output_path,
+            );
+            let (old_res, new_res) = tokio::join!(old_result, new_result);
+            drop(permit);
+            (old_res, new_res)
+        }));
+    }
+
+    for handle in handles {
+        let (old_res, new_res) = handle.await?;
+        old_res?;
+        new_res?;
+    }
+    Ok(())
+}
+
+async fn execute_command_async(
+    cmd: &str,
+    args: &Option<String>,
+    input_path: &Path,
+    output_path: &Path,
+) -> Result<()> {
+    let cmd_parts: Vec<&str> = cmd.split_whitespace().collect();
+    if cmd_parts.is_empty() {
+        return Err(anyhow::anyhow!("Empty command"));
+    }
+
+    let program = cmd_parts[0];
+    let mut command = tokio::process::Command::new(program);
+
+    if cmd_parts.len() > 1 {
+        command.args(&cmd_parts[1..]);
+    }
+
+    if let Some(args) = args {
+        let args = args
+            .replace("{input}", input_path.to_str().unwrap())
+            .replace("{output}", output_path.to_str().unwrap());
+        command.args(args.split_whitespace());
+    }
+
+    let output = command
+        .output()
+        .await
+        .with_context(|| format!("Failed to execute command: {}", cmd))?;
+
+    let mut content = String::new();
+    content.push_str(&format!("exit_status: {}\n", output.status));
+    content.push_str("---stdout---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stdout));
+    content.push_str("\n---stderr---\n");
+    content.push_str(&String::from_utf8_lossy(&output.stderr));
+
+    tokio::fs::write(output_path, content)
+        .await
+        .with_context(|| format!("Failed to write output to: {}", output_path.display()))?;
 
     Ok(())
 }
