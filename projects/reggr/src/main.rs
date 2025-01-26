@@ -54,6 +54,7 @@ fn get_config(args: &Args) -> Result<reggr::Config> {
                 args.output_dir.as_ref(),
                 args.old_cmd_args.as_ref(),
                 args.new_cmd_args.as_ref(),
+                Some(args.concurrent),
             );
         }
         config
@@ -82,6 +83,7 @@ fn get_config(args: &Args) -> Result<reggr::Config> {
             output_dir,
             args.old_cmd_args.clone(),
             args.new_cmd_args.clone(),
+            Some(args.concurrent),
         )
     };
 
