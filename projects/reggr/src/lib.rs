@@ -16,6 +16,8 @@ pub struct Config {
     pub input_dir: PathBuf,
     pub output_dir: PathBuf,
     pub postprocess: Option<String>,
+    #[serde(default)]
+    pub concurrent: bool,
 }
 
 impl Config {
@@ -34,6 +36,7 @@ impl Config {
         output_dir: &PathBuf,
         old_cmd_args: Option<String>,
         new_cmd_args: Option<String>,
+        concurrent: Option<bool>,
     ) -> Self {
         Config {
             preprocess: None,
@@ -44,6 +47,7 @@ impl Config {
             input_dir: input_dir.clone(),
             output_dir: output_dir.clone(),
             postprocess: None,
+            concurrent: concurrent.unwrap_or(false),
         }
     }
 
@@ -55,6 +59,7 @@ impl Config {
         output_dir: Option<&PathBuf>,
         old_cmd_args: Option<&String>,
         new_cmd_args: Option<&String>,
+        concurrent: Option<bool>,
     ) -> Self {
         if let Some(old_cmd) = old_cmd {
             self.old_cmd = old_cmd.clone();
@@ -73,6 +78,9 @@ impl Config {
         }
         if let Some(output_dir) = output_dir {
             self.output_dir = output_dir.clone();
+        }
+        if let Some(concurrent) = concurrent {
+            self.concurrent = concurrent;
         }
         self
     }
